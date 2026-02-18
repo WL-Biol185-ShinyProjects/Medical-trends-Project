@@ -5,6 +5,6 @@ date: "2026-02-16"
 ---
 ```{r}
 library(ggplot2)
-ggplot(Alzheimer_s_Disease_and_Healthy_Aging_Indicators_Cognitive_Decline_20260216_2_, aes(LocationDesc)) + geom_histogram(stat= "count")
+ggplot(Alzheimers_Data, aes(LocationDesc)) + geom_histogram(stat= "count") + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
