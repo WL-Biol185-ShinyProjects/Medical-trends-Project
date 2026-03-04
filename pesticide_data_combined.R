@@ -15,7 +15,7 @@ pesticides_2014 <- merge(pesticides_2014, dictionary, by = c("state_code", "coun
 pesticides_2015 <- merge(pesticides_2015, dictionary, by = c("state_code", "county_code"), all.x = TRUE)
 
 # Filter to specific compounds
-compounds_to_keep <- c("2,4-D", "Glyphosate", "Paraquat", "Malathion", "Maneb", "Metolachlor")
+compounds_to_keep <- c("2,4-D", "Glyphosate", "Paraquat", "Malathion", "Maneb", "Metolachlor", "Chlorpyrifos","Rotenone", "Diquat", "Diazinon", "Acephate", "Dimethoate", "Mancozeb")
 pesticides_2014_filtered <- subset(pesticides_2014, compound %in% compounds_to_keep)
 pesticides_2015_filtered <- subset(pesticides_2015, compound %in% compounds_to_keep)
 
