@@ -41,3 +41,19 @@ StateData_clean <- ExpectancyData_clean %>%
 
 View(StateData_clean)
 write.csv(StateData_clean, "LifeExpectancyStateData_clean.csv", row.names = FALSE)
+
+#cleaning up Parkinsons Data
+Parkinsons_mortality_rates <- Parkinsons_mortality_rates %>%
+  select(-URL)
+
+#averages all the years together so these data points in the table now have average deaths and death rate per state for the years 2014-2023
+Parkinsons_mortality_rates_clean <- Parkinsons_mortality_rates %>%
+  group_by(Location) %>%
+  summarise(
+    Avg_Death_Rate = mean(`Death Rate`, na.rm = TRUE),
+    Avg_Deaths     = mean(Deaths,       na.rm = TRUE)
+  ) %>%
+  ungroup()
+View(Parkinsons_mortality_rates_clean)
+write.csv(Parkinsons_mortality_rates_clean, "Parkinsons_mortality_rates_clean.csv", row.names = FALSE)
+
