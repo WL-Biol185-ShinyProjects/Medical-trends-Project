@@ -1,23 +1,32 @@
 library(dplyr)
 
+
+
 # Load the data
 pesticides_2014 <- read.csv("Pesticide_Data_2014.csv", stringsAsFactors = FALSE)
 pesticides_2015 <- read.csv("Pesticide_Data_2015.csv", stringsAsFactors = FALSE)
 dictionary       <- read.csv("dictionary.csv",       stringsAsFactors = FALSE)
 
-pesticides_2014 <- pesticides_2014 %>%
-  rename(compound = V1, state_code = V3, county_code = V4)
+# Load the data
+pesticides_2014 <- read.csv("Pesticide_Data_2014.csv", stringsAsFactors = FALSE)
+pesticides_2015 <- read.csv("Pesticide_Data_2015.csv", stringsAsFactors = FALSE)
+dictionary      <- read.csv("dictionary.csv",           stringsAsFactors = FALSE)
 
-pesticides_2015 <- pesticides_2015 %>%
-  rename(compound = V1, state_code = V3, county_code = V4)
+# Rename key columns
+pesticides_2014 <- rename(pesticides_2014, compound = COMPOUND, state_code = STATE_CODE, county_code = COUNTY_CODE)
+pesticides_2015 <- rename(pesticides_2015, compound = COMPOUND, state_code = STATE_CODE, county_code = COUNTY_CODE)
+dictionary      <- rename(dictionary, state_code = STATE_CODE, county_code = COUNTY_CODE, county_name = COUNTY, state_name = STATE)
 
-# Rename relevant columns in dictionary
-dictionary <- dictionary %>%
-  rename(state_code = V1, county_code = V2, county_name = V3, state_name = V4)
+# Merge county and state names into pesticide data
+pesticides_2014 <- merge(pesticides_2014, dictionary, by = c("state_code", "county_code"), all.x = TRUE)
+pesticides_2015 <- merge(pesticides_2015, dictionary, by = c("state_code", "county_code"), all.x = TRUE)
 
+# Filter to specific compounds
+compounds_to_keep <- c("2,4-D", "Glyphosate", "Paraquat")
+pesticides_2014_filtered <- subset(pesticides_2014, compound %in% compounds_to_keep)
+pesticides_2015_filtered <- subset(pesticides_2015, compound %in% compounds_to_keep)
 
-pesticides_2014_named <- pesticides_2014 %>%
-  left_join(dictionary, by = c("state_code", "county_code"))
+# Check the result
+head(pesticides_2014_filtered)
+head(pesticides_2015_filtered)
 
-pesticides_2015_named <- pesticides_2015 %>%
-  left_join(dictionary, by = c("state_code", "county_code"))
