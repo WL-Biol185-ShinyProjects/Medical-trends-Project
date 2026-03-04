@@ -26,3 +26,18 @@ ExpectancyData_clean <- ExpectancyData_clean %>%
 
 #saving this new datatset as a csv to the folder 
 write.csv(ExpectancyData_clean, "ExpectancyData_clean.csv", row.names = FALSE)
+
+#now creating a state-level data set that has life expectancy data by state by merging and averaging all the county columns
+StateData_clean <- ExpectancyData_clean %>%
+  group_by(State) %>%
+  summarise(
+    Avg_Life_Expectancy    = mean(Avg_Life_Expectancy,    na.rm = TRUE),
+    Avg_Range_Min          = mean(Avg_Range_Min,          na.rm = TRUE),
+    Avg_Range_Max          = mean(Avg_Range_Max,          na.rm = TRUE),
+    Avg_Life_Expectancy_SE = mean(Avg_Life_Expectancy_SE, na.rm = TRUE),
+    County_Count           = n()
+  ) %>%
+  ungroup()
+
+View(StateData_clean)
+write.csv(StateData_clean, "LifeExpectancyStateData_clean.csv", row.names = FALSE)
