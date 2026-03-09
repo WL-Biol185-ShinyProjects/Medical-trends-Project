@@ -289,7 +289,7 @@ fluidPage(
   
   # Top branding bar
   div(class = "top-brand",
-      div(class = "project-title", "BIOL-185 Project - Life Expectancy & Pesticides"),
+      div(class = "project-title", "BIOL-185 Project - Environmental Impact on Neurological Health"),
       div("Environmental Health Research")
   ),
   
@@ -297,7 +297,7 @@ fluidPage(
   navbarPage(
     title = "",
     id = "main_nav",
-    windowTitle = "Life Expectancy & Pesticides",
+    windowTitle = "Environmental Impact on Neurological Health",
     collapsible = TRUE,
     
     header = tags$div(class = "navbar-custom"),

@@ -11,7 +11,7 @@ library(leaflet)
 # SERVER FUNCTION
 # =============================================================================
 
-server <- function(input, output, session) {
+function(input, output, session) {
   
   # ===========================================================================
   # DATA GENERATION (In production, load from external files)
