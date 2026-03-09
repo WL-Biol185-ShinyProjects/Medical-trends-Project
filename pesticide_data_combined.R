@@ -15,10 +15,36 @@ pesticides_2014 <- merge(pesticides_2014, dictionary, by = c("state_code", "coun
 pesticides_2015 <- merge(pesticides_2015, dictionary, by = c("state_code", "county_code"), all.x = TRUE)
 
 # Filter to specific compounds
-compounds_to_keep <- c("2,4-D", "Glyphosate", "Paraquat", "Malathion", "Maneb", "Metolachlor", "Chlorpyrifos","Rotenone", "Diquat", "Diazinon", "Acephate", "Dimethoate", "Mancozeb")
+compounds_to_keep <- c("2,4-D", "Glyphosate", "Paraquat", "Malathion", "Chlorpyrifos")
 pesticides_2014_filtered <- subset(pesticides_2014, compound %in% compounds_to_keep)
 pesticides_2015_filtered <- subset(pesticides_2015, compound %in% compounds_to_keep)
 
 # Check the result
-head(pesticides_2014_filtered)
-head(pesticides_2015_filtered)
+# head(pesticides_2014_filtered)
+# head(pesticides_2015_filtered)
+
+write.csv(pesticides_2015_filtered, "pesticides_2015_filtered.csv", row.names = FALSE)
+write.csv(pesticides_2014_filtered, "pesticides_2014_filtered.csv", row.names = FALSE)
+
+# Combine 2014 and 2015 datasets
+pesticides_2014_filtered <- read.csv("pesticides_2014_filtered.csv", stringsAsFactors = FALSE)
+pesticides_2015_filtered <- read.csv("pesticides_2015_filtered.csv", stringsAsFactors = FALSE)
+
+# Add a year column to each so you can tell them apart
+pesticides_2014_filtered$year <- 2014
+pesticides_2015_filtered$year <- 2015
+
+# Combine into one dataframe
+pesticides_combined <- bind_rows(pesticides_2014_filtered, pesticides_2015_filtered)
+
+# Condense pesticide data by county
+pesticides_by_county <- pesticides_combined %>%
+  group_by(state_code, county_code, county_name, state_name, year) %>%
+  summarise(
+    LOW_ESTIMATE  = sum(LOW_ESTIMATE,  na.rm = TRUE),
+    HIGH_ESTIMATE = sum(HIGH_ESTIMATE, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Save the result
+write.csv(pesticides_by_county, "pesticides_by_county.csv", row.names = FALSE)
