@@ -20,5 +20,9 @@ pesticides_2014_filtered <- subset(pesticides_2014, compound %in% compounds_to_k
 pesticides_2015_filtered <- subset(pesticides_2015, compound %in% compounds_to_keep)
 
 # Check the result
-head(pesticides_2014_filtered)
-head(pesticides_2015_filtered)
+# head(pesticides_2014_filtered)
+# head(pesticides_2015_filtered)
+
+write.csv(pesticides_2014_filtered, "pesticides_2014_filtered.csv", row.names = FALSE)
+write.csv(pesticides_2015_filtered, "pesticides_2015_filtered.csv", row.names = FALSE)
+
