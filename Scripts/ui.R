@@ -337,10 +337,10 @@ fluidPage(
                      h2("Data Sources"),
                      p("The data in this project comes from multiple authoritative sources:"),
                      tags$ul(
-                       tags$li(tags$strong("Centers for Disease Control and Prevention:"), " Air quality and Parkinson's data"),
+                       tags$li(tags$strong("Centers for Disease Control and Prevention:"), " Air quality data"),
                        tags$li(tags$strong("U.S. Environmental Protection Agency:"), " Pesticide use estimates"),
                        tags$li(tags$strong("USDA National Agriculture Statistics Service"), " Environmental exposure and agricultural land data"),
-      
+                       tags$li(tags$strong("National Center for Health Statistics"), " Parkinson's mortality data")
                      ),
                      
                      div(class = "data-sources",
