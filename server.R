@@ -14,85 +14,61 @@ library(leaflet)
 function(input, output, session) {
   
   # ===========================================================================
-  # DATA GENERATION (In production, load from external files)
+  # LOAD EXTERNAL DATA
   # ===========================================================================
   
-  set.seed(123)
+  # Load Parkinson's disease data
+  Parkinson_Data <- read.csv("Parkinson_mortality_rates_clean.csv")
+
+  # Load Pesticide use data  
+  Pesticide_County_Data <- read.csv("pesticides_by_county.csv")
   
-  # State-level data
-  states_data <- data.frame(
-    State = state.name,
-    Region = state.region,
-    Life_Expectancy = rnorm(50, mean = 78.5, sd = 2.5),
-    Pesticide_Use_kg_per_ha = abs(rnorm(50, mean = 2.5, sd = 1.2)),
-    Population = sample(500000:40000000, 50),
-    Agricultural_Area_pct = runif(50, 5, 60),
-    Latitude = c(32.3, 64.2, 34.0, 34.7, 36.8, 39.5, 41.6, 38.9, 27.8, 32.2,
-                 43.6, 44.3, 39.8, 39.9, 41.6, 38.5, 37.8, 30.4, 44.3, 39.0,
-                 42.4, 43.3, 32.3, 38.6, 46.9, 41.5, 46.6, 39.2, 43.1, 40.8,
-                 35.5, 42.7, 35.8, 39.9, 41.2, 35.5, 44.9, 40.3, 33.9, 44.4,
-                 35.0, 43.8, 31.0, 39.3, 44.0, 37.5, 47.5, 38.5, 43.1, 43.0),
-    Longitude = c(-86.9, -152.4, -111.1, -92.4, -119.4, -105.8, -72.7, -75.5, -81.7, -83.4,
-                  -116.2, -114.5, -89.4, -86.1, -93.6, -84.3, -84.3, -92.3, -69.8, -76.6,
-                  -71.4, -84.5, -89.7, -92.2, -110.0, -100.3, -112.0, -119.8, -71.5, -74.4,
-                  -106.0, -73.8, -78.6, -82.9, -96.7, -97.5, -123.0, -76.9, -80.9, -72.6,
-                  -80.0, -99.8, -97.5, -111.9, -72.6, -78.7, -120.5, -80.9, -89.5, -107.3)
-  )
+  # Load Pesticide use data  
+  Expectancy_Data <- read.csv("LifeExpectancyStateData_clean.csv")
   
-  # Calculate correlation
-  correlation <- cor(states_data$Pesticide_Use_kg_per_ha, 
-                     states_data$Life_Expectancy)
-  
-  # Temporal trend data
-  years_data <- data.frame(
-    Year = rep(2000:2023, each = 3),
-    Category = rep(c("Low Pesticide Use", "Medium Pesticide Use", "High Pesticide Use"), 24),
-    Life_Expectancy = c(
-      seq(75.5, 78.2, length.out = 24),
-      seq(75.0, 77.5, length.out = 24),
-      seq(74.2, 76.8, length.out = 24)
-    ) + rnorm(72, 0, 0.3),
-    Pesticide_Use = rep(c(1.2, 2.8, 5.5), 24)
-  )
-  
-  # Age group data
-  age_groups_data <- data.frame(
-    Age_Group = rep(c("0-14", "15-44", "45-64", "65-74", "75+"), each = 3),
-    Exposure_Level = rep(c("Low", "Medium", "High"), 5),
-    Life_Expectancy_Impact = c(
-      -0.5, -1.2, -2.1,
-      -0.3, -0.8, -1.5,
-      -0.8, -1.8, -3.2,
-      -1.5, -2.5, -4.1,
-      -2.0, -3.2, -5.5
-    )
-  )
+  # Load Pesticide use data  
+  Farm_Data <- read.csv("Farm_Data_2024.csv")
   
   # ===========================================================================
-  # REACTIVE DATA FILTERING
+  # COMBINED DATA FOR ANALYSIS
   # ===========================================================================
   
-  filtered_data <- reactive({
-    data <- states_data
+  # Merge the two datasets by State
+  combined_data <- reactive({
+    req(Parkinson_Data(), Pesticide_Data())
     
-    # Filter by life expectancy
-    data <- data %>%
-      filter(Life_Expectancy >= input$life_exp_filter[1],
-             Life_Expectancy <= input$life_exp_filter[2])
+    # Merge datasets - keep all columns, adding suffixes for duplicates
+    merged <- Parkinson_Data() %>%
+      full_join(Pesticide_Data(), 
+                by = c("State"), 
+                suffix = c("_park", "_pest"))
     
-    # Filter by pesticide use
-    data <- data %>%
-      filter(Pesticide_Use_kg_per_ha >= input$pesticide_filter[1],
-             Pesticide_Use_kg_per_ha <= input$pesticide_filter[2])
-    
-    # Filter by region
-    if(input$region_filter != "All") {
-      data <- data %>% filter(Region == input$region_filter)
+    # Consolidate Region, Latitude, Longitude columns
+    if("Region_park" %in% names(merged)) {
+      merged$Region <- coalesce(merged$Region_park, merged$Region_pest)
+    }
+    if("Latitude_park" %in% names(merged)) {
+      merged$Latitude <- coalesce(merged$Latitude_park, merged$Latitude_pest)
+    }
+    if("Longitude_park" %in% names(merged)) {
+      merged$Longitude <- coalesce(merged$Longitude_park, merged$Longitude_pest)
     }
     
-    return(data)
+    return(merged)
   })
   
+  # Calculate correlation
+  correlation <- reactive({
+    req(combined_data())
+    data <- combined_data()
+    
+    # Check if required columns exist
+    if("Parkinson_Rate" %in% names(data) && "Pesticide_Use" %in% names(data)) {
+      cor(data$Pesticide_Use, data$Parkinson_Rate, use = "complete.obs")
+    } else {
+      NA
+    }
+  })
   # ===========================================================================
   # HOME TAB OUTPUTS
   # ===========================================================================
