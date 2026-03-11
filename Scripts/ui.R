@@ -336,9 +336,10 @@ fluidPage(
                      tags$h3("Data Sources"),
                      p("All data comes from publicly available government datasets:"),
                      tags$ul(
-                       tags$li("CDC - Parkinson's disease mortality statistics"),
-                       tags$li("USDA - Pesticide usage and farm statistics"),
-                       tags$li("CDC WONDER - Life expectancy data")
+                       tags$li("Centers for Disease Control and Prevention - Air quality data"),
+                       tags$li("U.S. Environmental Protection Agency - Pesticide use estimates"),
+                       tags$li("USDA National Agriculture Statistics Service - Environmental exposure and agricultural land data"),
+                       tags$li("National Center for Health Statistics - Parkinson's mortality data")
                      ),
                      
                      tags$h3("Methodology"),
