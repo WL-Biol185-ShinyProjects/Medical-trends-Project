@@ -308,8 +308,8 @@ fluidPage(
     tabPanel("Home",
              div(class = "main-container",
                  div(class = "hero-section",
-                     h1("Life Expectancy & Pesticides Case Studies"),
-                     p("Welcome to our research project exploring the relationship between pesticide exposure and life expectancy across the United States. This interactive dashboard visualizes county-level data on pesticide use, agricultural practices, environmental exposure, and population health outcomes.")
+                     h1("Environmental Impact on Neurological Health"),
+                     p("Welcome to our research project exploring the relationships between environmental factors and Parkinson's disease across the United States. This interactive dashboard visualizes county-level data on pesticide use, agricultural practices, environmental exposure, and population health outcomes.")
                  ),
                  
                  # Stats boxes - these will be rendered by server
@@ -337,10 +337,10 @@ fluidPage(
                      h2("Data Sources"),
                      p("The data in this project comes from multiple authoritative sources:"),
                      tags$ul(
-                       tags$li(tags$strong("CDC WONDER:"), " Life expectancy and mortality data (2017-2023)"),
-                       tags$li(tags$strong("USDA National Agricultural Statistics Service:"), " Pesticide use estimates"),
-                       tags$li(tags$strong("EPA:"), " Environmental exposure and pesticide registration data"),
-                       tags$li(tags$strong("U.S. Census Bureau:"), " Population and demographic information")
+                       tags$li(tags$strong("Centers for Disease Control and Prevention:"), " Air quality and Parkinson's data"),
+                       tags$li(tags$strong("U.S. Environmental Protection Agency:"), " Pesticide use estimates"),
+                       tags$li(tags$strong("USDA National Agriculture Statistics Service"), " Environmental exposure and agricultural land data"),
+      
                      ),
                      
                      div(class = "data-sources",
