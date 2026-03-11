@@ -211,13 +211,12 @@ fluidPage(
                  div(class = "content-box",
                      h2("Datasets Used"),
                      tags$ul(
-<<<<<<< HEAD
-                       tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " - Parkinson's death rates by state"),
-                       tags$li(tags$strong("pesticides_by_county.csv"), " - Pesticide usage by county"),
-                       tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " - Life expectancy by state"),
-                       tags$li(tags$strong("ExpectancyData_clean.csv"), " - Life expectancy by county"),
-                       tags$li(tags$strong("Farm_Data_2024.csv"), " - Number and size of farms by state")
-=======
+                       tags$li(tags$strong("Clean Datasets/Parkinsons_mortality_rates_clean.csv"), " - Parkinson's death rates by state"),
+                       tags$li(tags$strong("Clean Datasets/pesticides_by_county.csv"), " - Pesticide usage by county"),
+                       tags$li(tags$strong("Clean Datasets/LifeExpectancyStateData_clean.csv"), " - Life expectancy by state"),
+                       tags$li(tags$strong("Clean Datasets/ExpectancyData_clean.csv"), " - Life expectancy by county"),
+                       tags$li(tags$strong("Clean Datasets/Farm_Data_2024.csv"), " - Number and size of farms by state"),
+                       
                        tags$li(tags$strong("Centers for Disease Control and Prevention:"), " Air quality data"),
                        tags$li(tags$strong("U.S. Environmental Protection Agency:"), " Pesticide use estimates"),
                        tags$li(tags$strong("USDA National Agriculture Statistics Service"), " Environmental exposure and agricultural land data"),
@@ -229,7 +228,6 @@ fluidPage(
                          div(class = "source-logo", "USDA"),
                          div(class = "source-logo", "EPA"),
                          div(class = "source-logo", "Census")
->>>>>>> eb526d72c1f5f25ba9d726e5b769702af1c324d9
                      )
                  )
              )

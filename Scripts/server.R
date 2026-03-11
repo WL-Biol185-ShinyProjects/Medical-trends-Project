@@ -19,7 +19,7 @@ function(input, output, session) {
   # Load Parkinson's mortality data (by state)
   Parkinson_Data <- reactive({
     tryCatch({
-      data <- read.csv("Parkinsons_mortality_rates_clean.csv", stringsAsFactors = FALSE)
+      data <- read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/Parkinsons_mortality_rates_clean.csv", stringsAsFactors = FALSE)
       # Rename Location to State if needed
       if("Location" %in% names(data)) {
         data$State <- data$Location
@@ -35,7 +35,7 @@ function(input, output, session) {
   # Load Pesticide data by county
   Pesticide_County_Data <- reactive({
     tryCatch({
-      read.csv("pesticides_by_county.csv", stringsAsFactors = FALSE)
+      read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/pesticides_by_county.csv", stringsAsFactors = FALSE)
     }, error = function(e) {
       showNotification("Error loading pesticides_by_county.csv", 
                        type = "error", duration = NULL)
@@ -46,7 +46,7 @@ function(input, output, session) {
   # Load Life Expectancy by State
   Expectancy_State_Data <- reactive({
     tryCatch({
-      read.csv("LifeExpectancyStateData_clean.csv", stringsAsFactors = FALSE)
+      read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/LifeExpectancyStateData_clean.csv", stringsAsFactors = FALSE)
     }, error = function(e) {
       showNotification("Error loading LifeExpectancyStateData_clean.csv", 
                        type = "error", duration = NULL)
@@ -57,7 +57,7 @@ function(input, output, session) {
   # Load Life Expectancy by County
   Expectancy_Data <- reactive({
     tryCatch({
-      read.csv("ExpectancyData_clean.csv", stringsAsFactors = FALSE)
+      read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/ExpectancyData_clean.csv", stringsAsFactors = FALSE)
     }, error = function(e) {
       showNotification("Error loading ExpectancyData_clean.csv", 
                        type = "error", duration = NULL)
@@ -68,7 +68,7 @@ function(input, output, session) {
   # Load Farm data by state
   Farm_Data <- reactive({
     tryCatch({
-      read.csv("Farm_Data_2024.csv", stringsAsFactors = FALSE)
+      read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/Farm_Data_2024.csv", stringsAsFactors = FALSE)
     }, error = function(e) {
       showNotification("Error loading Farm_Data_2024.csv", 
                        type = "error", duration = NULL)
