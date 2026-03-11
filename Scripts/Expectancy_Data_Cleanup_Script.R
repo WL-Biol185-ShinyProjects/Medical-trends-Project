@@ -54,6 +54,14 @@ Parkinsons_mortality_rates_clean <- Parkinsons_mortality_rates %>%
     Avg_Deaths     = mean(Deaths,       na.rm = TRUE)
   ) %>%
   ungroup()
-View(Parkinsons_mortality_rates_clean)
-write.csv(Parkinsons_mortality_rates_clean, "Parkinsons_mortality_rates_clean.csv", row.names = FALSE)
+Parkinsons_mortality_rates_clean <- Parkinsons_mortality_rates_clean[-9, ]
 
+View(Parkinsons_mortality_rates_clean)
+write.csv(Parkinsons_mortality_rates_clean, "Clean Datasets/Parkinsons_mortality_rates_clean.csv", row.names = FALSE)
+
+Farm_Data <- Farm_Data %>%
+  arrange(State) %>% select(-X, -X.1, -X.2, -X.3, -X.4)
+write.csv(Farm_Data, "Clean Datasets/Farm_Data_2024.csv", row.names = FALSE)
+
+Parkinson_Data <- Parkinson_Data[-9, ]
+View(Parkinson_Data_1)
