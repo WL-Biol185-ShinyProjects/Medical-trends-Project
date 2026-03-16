@@ -1,4 +1,5 @@
 # ui.R - User Interface for Medical Trends Dashboard
+# Parkinson's Disease, Pesticides, Life Expectancy, and Farm Data
 
 library(shiny)
 library(plotly)
@@ -211,23 +212,11 @@ fluidPage(
                  div(class = "content-box",
                      h2("Datasets Used"),
                      tags$ul(
-                       tags$li(tags$strong("Clean Datasets/Parkinsons_mortality_rates_clean.csv"), " - Parkinson's death rates by state"),
-                       tags$li(tags$strong("Clean Datasets/pesticides_by_county.csv"), " - Pesticide usage by county"),
-                       tags$li(tags$strong("Clean Datasets/LifeExpectancyStateData_clean.csv"), " - Life expectancy by state"),
-                       tags$li(tags$strong("Clean Datasets/ExpectancyData_clean.csv"), " - Life expectancy by county"),
-                       tags$li(tags$strong("Clean Datasets/Farm_Data_2024.csv"), " - Number and size of farms by state"),
-                       
-                       tags$li(tags$strong("Centers for Disease Control and Prevention:"), " Air quality data"),
-                       tags$li(tags$strong("U.S. Environmental Protection Agency:"), " Pesticide use estimates"),
-                       tags$li(tags$strong("USDA National Agriculture Statistics Service"), " Environmental exposure and agricultural land data"),
-                       tags$li(tags$strong("National Center for Health Statistics"), " Parkinson's mortality data")
-                     ),
-                     
-                     div(class = "data-sources",
-                         div(class = "source-logo", "CDC"),
-                         div(class = "source-logo", "USDA"),
-                         div(class = "source-logo", "EPA"),
-                         div(class = "source-logo", "Census")
+                       tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " - Parkinson's death rates by state"),
+                       tags$li(tags$strong("pesticides_by_county.csv"), " - Pesticide usage by county"),
+                       tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " - Life expectancy by state"),
+                       tags$li(tags$strong("ExpectancyData_clean.csv"), " - Life expectancy by county"),
+                       tags$li(tags$strong("Farm_Data_2024.csv"), " - Number and size of farms by state")
                      )
                  )
              )
@@ -334,10 +323,9 @@ fluidPage(
                      tags$h3("Data Sources"),
                      p("All data comes from publicly available government datasets:"),
                      tags$ul(
-                       tags$li("Centers for Disease Control and Prevention - Air quality data"),
-                       tags$li("U.S. Environmental Protection Agency - Pesticide use estimates"),
-                       tags$li("USDA National Agriculture Statistics Service - Environmental exposure and agricultural land data"),
-                       tags$li("National Center for Health Statistics - Parkinson's mortality data")
+                       tags$li("CDC - Parkinson's disease mortality statistics"),
+                       tags$li("USDA - Pesticide usage and farm statistics"),
+                       tags$li("CDC WONDER - Life expectancy data")
                      ),
                      
                      tags$h3("Methodology"),
