@@ -65,3 +65,5 @@ write.csv(Farm_Data, "Clean Datasets/Farm_Data_2024.csv", row.names = FALSE)
 
 Parkinson_Data <- Parkinson_Data[-9, ]
 View(Parkinson_Data_1)
+
+# creating a state wide pesticide dataset
