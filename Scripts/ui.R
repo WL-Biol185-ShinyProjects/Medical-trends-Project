@@ -272,14 +272,14 @@ fluidPage(
                  div(class = "hero-section",
                      h1("Medical Trends Analysis Dashboard"),
 
-                     p("Welcome to our BIOL-185 project analyzing Parkinson's data across the United States. This interactive dashboard explores the relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States. This interactive dashboard integrates multiple datasets to visualize geographic patterns and correlations.")
+                     p("Welcome to our BIOL-185 project analyzing Parkinson's data across the United States. This interactive dashboard explores the relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States. This interactive dashboard integrates multiple datasets to visualize geographic patterns and correlations."),
 
                      p("Exploring relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States.")
 
                  ),
                  
                  
-                 uiOutput("stats_boxes", ),
+                 uiOutput("stats_boxes" ),
                  
                  div(class = "stats-boxes",
                      div(class = "stat-box",
