@@ -27,12 +27,25 @@ pesticides_2015_filtered$year <- 2015
 
 # Condense pesticide data by county
 pesticides_by_county <- pesticides_2015_filtered %>%
-  group_by(state_code, county_code, county_name, state_name, year) %>%
+  group_by(state_code, state_name, county_code, county_name, compound) %>%
   summarise(
     LOW_ESTIMATE  = sum(LOW_ESTIMATE,  na.rm = TRUE),
     HIGH_ESTIMATE = sum(HIGH_ESTIMATE, na.rm = TRUE),
     .groups = "drop"
   )
 
+# add column with average of low and high estimates
+
+average_estimate <- pesticides_by_county %>%
+  group_by(state_name, state_code, county_code, county_name, compound) |>
+  summarise(
+    LOW_ESTIMATE  = sum(LOW_ESTIMATE,  na.rm = TRUE),
+    HIGH_ESTIMATE = sum(HIGH_ESTIMATE, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(
+    AVG_ESTIMATE = (LOW_ESTIMATE + HIGH_ESTIMATE) / 2
+  )
+
 # Save the result
-write.csv(pesticides_by_county, "county_pesticides_data.csv", row.names = FALSE)
+write.csv(average_estimate, "county_pesticides_data.csv", row.names = FALSE)
