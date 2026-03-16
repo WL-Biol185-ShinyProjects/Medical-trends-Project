@@ -213,7 +213,7 @@ fluidPage(
                      h2("Datasets Used"),
                      tags$ul(
                        tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " - Parkinson's death rates by state"),
-                       tags$li(tags$strong("pesticides_by_county.csv"), " - Pesticide usage by county"),
+                       tags$li(tags$strong("county_pesticides_data_clean.csv"), " - Pesticide usage by county"),
                        tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " - Life expectancy by state"),
                        tags$li(tags$strong("ExpectancyData_clean.csv"), " - Life expectancy by county"),
                        tags$li(tags$strong("Farm_Data_2024.csv"), " - Number and size of farms by state")
@@ -252,11 +252,20 @@ fluidPage(
     # =========================================================================
     # DATA VISUALIZATION TAB
     # =========================================================================
+    # =============================================================================
+    # UI ADDITION - DATA VISUALIZATION TAB ONLY
+    # =============================================================================
+    # INSTRUCTIONS:
+    # Find your existing tabPanel("Data Visualization", ...) in ui.R and replace
+    # the ENTIRE block with this. Everything is identical to what you had before,
+    # with the new county pesticide section added at the bottom.
+    # =============================================================================
+    
     tabPanel("Data Visualization",
              div(class = "main-container",
                  h1(class = "page-header", "Data Visualizations"),
                  
-                 # Scatter plots
+                 # --- Existing plots (unchanged) ---
                  div(class = "plot-container",
                      plotlyOutput("plot_parkinson_pesticide", height = 500)
                  ),
@@ -269,7 +278,6 @@ fluidPage(
                      plotlyOutput("plot_pesticide_life_expectancy", height = 500)
                  ),
                  
-                 # Bar charts
                  fluidRow(
                    column(6,
                           div(class = "plot-container",
@@ -281,9 +289,38 @@ fluidPage(
                               plotlyOutput("plot_top_farms", height = 500)
                           )
                    )
+                 ),
+                 
+                 # --- NEW: County-level pesticide vs life expectancy ---
+                 div(class = "plot-container",
+                     h2("Pesticide Use vs. Life Expectancy by County"),
+                     p("Select a pesticide to view its relationship with average life expectancy at the county level."),
+                     
+                     # Dropdown
+                     selectInput(
+                       inputId  = "selected_pesticide",
+                       label    = "Select Pesticide:",
+                       choices  = c("2,4-D", "glyphosate", "paraquat", "chlorpyrifos"),
+                       selected = "glyphosate"
+                     ),
+                     
+                     # Plot on left, stats on right
+                     fluidRow(
+                       column(8,
+                              plotlyOutput("plot_county_pesticide_life", height = "500px")
+                       ),
+                       column(4,
+                              h4("Correlation Result"),
+                              verbatimTextOutput("cor_county_pesticide_life"),
+                              br(),
+                              h4("Regression Summary"),
+                              verbatimTextOutput("reg_county_pesticide_life")
+                       )
+                     )
                  )
              )
     ),
+    
     
     # =========================================================================
     # STATISTICAL ANALYSIS TAB
