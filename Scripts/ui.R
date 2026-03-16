@@ -1,5 +1,5 @@
-# ui.R - User Interface for Medical Trends Dashboard
-# Maps + empty Data Visualization tab
+# ui.R - User Interface with Map Selector
+# Layout similar to example with sidebar selector
 
 library(shiny)
 library(DT)
@@ -24,7 +24,7 @@ fluidPage(
       
       body {
         font-family: 'Inter', sans-serif;
-        background-color: #f8f9fa;
+        background-color: #f5f5f5;
       }
       
       .top-brand {
@@ -140,21 +140,77 @@ fluidPage(
         padding-bottom: 12px;
       }
       
-      .map-container {
+      /* Map viewer layout */
+      .map-viewer-container {
+        display: flex;
+        gap: 0;
+        height: 700px;
         background: white;
-        padding: 25px;
         border-radius: 10px;
-        margin-bottom: 30px;
+        overflow: hidden;
         box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       }
       
-      .map-title {
-        font-size: 1.3em;
-        color: #2d5016;
-        font-weight: 600;
+      .map-sidebar {
+        width: 300px;
+        background: #f8f9fa;
+        padding: 20px;
+        border-right: 1px solid #e0e0e0;
+        overflow-y: auto;
+      }
+      
+      .map-sidebar h3 {
+        font-size: 1.1em;
+        color: #333;
         margin-bottom: 15px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #e0e0e0;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .map-selector {
+        margin-bottom: 25px;
+      }
+      
+      .map-selector label {
+        display: block;
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 500;
+      }
+      
+      .map-selector input[type='radio'] {
+        margin-right: 10px;
+      }
+      
+      .map-selector label:hover {
+        border-color: #4a7c2a;
+        background: #f0f7f0;
+      }
+      
+      .map-selector input[type='radio']:checked + label,
+      .map-selector label:has(input:checked) {
+        background: #4a7c2a;
+        color: white;
+        border-color: #4a7c2a;
+      }
+      
+      .map-content {
+        flex: 1;
+        position: relative;
+      }
+      
+      .map-title-bar {
+        background: #2d5016;
+        color: white;
+        padding: 15px 20px;
+        font-size: 1.1em;
+        font-weight: 600;
       }
       
       .page-header {
@@ -234,28 +290,42 @@ fluidPage(
     ),
     
     # =========================================================================
-    # MAPS TAB
+    # MAPS TAB - With Sidebar Selector
     # =========================================================================
     tabPanel("Maps",
              div(class = "main-container",
-                 h1(class = "page-header", "Geographic Maps"),
+                 h1(class = "page-header", "Geographic Analysis"),
                  
-                 div(class = "map-container",
-                     div(class = "map-title", "Map 1: Parkinson's Death Rate vs. Pesticide Use (State Level)"),
-                     p("Hover over states to see death rate. Circle size represents pesticide use; color represents Parkinson's death rate (yellow to red)."),
-                     leafletOutput("map_parkinson_pesticide", height = 600)
-                 ),
-                 
-                 div(class = "map-container",
-                     div(class = "map-title", "Map 2: Parkinson's Death Rate vs. Number of Farms (State Level)"),
-                     p("Hover over states to see death rate. Circle size represents number of farms; color represents Parkinson's death rate (red to purple)."),
-                     leafletOutput("map_parkinson_farms", height = 600)
-                 ),
-                 
-                 div(class = "map-container",
-                     div(class = "map-title", "Map 3: Pesticides vs. Life Expectancy (County Level)"),
-                     p("County-level analysis using cfips_location.csv (cfips, name, lng, lat). Color represents life expectancy."),
-                     leafletOutput("map_pesticide_life_expectancy", height = 600)
+                 div(class = "map-viewer-container",
+                     # Sidebar with map selector
+                     div(class = "map-sidebar",
+                         h3("Select Map"),
+                         div(class = "map-selector",
+                             radioButtons(
+                               "selected_map",
+                               label = NULL,
+                               choices = list(
+                                 "Parkinson's vs Pesticides" = "map1",
+                                 "Parkinson's vs Farms" = "map2",
+                                 "Pesticides vs Life Expectancy" = "map3"
+                               ),
+                               selected = "map1"
+                             )
+                         ),
+                         
+                         hr(),
+                         
+                         h3("Map Info"),
+                         uiOutput("map_description")
+                     ),
+                     
+                     # Main map area
+                     div(class = "map-content",
+                         div(class = "map-title-bar",
+                             textOutput("map_title")
+                         ),
+                         leafletOutput("main_map", height = "640px")
+                     )
                  )
              )
     ),
@@ -325,16 +395,7 @@ fluidPage(
                      tags$ul(
                        tags$li(tags$strong("Map 1:"), " State-level Parkinson's death rates vs. pesticide use"),
                        tags$li(tags$strong("Map 2:"), " State-level Parkinson's death rates vs. farm density"),
-                       tags$li(tags$strong("Map 3:"), " County-level pesticide exposure vs. life expectancy (using cfips coordinates)")
-                     ),
-                     
-                     tags$h3("County Coordinate System"),
-                     p("Map 3 uses the cfips_location.csv file which contains:"),
-                     tags$ul(
-                       tags$li(tags$strong("cfips:"), " 5-digit FIPS code (first 2 digits = state FIPS)"),
-                       tags$li(tags$strong("name:"), " County name"),
-                       tags$li(tags$strong("lng:"), " Longitude coordinate"),
-                       tags$li(tags$strong("lat:"), " Latitude coordinate")
+                       tags$li(tags$strong("Map 3:"), " County-level pesticide exposure vs. life expectancy")
                      ),
                      
                      tags$h3("Important Limitations"),
