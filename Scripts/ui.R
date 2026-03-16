@@ -204,11 +204,46 @@ fluidPage(
              div(class = "main-container",
                  div(class = "hero-section",
                      h1("Medical Trends Analysis Dashboard"),
+<<<<<<< HEAD
                      p("Exploring relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States. This interactive dashboard integrates multiple datasets to visualize geographic patterns and correlations.")
+=======
+
+                     p("Welcome to our BIOL-185 project analyzing Parkinson's data across the United States. This interactive dashboard explores the relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States. This interactive dashboard integrates multiple datasets to visualize geographic patterns and correlations."),
+
+                     p("Exploring relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States.")
+
+>>>>>>> 417e9668158567004ba886f3191ff179a5a6b89f
                  ),
                  
                  uiOutput("stats_boxes"),
                  
+<<<<<<< HEAD
+=======
+                 uiOutput("stats_boxes" ),
+                 
+                 div(class = "stats-boxes",
+                     div(class = "stat-box",
+                         h4("States Covered"),
+                         p(textOutput("n_states")),
+                         span("across the U.S.")
+                     ),
+                     div(class = "stat-box",
+                         h4("Counties Analyzed"),
+                         p(textOutput("n_counties")),
+                         span("county-level records")
+                     ),
+                     div(class = "stat-box",
+                         h4("Avg Annual Rate"),
+                         p(textOutput("avg_rate")),
+                         span("per 100,000 population")
+                     ),
+                     div(class = "stat-box",
+                         h4("Years Covered"),
+                         p("2017 - 2021"),
+                         span("incidence data")
+                     )
+                 ),
+>>>>>>> 417e9668158567004ba886f3191ff179a5a6b89f
                  div(class = "content-box",
                      h2("Research Questions"),
                      tags$ul(
