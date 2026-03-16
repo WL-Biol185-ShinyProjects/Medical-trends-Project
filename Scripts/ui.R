@@ -108,6 +108,17 @@ fluidPage(
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         border-left: 4px solid #4a7c2a;
+        width: 160px;
+        height: 160px;
+        background-color: #f8f9fa;
+        border-top: 4px solid #2c7bb6;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
       }
       
       .stat-number {
