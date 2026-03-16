@@ -107,17 +107,20 @@ fluidPage(
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         border-left: 4px solid #4a7c2a;
-        width: 160px;
-        height: 160px;
+        width: 140px;
+        height: 140px;
         background-color: #f8f9fa;
         border-top: 4px solid #2c7bb6;
         border-radius: 8px;
         padding: 20px;
         text-align: center;
         display: flex;
-        flex-direction: column;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 16px;
+        margin: 20px 0;
         justify-content: center;
-        align-items: center;
       }
       
       .stat-number {
