@@ -23,6 +23,4 @@ average_estimate <- pesticides_by_state %>%
     AVG_ESTIMATE = (LOW_ESTIMATE + HIGH_ESTIMATE) / 2
   )
 
-
-print()
-# write.csv(pesticides_by_state, "state_pesticide_data_clean.csv", row.names = FALSE)
+write.csv(average_estimate, "state_pesticide_data_clean.csv", row.names = FALSE)
