@@ -578,6 +578,93 @@ function(input, output, session) {
       )
   })
   
+  
+  # =============================================================================
+  # SERVER ADDITION - COUNTY PESTICIDE VS LIFE EXPECTANCY
+  # =============================================================================
+  # INSTRUCTIONS:
+  # Paste this block into your server.R, anywhere inside the server function.
+  # A good place is right after your existing plot outputs (plot_top_farms etc.)
+  # and before the closing } of the server function.
+  # =============================================================================
+  
+  # Reactive: re-filters and merges data whenever dropdown selection changes
+  county_pesticide_merged <- reactive({
+    req(input$selected_pesticide)
+    req(Pesticide_County_Data())   # add req() checks
+    req(Expectancy_Data())
+    
+    pest_subset <- Pesticide_County_Data() %>%   # add () here
+      filter(compound == input$selected_pesticide) %>%
+      select(county_name, AVG_ESTIMATE) %>%
+      group_by(county_name) %>%
+      summarise(AVG_ESTIMATE = mean(AVG_ESTIMATE, na.rm = TRUE))
+    
+    expectancy_clean <- Expectancy_Data() %>%    # add () here
+      group_by(County) %>%
+      summarise(Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE))
+    
+    inner_join(pest_subset, expectancy_clean, by = c("county_name" = "County")) %>%
+      filter(!is.na(AVG_ESTIMATE), !is.na(Avg_Life_Expectancy))
+  })
+  
+  # Scatter plot - updates when dropdown changes
+  output$plot_county_pesticide_life <- renderPlotly({
+    req(county_pesticide_merged())
+    data <- county_pesticide_merged()
+    
+    model     <- lm(Avg_Life_Expectancy ~ AVG_ESTIMATE, data = data)
+    cor_val   <- round(cor(data$AVG_ESTIMATE, data$Avg_Life_Expectancy), 3)
+    r_squared <- round(summary(model)$r.squared, 3)
+    p_val     <- round(summary(model)$coefficients[2, 4], 4)
+    
+    annotation_label <- paste0("r = ", cor_val, "\nR² = ", r_squared, "\np = ", p_val)
+    
+    p <- ggplot(data, aes(
+      x = AVG_ESTIMATE,
+      y = Avg_Life_Expectancy,
+      text = paste(
+        "County:", county_name,
+        "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 2),
+        "<br>Life Expectancy:", round(Avg_Life_Expectancy, 2)
+      )
+    )) +
+      geom_point(color = "#2d5016", size = 2, alpha = 0.5) +
+      geom_smooth(method = "lm", se = TRUE, color = "darkred",
+                  linetype = "dashed", alpha = 0.2) +
+      scale_x_log10() +
+      annotate("text",
+               x = max(data$AVG_ESTIMATE, na.rm = TRUE) * 0.5,
+               y = min(data$Avg_Life_Expectancy, na.rm = TRUE) * 1.02,
+               label = annotation_label,
+               size = 4, color = "darkred", fontface = "bold") +
+      labs(
+        title = paste0(input$selected_pesticide, ": Pesticide Use vs. Avg Life Expectancy by County"),
+        x = paste0(input$selected_pesticide, " AVG_ESTIMATE (log scale)"),
+        y = "Avg Life Expectancy (years)"
+      ) +
+      theme_minimal(base_size = 13) +
+      theme(plot.title = element_text(face = "bold"))
+    
+    ggplotly(p, tooltip = "text")
+  })
+  
+  # Correlation text - updates when dropdown changes
+  output$cor_county_pesticide_life <- renderPrint({
+    req(county_pesticide_merged())
+    data <- county_pesticide_merged()
+    cor.test(data$AVG_ESTIMATE, data$Avg_Life_Expectancy)
+  })
+  
+  # Regression summary text - updates when dropdown changes
+  output$reg_county_pesticide_life <- renderPrint({
+    req(county_pesticide_merged())
+    data <- county_pesticide_merged()
+    summary(lm(Avg_Life_Expectancy ~ AVG_ESTIMATE, data = data))
+  })
+  
+  
+  
   # ===========================================================================
   # DOWNLOAD HANDLER
   # ===========================================================================

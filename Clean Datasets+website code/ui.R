@@ -374,7 +374,7 @@ fluidPage(
     ),
     
     # =========================================================================
-    # DATA VISUALIZATION TAB (EMPTY)
+    # DATA VISUALIZATION TAB
     # =========================================================================
     # =============================================================================
     # UI ADDITION - DATA VISUALIZATION TAB ONLY
@@ -389,7 +389,6 @@ fluidPage(
              div(class = "main-container",
                  h1(class = "page-header", "Data Visualizations"),
                  
-<<<<<<< HEAD:Scripts/ui.R
                  # --- Existing plots (unchanged) ---
                  div(class = "plot-container",
                      plotlyOutput("plot_parkinson_pesticide", height = 500)
@@ -442,14 +441,6 @@ fluidPage(
                               verbatimTextOutput("reg_county_pesticide_life")
                        )
                      )
-=======
-                 div(class = "empty-state",
-                     div(class = "empty-state-icon", "📊"),
-                     div(class = "empty-state-text", 
-                         "Visualization space reserved for future charts and graphs.",
-                         br(), br(),
-                         "Check the 'Maps' tab to explore geographic patterns.")
->>>>>>> a4b03207f625750f9bdf3bc2195e1863d88f5796:Clean Datasets+website code/ui.R
                  )
              )
     ),
