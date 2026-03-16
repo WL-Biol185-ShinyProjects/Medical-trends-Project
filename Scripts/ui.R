@@ -1,7 +1,7 @@
-# ui.R - User Interface with Map Selector
-# Layout similar to example with sidebar selector
+# ui.R - User Interface for Medical Trends Dashboard
 
 library(shiny)
+library(plotly)
 library(DT)
 library(leaflet)
 
@@ -24,7 +24,7 @@ fluidPage(
       
       body {
         font-family: 'Inter', sans-serif;
-        background-color: #f5f5f5;
+        background-color: #f8f9fa;
       }
       
       .top-brand {
@@ -140,77 +140,29 @@ fluidPage(
         padding-bottom: 12px;
       }
       
-      /* Map viewer layout */
-      .map-viewer-container {
-        display: flex;
-        gap: 0;
-        height: 700px;
+      .map-container {
         background: white;
+        padding: 25px;
         border-radius: 10px;
-        overflow: hidden;
+        margin-bottom: 30px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       }
       
-      .map-sidebar {
-        width: 300px;
-        background: #f8f9fa;
-        padding: 20px;
-        border-right: 1px solid #e0e0e0;
-        overflow-y: auto;
-      }
-      
-      .map-sidebar h3 {
-        font-size: 1.1em;
-        color: #333;
+      .map-title {
+        font-size: 1.3em;
+        color: #2d5016;
+        font-weight: 600;
         margin-bottom: 15px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e0e0e0;
       }
       
-      .map-selector {
-        margin-bottom: 25px;
-      }
-      
-      .map-selector label {
-        display: block;
-        padding: 12px 15px;
-        margin-bottom: 8px;
+      .plot-container {
         background: white;
-        border: 2px solid #e0e0e0;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-weight: 500;
-      }
-      
-      .map-selector input[type='radio'] {
-        margin-right: 10px;
-      }
-      
-      .map-selector label:hover {
-        border-color: #4a7c2a;
-        background: #f0f7f0;
-      }
-      
-      .map-selector input[type='radio']:checked + label,
-      .map-selector label:has(input:checked) {
-        background: #4a7c2a;
-        color: white;
-        border-color: #4a7c2a;
-      }
-      
-      .map-content {
-        flex: 1;
-        position: relative;
-      }
-      
-      .map-title-bar {
-        background: #2d5016;
-        color: white;
-        padding: 15px 20px;
-        font-size: 1.1em;
-        font-weight: 600;
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       }
       
       .page-header {
@@ -218,25 +170,6 @@ fluidPage(
         font-size: 2.5em;
         margin-bottom: 30px;
         font-weight: 700;
-      }
-      
-      .empty-state {
-        text-align: center;
-        padding: 80px 40px;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      }
-      
-      .empty-state-icon {
-        font-size: 4em;
-        color: #ccc;
-        margin-bottom: 20px;
-      }
-      
-      .empty-state-text {
-        font-size: 1.2em;
-        color: #666;
       }
     "))
   ),
@@ -260,38 +193,11 @@ fluidPage(
              div(class = "main-container",
                  div(class = "hero-section",
                      h1("Medical Trends Analysis Dashboard"),
-
-                     p("Welcome to our BIOL-185 project analyzing Parkinson's data across the United States. This interactive dashboard explores the relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States. This interactive dashboard integrates multiple datasets to visualize geographic patterns and correlations.")
-
-                     p("Exploring relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States.")
-
+                     p("Exploring relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States. This interactive dashboard integrates multiple datasets to visualize geographic patterns and correlations.")
                  ),
                  
+                 uiOutput("stats_boxes"),
                  
-                 uiOutput("stats_boxes", ),
-                 
-                 div(class = "stats-boxes",
-                     div(class = "stat-box",
-                         h4("States Covered"),
-                         p(textOutput("n_states")),
-                         span("across the U.S.")
-                     ),
-                     div(class = "stat-box",
-                         h4("Counties Analyzed"),
-                         p(textOutput("n_counties")),
-                         span("county-level records")
-                     ),
-                     div(class = "stat-box",
-                         h4("Avg Annual Rate"),
-                         p(textOutput("avg_rate")),
-                         span("per 100,000 population")
-                     ),
-                     div(class = "stat-box",
-                         h4("Years Covered"),
-                         p("2017 - 2021"),
-                         span("incidence data")
-                     )
-                 ),
                  div(class = "content-box",
                      h2("Research Questions"),
                      tags$ul(
@@ -305,85 +211,101 @@ fluidPage(
                  div(class = "content-box",
                      h2("Datasets Used"),
                      tags$ul(
-                       tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " - Parkinson's death rates by state"),
-                       tags$li(tags$strong("pesticides_by_county.csv"), " - Pesticide usage by county"),
-                       tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " - Life expectancy by state"),
-                       tags$li(tags$strong("ExpectancyData_clean.csv"), " - Life expectancy by county"),
-                       tags$li(tags$strong("Farm_Data_2024.csv"), " - Number and size of farms by state"),
-                       tags$li(tags$strong("cfips_location.csv"), " - County coordinates (cfips, name, lng, lat)")
+                       tags$li(tags$strong("Clean Datasets/Parkinsons_mortality_rates_clean.csv"), " - Parkinson's death rates by state"),
+                       tags$li(tags$strong("Clean Datasets/pesticides_by_county.csv"), " - Pesticide usage by county"),
+                       tags$li(tags$strong("Clean Datasets/LifeExpectancyStateData_clean.csv"), " - Life expectancy by state"),
+                       tags$li(tags$strong("Clean Datasets/ExpectancyData_clean.csv"), " - Life expectancy by county"),
+                       tags$li(tags$strong("Clean Datasets/Farm_Data_2024.csv"), " - Number and size of farms by state"),
+                       
+                       tags$li(tags$strong("Centers for Disease Control and Prevention:"), " Air quality data"),
+                       tags$li(tags$strong("U.S. Environmental Protection Agency:"), " Pesticide use estimates"),
+                       tags$li(tags$strong("USDA National Agriculture Statistics Service"), " Environmental exposure and agricultural land data"),
+                       tags$li(tags$strong("National Center for Health Statistics"), " Parkinson's mortality data")
+                     ),
+                     
+                     div(class = "data-sources",
+                         div(class = "source-logo", "CDC"),
+                         div(class = "source-logo", "USDA"),
+                         div(class = "source-logo", "EPA"),
+                         div(class = "source-logo", "Census")
                      )
                  )
              )
     ),
     
     # =========================================================================
-    # MAPS TAB - With Sidebar Selector
+    # MAPS TAB
     # =========================================================================
     tabPanel("Maps",
              div(class = "main-container",
-                 h1(class = "page-header", "Geographic Analysis"),
+                 h1(class = "page-header", "Geographic Maps"),
                  
-                 div(class = "map-viewer-container",
-                     # Sidebar with map selector
-                     div(class = "map-sidebar",
-                         h3("Select Map"),
-                         div(class = "map-selector",
-                             radioButtons(
-                               "selected_map",
-                               label = NULL,
-                               choices = list(
-                                 "Parkinson's vs Pesticides" = "map1",
-                                 "Parkinson's vs Farms" = "map2",
-                                 "Pesticides vs Life Expectancy" = "map3"
-                               ),
-                               selected = "map1"
-                             )
-                         ),
-                         
-                         hr(),
-                         
-                         h3("Map Info"),
-                         uiOutput("map_description")
-                     ),
-                     
-                     # Main map area
-                     div(class = "map-content",
-                         div(class = "map-title-bar",
-                             textOutput("map_title")
-                         ),
-                         leafletOutput("main_map", height = "640px")
-                     )
+                 div(class = "map-container",
+                     div(class = "map-title", "Map 1: Parkinson's Disease vs. Pesticide Use (State Level)"),
+                     p("Circle size represents pesticide use; color represents Parkinson's death rate (darker red = higher rate)."),
+                     leafletOutput("map_parkinson_pesticide", height = 600)
+                 ),
+                 
+                 div(class = "map-container",
+                     div(class = "map-title", "Map 2: Parkinson's Disease vs. Number of Farms (State Level)"),
+                     p("Circle size represents number of farms; color represents Parkinson's death rate."),
+                     leafletOutput("map_parkinson_farms", height = 600)
+                 ),
+                 
+                 div(class = "map-container",
+                     div(class = "map-title", "Map 3: Pesticides vs. Life Expectancy (County Level)"),
+                     p("County-level analysis of pesticide exposure and life expectancy."),
+                     leafletOutput("map_pesticide_life_expectancy", height = 600)
                  )
              )
     ),
     
     # =========================================================================
-    # DATA VISUALIZATION TAB (EMPTY)
+    # DATA VISUALIZATION TAB
     # =========================================================================
     tabPanel("Data Visualization",
              div(class = "main-container",
                  h1(class = "page-header", "Data Visualizations"),
                  
-                 div(class = "empty-state",
-                     div(class = "empty-state-icon", "📊"),
-                     div(class = "empty-state-text", 
-                         "Visualization space reserved for future charts and graphs.",
-                         br(), br(),
-                         "Check the 'Maps' tab to explore geographic patterns.")
+                 # Scatter plots
+                 div(class = "plot-container",
+                     plotlyOutput("plot_parkinson_pesticide", height = 500)
+                 ),
+                 
+                 div(class = "plot-container",
+                     plotlyOutput("plot_parkinson_farms", height = 500)
+                 ),
+                 
+                 div(class = "plot-container",
+                     plotlyOutput("plot_pesticide_life_expectancy", height = 500)
+                 ),
+                 
+                 # Bar charts
+                 fluidRow(
+                   column(6,
+                          div(class = "plot-container",
+                              plotlyOutput("plot_top_parkinsons", height = 500)
+                          )
+                   ),
+                   column(6,
+                          div(class = "plot-container",
+                              plotlyOutput("plot_top_farms", height = 500)
+                          )
+                   )
                  )
              )
     ),
     
     # =========================================================================
-    # DATA TABLES TAB
+    # STATISTICAL ANALYSIS TAB
     # =========================================================================
-    tabPanel("Data Tables",
+    tabPanel("Statistical Analysis",
              div(class = "main-container",
-                 h1(class = "page-header", "Data Tables"),
+                 h1(class = "page-header", "Statistical Analysis"),
                  
                  div(class = "content-box",
                      h2("Parkinson's Disease Data"),
-                     p("State-level Parkinson's mortality data."),
+                     p("State-level Parkinson's mortality data including death rates and total deaths."),
                      DTOutput("data_table_parkinson"),
                      br(),
                      downloadButton("download_combined", "Download Combined Dataset", 
@@ -392,7 +314,7 @@ fluidPage(
                  
                  div(class = "content-box",
                      h2("Farm Data"),
-                     p("State-level agricultural data."),
+                     p("State-level agricultural data including number of farms and acreage."),
                      DTOutput("data_table_farms")
                  )
              )
@@ -407,33 +329,40 @@ fluidPage(
                      h2("About This Project"),
                      
                      tags$h3("Purpose"),
-                     p("This dashboard explores relationships between environmental factors and health outcomes across the United States."),
+                     p("This dashboard was created to explore potential relationships between environmental factors (pesticide use, agricultural intensity) and health outcomes (Parkinson's disease rates, life expectancy) across the United States."),
                      
                      tags$h3("Data Sources"),
+                     p("All data comes from publicly available government datasets:"),
                      tags$ul(
-                       tags$li("CDC - Parkinson's disease mortality"),
-                       tags$li("USDA - Pesticide usage and farm statistics"),
-                       tags$li("CDC WONDER - Life expectancy data"),
-                       tags$li("Census - County coordinate data (cfips_location.csv)")
+                       tags$li("Centers for Disease Control and Prevention - Air quality data"),
+                       tags$li("U.S. Environmental Protection Agency - Pesticide use estimates"),
+                       tags$li("USDA National Agriculture Statistics Service - Environmental exposure and agricultural land data"),
+                       tags$li("National Center for Health Statistics - Parkinson's mortality data")
                      ),
                      
-                     tags$h3("Maps"),
-                     p("Three interactive maps visualize:"),
+                     tags$h3("Methodology"),
+                     p("This analysis uses:"),
                      tags$ul(
-                       tags$li(tags$strong("Map 1:"), " State-level Parkinson's death rates vs. pesticide use"),
-                       tags$li(tags$strong("Map 2:"), " State-level Parkinson's death rates vs. farm density"),
-                       tags$li(tags$strong("Map 3:"), " County-level pesticide exposure vs. life expectancy")
+                       tags$li("State-level aggregation for Parkinson's and farm data"),
+                       tags$li("County-level pesticide and life expectancy data"),
+                       tags$li("Geographic visualization with Leaflet maps"),
+                       tags$li("Statistical correlation analysis")
                      ),
                      
                      tags$h3("Important Limitations"),
                      tags$ul(
                        tags$li("Correlation does not imply causation"),
-                       tags$li("Aggregated data may mask local variations"),
-                       tags$li("Multiple confounding variables exist")
+                       tags$li("State and county-level data may mask local variations"),
+                       tags$li("Multiple confounding variables affect health outcomes"),
+                       tags$li("Temporal lags between exposure and disease manifestation")
                      ),
                      
+                     tags$h3("Contact"),
+                     p(tags$strong("Course:"), " BIOL-185"),
+                     p(tags$strong("Project:"), " Medical Trends Analysis"),
+                     
                      br(),
-                     p(tags$em("BIOL-185 Course Project - March 2026"), 
+                     p(tags$em("Last Updated: March 2026"), 
                        style = "color: #888; text-align: right;")
                  )
              )
