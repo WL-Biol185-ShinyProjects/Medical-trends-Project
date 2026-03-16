@@ -31,7 +31,7 @@ function(input, output, session) {
   
   Pesticide_County_Data <- reactive({
     tryCatch({
-      read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/pesticides_by_county.csv", stringsAsFactors = FALSE)
+      read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/county_pesticides_data_clean.csv", stringsAsFactors = FALSE)
     }, error = function(e) {
       showNotification("Error loading pesticides_by_county.csv", type = "error")
       return(NULL)
