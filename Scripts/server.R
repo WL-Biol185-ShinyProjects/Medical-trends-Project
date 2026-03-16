@@ -16,90 +16,109 @@ function(input, output, session) {
   # LOAD EXTERNAL DATA
   # ===========================================================================
   
-  # Load Parkinson's mortality data (by state)
   Parkinson_Data <- reactive({
     tryCatch({
       data <- read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/Parkinsons_mortality_rates_clean.csv", stringsAsFactors = FALSE)
-      # Rename Location to State if needed
       if("Location" %in% names(data)) {
         data$State <- data$Location
       }
       return(data)
     }, error = function(e) {
-      showNotification("Error loading Parkinsons_mortality_rates_clean.csv", 
-                       type = "error", duration = NULL)
+      showNotification("Error loading Parkinsons_mortality_rates_clean.csv", type = "error")
       return(NULL)
     })
   })
   
-  # Load Pesticide data by county
   Pesticide_County_Data <- reactive({
     tryCatch({
       read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/pesticides_by_county.csv", stringsAsFactors = FALSE)
     }, error = function(e) {
-      showNotification("Error loading pesticides_by_county.csv", 
-                       type = "error", duration = NULL)
+      showNotification("Error loading pesticides_by_county.csv", type = "error")
       return(NULL)
     })
   })
   
-  # Load Life Expectancy by State
   Expectancy_State_Data <- reactive({
     tryCatch({
       read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/LifeExpectancyStateData_clean.csv", stringsAsFactors = FALSE)
     }, error = function(e) {
-      showNotification("Error loading LifeExpectancyStateData_clean.csv", 
-                       type = "error", duration = NULL)
+      showNotification("Error loading LifeExpectancyStateData_clean.csv", type = "error")
       return(NULL)
     })
   })
   
-  # Load Life Expectancy by County
   Expectancy_Data <- reactive({
     tryCatch({
       read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/ExpectancyData_clean.csv", stringsAsFactors = FALSE)
     }, error = function(e) {
-      showNotification("Error loading ExpectancyData_clean.csv", 
-                       type = "error", duration = NULL)
+      showNotification("Error loading ExpectancyData_clean.csv", type = "error")
       return(NULL)
     })
   })
   
-  # Load Farm data by state
   Farm_Data <- reactive({
     tryCatch({
       read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/Farm_Data_2024.csv", stringsAsFactors = FALSE)
     }, error = function(e) {
-      showNotification("Error loading Farm_Data_2024.csv", 
-                       type = "error", duration = NULL)
+      showNotification("Error loading Farm_Data_2024.csv", type = "error")
+      return(NULL)
+    })
+  })
+  
+  County_Coords <- reactive({
+    tryCatch({
+      read.csv("/home/rbernot@ad.wlu.edu/BIOL185/Medical-trends-project/Clean Datasets/cfips_location.csv", stringsAsFactors = FALSE)
+    }, error = function(e) {
+      showNotification("Error loading cfips_location.csv", type = "error")
       return(NULL)
     })
   })
   
   # ===========================================================================
-  # GET STATE COORDINATES
+  # STATE FIPS TO STATE CODE MAPPING
   # ===========================================================================
   
-  state_coords <- data.frame(
-    State = c("AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA",
-              "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD",
-              "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH",
-              "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC",
-              "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"),
-    Latitude = c(64.2, 32.3, 34.7, 34.0, 36.8, 39.5, 41.6, 38.9, 27.8, 32.2,
-                 21.3, 42.0, 44.0, 40.6, 40.3, 38.5, 37.8, 30.4, 42.4, 39.0,
-                 45.2, 44.3, 46.4, 38.6, 32.3, 46.9, 35.8, 47.5, 41.5, 43.2,
-                 40.2, 34.5, 38.8, 43.0, 40.4, 35.5, 44.0, 41.2, 41.8, 34.0,
-                 44.4, 35.8, 31.0, 39.3, 37.5, 44.0, 47.5, 44.5, 38.6, 43.0),
-    Longitude = c(-152.4, -86.9, -92.4, -111.1, -119.4, -105.8, -72.7, -75.5, -81.7, -83.4,
-                  -157.8, -93.5, -114.7, -89.4, -86.1, -98.4, -84.3, -92.3, -71.4, -76.6,
-                  -69.4, -85.6, -94.7, -92.2, -89.7, -110.0, -78.6, -100.4, -99.9, -71.6,
-                  -74.5, -106.0, -117.0, -75.5, -82.9, -97.5, -120.5, -77.2, -71.5, -81.0,
-                  -100.4, -86.4, -97.5, -111.7, -78.7, -72.6, -120.5, -89.5, -80.5, -107.5)
+  state_fips_mapping <- data.frame(
+    state_fips = c("01", "02", "04", "05", "06", "08", "09", "10", "11", "12", 
+                   "13", "15", "16", "17", "18", "19", "20", "21", "22", "23",
+                   "24", "25", "26", "27", "28", "29", "30", "31", "32", "33",
+                   "34", "35", "36", "37", "38", "39", "40", "41", "42", "44",
+                   "45", "46", "47", "48", "49", "50", "51", "53", "54", "55", "56"),
+    State = c("AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL",
+              "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME",
+              "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH",
+              "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI",
+              "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"),
+    stringsAsFactors = FALSE
   )
   
   # ===========================================================================
-  # PROCESS AND MERGE DATA FOR STATE-LEVEL ANALYSIS
+  # STATE COORDINATES - Fixed state centers
+  # ===========================================================================
+  
+  State_Coords <- reactive({
+    data.frame(
+      State = c("AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA",
+                "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD",
+                "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH",
+                "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC",
+                "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY", "DC"),
+      Latitude = c(64.2, 32.3, 34.7, 34.0, 36.8, 39.5, 41.6, 38.9, 27.8, 32.2,
+                   21.3, 42.0, 44.0, 40.6, 40.3, 38.5, 37.8, 30.4, 42.4, 39.0,
+                   45.2, 44.3, 46.4, 38.6, 32.3, 46.9, 35.8, 47.5, 41.5, 43.2,
+                   40.2, 34.5, 38.8, 43.0, 40.4, 35.5, 44.0, 41.2, 41.8, 34.0,
+                   44.4, 35.8, 31.0, 39.3, 37.5, 44.0, 47.5, 44.5, 38.6, 43.0, 38.9),
+      Longitude = c(-152.4, -86.9, -92.4, -111.1, -119.4, -105.8, -72.7, -75.5, -81.7, -83.4,
+                    -157.8, -93.5, -114.7, -89.4, -86.1, -98.4, -84.3, -92.3, -71.4, -76.6,
+                    -69.4, -85.6, -94.7, -92.2, -89.7, -110.0, -78.6, -100.4, -99.9, -71.6,
+                    -74.5, -106.0, -117.0, -75.5, -82.9, -97.5, -120.5, -77.2, -71.5, -81.0,
+                    -100.4, -86.4, -97.5, -111.7, -78.7, -72.6, -120.5, -89.5, -80.5, -107.5, -77.0),
+      stringsAsFactors = FALSE
+    )
+  })
+  
+  # ===========================================================================
+  # PROCESS AND MERGE DATA
   # ===========================================================================
   
   # Aggregate pesticide data to state level
@@ -107,55 +126,60 @@ function(input, output, session) {
     req(Pesticide_County_Data())
     data <- Pesticide_County_Data()
     
-    # Group by state and calculate average pesticide use
+    state_col <- if("state_name" %in% names(data)) {
+      "state_name"
+    } else if("state_code" %in% names(data)) {
+      "state_code"
+    } else {
+      NULL
+    }
+    
+    if(is.null(state_col)) {
+      return(NULL)
+    }
+    
+    if(!all(c("LOW_ESTIMATE", "HIGH_ESTIMATE") %in% names(data))) {
+      return(NULL)
+    }
+    
     state_pest <- data %>%
-      group_by(state_name) %>%
+      group_by(!!sym(state_col)) %>%
       summarise(
         Avg_Pesticide = mean((LOW_ESTIMATE + HIGH_ESTIMATE) / 2, na.rm = TRUE),
         .groups = "drop"
-      ) %>%
-      rename(State = state_name)
+      )
     
+    names(state_pest)[1] <- "State"
     return(state_pest)
   })
   
   # Merge Parkinson's with state coordinates
   Parkinson_With_Coords <- reactive({
-    req(Parkinson_Data())
-    data <- Parkinson_Data()
+    req(Parkinson_Data(), State_Coords())
     
-    # Merge with coordinates
+    data <- Parkinson_Data()
+    coords <- State_Coords()
+    
     merged <- data %>%
-      left_join(state_coords, by = "State")
+      left_join(coords, by = "State")
     
     return(merged)
   })
   
   # Merge Farm data with coordinates  
   Farm_With_Coords <- reactive({
-    req(Farm_Data())
+    req(Farm_Data(), State_Coords())
+    
     data <- Farm_Data()
+    coords <- State_Coords()
     
-    # Merge with coordinates
     merged <- data %>%
-      left_join(state_coords, by = "State")
+      left_join(coords, by = "State")
     
     return(merged)
   })
   
-  # Merge Life Expectancy with coordinates
-  Expectancy_With_Coords <- reactive({
-    req(Expectancy_State_Data())
-    data <- Expectancy_State_Data()
-    
-    # Merge with coordinates
-    merged <- data %>%
-      left_join(state_coords, by = "State")
-    
-    return(merged)
-  })
-  
-  # Combined: Parkinson's + Pesticides (State Level)
+  # Combined: Parkinson's + Pesticides
   Parkinson_Pesticide_State <- reactive({
     req(Parkinson_With_Coords(), Pesticide_State_Data())
     
@@ -168,19 +192,78 @@ function(input, output, session) {
     return(merged)
   })
   
-  # Combined: Parkinson's + Farms (State Level)
+  # Combined: Parkinson's + Farms
   Parkinson_Farm_State <- reactive({
     req(Parkinson_With_Coords(), Farm_With_Coords())
     
     parkinson <- Parkinson_With_Coords()
     farms <- Farm_With_Coords()
     
-    # Select relevant columns from farms to avoid duplication
+    park_cols <- names(parkinson)
+    farm_cols <- setdiff(names(farms), c("Latitude", "Longitude"))
+    
     farms_select <- farms %>%
-      select(State, Number_Of_Farms, Area_operated_Acres, Acres_Operated_Millions)
+      select(all_of(farm_cols))
     
     merged <- parkinson %>%
       left_join(farms_select, by = "State")
+    
+    return(merged)
+  })
+  
+  # County-level data for Map 3
+  County_Pesticide_Life <- reactive({
+    req(Pesticide_County_Data(), Expectancy_Data(), County_Coords())
+    
+    pesticide <- Pesticide_County_Data()
+    life_exp <- Expectancy_Data()
+    coords <- County_Coords()
+    
+    # Prepare coords with state info
+    coords <- coords %>%
+      mutate(
+        state_fips = substr(sprintf("%05s", cfips), 1, 2),
+        county_fips = sprintf("%05s", cfips),
+        county_name_clean = trimws(tolower(gsub(" County$| Parish$", "", name)))
+      )
+    
+    # Add state codes to coords
+    coords <- coords %>%
+      left_join(state_fips_mapping, by = "state_fips")
+    
+    # Clean county names in pesticide data
+    pesticide <- pesticide %>%
+      mutate(
+        county_name_clean = trimws(tolower(gsub(" County$| Parish$", "", county_name))),
+        Avg_Pesticide = (LOW_ESTIMATE + HIGH_ESTIMATE) / 2
+      )
+    
+    # Clean county names in life expectancy data
+    life_exp <- life_exp %>%
+      mutate(
+        county_name_clean = trimws(tolower(gsub(" County$| Parish$", "", County)))
+      )
+    
+    # Merge pesticide with life expectancy
+    merged <- pesticide %>%
+      left_join(
+        life_exp,
+        by = c("state_name" = "State", "county_name_clean" = "county_name_clean")
+      )
+    
+    # Merge with coordinates
+    merged <- merged %>%
+      left_join(
+        coords %>% select(State, county_name_clean, county_fips, lng, lat),
+        by = c("state_name" = "State", "county_name_clean" = "county_name_clean")
+      )
+    
+    # Keep only rows with coordinates
+    merged <- merged %>%
+      filter(!is.na(lat), !is.na(lng))
+    
+    print(paste("Map 3 - Total counties with coordinates:", nrow(merged)))
+    print(paste("Map 3 - Counties with life expectancy:", sum(!is.na(merged$Avg_Life_Expectancy))))
     
     return(merged)
   })
@@ -190,12 +273,23 @@ function(input, output, session) {
   # ===========================================================================
   
   output$stats_boxes <- renderUI({
-    req(Parkinson_Data(), Farm_Data())
+    req(Parkinson_Data())
     
-    avg_death_rate <- round(mean(Parkinson_Data()$Avg_Death_Rate, na.rm = TRUE), 2)
-    total_farms <- format(sum(Farm_Data()$Number_Of_Farms, na.rm = TRUE), big.mark = ",")
-    avg_life_exp <- round(mean(Expectancy_State_Data()$Avg_Life_Expectancy, na.rm = TRUE), 1)
-    states_count <- nrow(Parkinson_Data())
+    parkinson <- Parkinson_Data()
+    
+    avg_death_rate <- if("Avg_Death_Rate" %in% names(parkinson)) {
+      round(mean(parkinson$Avg_Death_Rate, na.rm = TRUE), 2)
+    } else { "N/A" }
+    
+    total_farms <- if(!is.null(Farm_Data()) && "Number_Of_Farms" %in% names(Farm_Data())) {
+      format(sum(Farm_Data()$Number_Of_Farms, na.rm = TRUE), big.mark = ",")
+    } else { "N/A" }
+    
+    avg_life_exp <- if(!is.null(Expectancy_State_Data()) && "Avg_Life_Expectancy" %in% names(Expectancy_State_Data())) {
+      round(mean(Expectancy_State_Data()$Avg_Life_Expectancy, na.rm = TRUE), 1)
+    } else { "N/A" }
+    
+    states_count <- nrow(parkinson)
     
     div(class = "stats-row",
         div(class = "stat-box",
@@ -218,264 +312,236 @@ function(input, output, session) {
   })
   
   # ===========================================================================
-  # MAP 1: PARKINSON'S VS PESTICIDES (STATE LEVEL)
+  # MAP SELECTOR OUTPUTS
   # ===========================================================================
   
-  output$map_parkinson_pesticide <- renderLeaflet({
-    req(Parkinson_Pesticide_State())
-    data <- Parkinson_Pesticide_State()
-    
-    # Remove rows with missing coordinates
-    data <- data %>% filter(!is.na(Latitude), !is.na(Longitude))
-    
-    if(nrow(data) == 0) return(NULL)
-    
-    # Color by Parkinson's death rate
-    pal <- colorNumeric(
-      palette = "YlOrRd",
-      domain = data$Avg_Death_Rate
+  output$map_title <- renderText({
+    switch(input$selected_map,
+           "map1" = "Parkinson's Death Rate vs. Pesticide Use (State Level)",
+           "map2" = "Parkinson's Death Rate vs. Number of Farms (State Level)",
+           "map3" = "Pesticides vs. Life Expectancy (County Level)",
+           "Select a map")
+  })
+  
+  output$map_description <- renderUI({
+    switch(input$selected_map,
+           "map1" = div(
+             p(style = "font-size: 0.9em; line-height: 1.6;",
+               "This map shows the relationship between Parkinson's disease death rates and pesticide use across states.",
+               br(), br(),
+               strong("Circle size:"), " State location", br(),
+               strong("Color:"), " Death rate (yellow to red)")
+           ),
+           "map2" = div(
+             p(style = "font-size: 0.9em; line-height: 1.6;",
+               "This map shows the relationship between Parkinson's disease death rates and agricultural intensity.",
+               br(), br(),
+               strong("Circle size:"), " State location", br(),
+               strong("Color:"), " Death rate (red to purple)")
+           ),
+           "map3" = div(
+             p(style = "font-size: 0.9em; line-height: 1.6;",
+               "This county-level map shows pesticide exposure and life expectancy.",
+               br(), br(),
+               strong("County points:"), " Small dots", br(),
+               strong("Color:"), " Life expectancy (yellow to red)")
+           ),
+           p("Select a map to view details.")
     )
+  })
+  
+  # ===========================================================================
+  # MAIN MAP OUTPUT (switches based on selection)
+  # ===========================================================================
+  
+  output$main_map <- renderLeaflet({
+    selected <- input$selected_map
     
-    leaflet(data) %>%
-      addTiles() %>%
-      setView(lng = -98.5795, lat = 39.8283, zoom = 4) %>%
-      addCircleMarkers(
-        lng = ~Longitude,
-        lat = ~Latitude,
-        radius = ~sqrt(Avg_Pesticide) / 50,
-        color = ~pal(Avg_Death_Rate),
-        fillOpacity = 0.7,
-        stroke = TRUE,
-        weight = 2,
-        popup = ~paste(
-          "<div style='font-family: Inter, sans-serif;'>",
-          "<h4 style='margin: 0 0 10px 0; color: #8B4513;'>", State, "</h4>",
-          "<strong>Parkinson's Death Rate:</strong> ", round(Avg_Death_Rate, 2), "<br>",
-          "<strong>Avg Pesticide Use:</strong> ", round(Avg_Pesticide, 2), " lbs<br>",
-          "</div>"
-        ),
-        label = ~State
-      ) %>%
-      addLegend(
-        position = "bottomright",
-        pal = pal,
-        values = ~Avg_Death_Rate,
-        title = "Parkinson's<br>Death Rate",
-        opacity = 0.8
+    if(selected == "map1") {
+      # MAP 1: Parkinson's vs Pesticides (FIXED)
+      req(Parkinson_Pesticide_State())
+      data <- Parkinson_Pesticide_State()
+      
+      data <- data %>% filter(!is.na(Latitude), !is.na(Longitude), !is.na(Avg_Death_Rate))
+      
+      print(paste("Map 1 - Rows with valid data:", nrow(data)))
+      
+      if(nrow(data) == 0) {
+        return(leaflet() %>% 
+                 addProviderTiles(providers$CartoDB.Positron) %>% 
+                 setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+                 addPopups(-98.5, 39.8283, "No data with valid coordinates found"))
+      }
+      
+      pal <- colorNumeric(
+        palette = "YlOrRd",
+        domain = data$Avg_Death_Rate
       )
-  })
-  
-  # ===========================================================================
-  # MAP 2: PARKINSON'S VS FARMS (STATE LEVEL)
-  # ===========================================================================
-  
-  output$map_parkinson_farms <- renderLeaflet({
-    req(Parkinson_Farm_State())
-    data <- Parkinson_Farm_State()
-    
-    # Remove rows with missing coordinates
-    data <- data %>% filter(!is.na(Latitude), !is.na(Longitude))
-    
-    if(nrow(data) == 0) return(NULL)
-    
-    # Color by Parkinson's death rate
-    pal <- colorNumeric(
-      palette = "RdPu",
-      domain = data$Avg_Death_Rate
-    )
-    
-    leaflet(data) %>%
-      addTiles() %>%
-      setView(lng = -98.5795, lat = 39.8283, zoom = 4) %>%
-      addCircleMarkers(
-        lng = ~Longitude,
-        lat = ~Latitude,
-        radius = ~sqrt(Number_Of_Farms) / 200,
-        color = ~pal(Avg_Death_Rate),
-        fillOpacity = 0.7,
-        stroke = TRUE,
-        weight = 2,
-        popup = ~paste(
-          "<div style='font-family: Inter, sans-serif;'>",
-          "<h4 style='margin: 0 0 10px 0; color: #8B4513;'>", State, "</h4>",
-          "<strong>Parkinson's Death Rate:</strong> ", round(Avg_Death_Rate, 2), "<br>",
-          "<strong>Number of Farms:</strong> ", format(Number_Of_Farms, big.mark = ","), "<br>",
-          "<strong>Acres Operated:</strong> ", round(Acres_Operated_Millions, 2), " million<br>",
-          "</div>"
-        ),
-        label = ~State
-      ) %>%
-      addLegend(
-        position = "bottomright",
-        pal = pal,
-        values = ~Avg_Death_Rate,
-        title = "Parkinson's<br>Death Rate",
-        opacity = 0.8
+      
+      leaflet(data) %>%
+        addProviderTiles(providers$CartoDB.Positron) %>%
+        setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+        addCircleMarkers(
+          lng = ~Longitude,
+          lat = ~Latitude,
+          radius = 8,
+          fillColor = ~pal(Avg_Death_Rate),
+          color = "white",
+          weight = 1.5,
+          opacity = 1,
+          fillOpacity = 0.8,
+          popup = ~paste(
+            "<div style='font-family: Inter, sans-serif; padding: 10px;'>",
+            "<h4 style='margin: 0 0 10px 0; color: #8B4513;'>", State, "</h4>",
+            "<strong>Death Rate:</strong> ", round(Avg_Death_Rate, 2), "<br>",
+            if("Avg_Deaths" %in% names(data)) paste("<strong>Avg Deaths:</strong>", round(Avg_Deaths, 1), "<br>") else "",
+            if("Avg_Pesticide" %in% names(data)) paste("<strong>Pesticide Use:</strong>", round(Avg_Pesticide, 2), " lbs<br>") else "",
+            "</div>"
+          ),
+          label = ~paste(State, "-", round(Avg_Death_Rate, 2)),
+          labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
+        ) %>%
+        addLegend(
+          position = "bottomright",
+          pal = pal,
+          values = ~Avg_Death_Rate,
+          title = "Death Rate",
+          opacity = 0.8
+        )
+      
+    } else if(selected == "map2") {
+      # MAP 2: Parkinson's vs Farms (WORKING)
+      req(Parkinson_Farm_State())
+      data <- Parkinson_Farm_State()
+      
+      data <- data %>% 
+        filter(!is.na(Latitude), !is.na(Longitude), !is.na(Avg_Death_Rate))
+      
+      print(paste("Map 2 - Rows with valid data:", nrow(data)))
+      
+      if(nrow(data) == 0) {
+        return(leaflet() %>% 
+                 addProviderTiles(providers$CartoDB.Positron) %>% 
+                 setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+                 addPopups(-98.5, 39.8283, "No valid data for Map 2"))
+      }
+      
+      pal <- colorNumeric(
+        palette = "RdPu",
+        domain = data$Avg_Death_Rate
       )
-  })
-  
-  # ===========================================================================
-  # MAP 3: PESTICIDES VS LIFE EXPECTANCY (COUNTY LEVEL)
-  # ===========================================================================
-  
-  output$map_pesticide_life_expectancy <- renderLeaflet({
-    req(Pesticide_County_Data(), Expectancy_Data())
-    
-    # This would require county-level coordinates
-    # For now, showing a message
-    leaflet() %>%
-      addTiles() %>%
-      setView(lng = -98.5795, lat = 39.8283, zoom = 4) %>%
-      addMarkers(lng = -98.5795, lat = 39.8283,
-                 popup = "County-level map requires county coordinates.<br>Please add county lat/long data.")
-  })
-  
-  # ===========================================================================
-  # PLOT 1: PARKINSON'S VS PESTICIDES SCATTER
-  # ===========================================================================
-  
-  output$plot_parkinson_pesticide <- renderPlotly({
-    req(Parkinson_Pesticide_State())
-    data <- Parkinson_Pesticide_State()
-    
-    data <- data %>% filter(!is.na(Avg_Death_Rate), !is.na(Avg_Pesticide))
-    
-    if(nrow(data) == 0) return(NULL)
-    
-    p <- ggplot(data, aes(
-      x = Avg_Pesticide,
-      y = Avg_Death_Rate,
-      text = paste(
-        "State:", State,
-        "<br>Death Rate:", round(Avg_Death_Rate, 2),
-        "<br>Pesticide Use:", round(Avg_Pesticide, 2)
-      )
-    )) +
-      geom_point(size = 3, alpha = 0.7, color = "#e74c3c") +
-      geom_smooth(method = "lm", se = TRUE, color = "darkgreen", linetype = "dashed") +
-      labs(
-        title = "Parkinson's Death Rate vs. Pesticide Use by State",
-        x = "Average Pesticide Use (lbs)",
-        y = "Parkinson's Death Rate"
-      ) +
-      theme_minimal(base_size = 13)
-    
-    ggplotly(p, tooltip = "text")
-  })
-  
-  # ===========================================================================
-  # PLOT 2: PARKINSON'S VS FARMS SCATTER
-  # ===========================================================================
-  
-  output$plot_parkinson_farms <- renderPlotly({
-    req(Parkinson_Farm_State())
-    data <- Parkinson_Farm_State()
-    
-    data <- data %>% filter(!is.na(Avg_Death_Rate), !is.na(Number_Of_Farms))
-    
-    if(nrow(data) == 0) return(NULL)
-    
-    p <- ggplot(data, aes(
-      x = Number_Of_Farms,
-      y = Avg_Death_Rate,
-      text = paste(
-        "State:", State,
-        "<br>Death Rate:", round(Avg_Death_Rate, 2),
-        "<br>Farms:", format(Number_Of_Farms, big.mark = ",")
-      )
-    )) +
-      geom_point(size = 3, alpha = 0.7, color = "#9b59b6") +
-      geom_smooth(method = "lm", se = TRUE, color = "darkblue", linetype = "dashed") +
-      labs(
-        title = "Parkinson's Death Rate vs. Number of Farms by State",
-        x = "Number of Farms",
-        y = "Parkinson's Death Rate"
-      ) +
-      theme_minimal(base_size = 13)
-    
-    ggplotly(p, tooltip = "text")
-  })
-  
-  # ===========================================================================
-  # PLOT 3: PESTICIDES VS LIFE EXPECTANCY SCATTER (STATE LEVEL)
-  # ===========================================================================
-  
-  output$plot_pesticide_life_expectancy <- renderPlotly({
-    req(Pesticide_State_Data(), Expectancy_With_Coords())
-    
-    pesticide <- Pesticide_State_Data()
-    life_exp <- Expectancy_With_Coords()
-    
-    # Merge
-    data <- life_exp %>%
-      left_join(pesticide, by = "State") %>%
-      filter(!is.na(Avg_Life_Expectancy), !is.na(Avg_Pesticide))
-    
-    if(nrow(data) == 0) return(NULL)
-    
-    p <- ggplot(data, aes(
-      x = Avg_Pesticide,
-      y = Avg_Life_Expectancy,
-      text = paste(
-        "State:", State,
-        "<br>Life Expectancy:", round(Avg_Life_Expectancy, 2),
-        "<br>Pesticide Use:", round(Avg_Pesticide, 2)
-      )
-    )) +
-      geom_point(size = 3, alpha = 0.7, color = "#27ae60") +
-      geom_smooth(method = "lm", se = TRUE, color = "darkred", linetype = "dashed") +
-      labs(
-        title = "Life Expectancy vs. Pesticide Use by State",
-        x = "Average Pesticide Use (lbs)",
-        y = "Average Life Expectancy (years)"
-      ) +
-      theme_minimal(base_size = 13)
-    
-    ggplotly(p, tooltip = "text")
-  })
-  
-  # ===========================================================================
-  # ADDITIONAL VISUALIZATIONS
-  # ===========================================================================
-  
-  # Bar chart: Top states by Parkinson's death rate
-  output$plot_top_parkinsons <- renderPlotly({
-    req(Parkinson_Data())
-    data <- Parkinson_Data() %>%
-      arrange(desc(Avg_Death_Rate)) %>%
-      head(15)
-    
-    p <- ggplot(data, aes(x = reorder(State, Avg_Death_Rate), y = Avg_Death_Rate)) +
-      geom_bar(stat = "identity", fill = "#e74c3c", alpha = 0.8) +
-      coord_flip() +
-      labs(
-        title = "Top 15 States by Parkinson's Death Rate",
-        x = "State",
-        y = "Death Rate"
-      ) +
-      theme_minimal(base_size = 13)
-    
-    ggplotly(p)
-  })
-  
-  # Bar chart: Top states by number of farms
-  output$plot_top_farms <- renderPlotly({
-    req(Farm_Data())
-    data <- Farm_Data() %>%
-      arrange(desc(Number_Of_Farms)) %>%
-      head(15)
-    
-    p <- ggplot(data, aes(x = reorder(State, Number_Of_Farms), y = Number_Of_Farms)) +
-      geom_bar(stat = "identity", fill = "#27ae60", alpha = 0.8) +
-      coord_flip() +
-      labs(
-        title = "Top 15 States by Number of Farms",
-        x = "State",
-        y = "Number of Farms"
-      ) +
-      theme_minimal(base_size = 13)
-    
-    ggplotly(p)
+      
+      leaflet(data) %>%
+        addProviderTiles(providers$CartoDB.Positron) %>%
+        setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+        addCircleMarkers(
+          lng = ~Longitude,
+          lat = ~Latitude,
+          radius = 8,
+          fillColor = ~pal(Avg_Death_Rate),
+          color = "white",
+          weight = 1.5,
+          opacity = 1,
+          fillOpacity = 0.8,
+          popup = ~paste(
+            "<div style='font-family: Inter, sans-serif; padding: 10px;'>",
+            "<h4 style='margin: 0 0 10px 0; color: #8B4513;'>", State, "</h4>",
+            "<strong>Death Rate:</strong> ", round(Avg_Death_Rate, 2), "<br>",
+            if("Avg_Deaths" %in% names(data)) paste("<strong>Avg Deaths:</strong>", round(Avg_Deaths, 1), "<br>") else "",
+            if("Number_Of_Farms" %in% names(data)) paste("<strong>Farms:</strong>", format(Number_Of_Farms, big.mark = ","), "<br>") else "",
+            if("Acres_Operated_Millions" %in% names(data)) paste("<strong>Acres:</strong>", round(Acres_Operated_Millions, 2), " M<br>") else "",
+            "</div>"
+          ),
+          label = ~paste(State, "-", round(Avg_Death_Rate, 2)),
+          labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
+        ) %>%
+        addLegend(
+          position = "bottomright",
+          pal = pal,
+          values = ~Avg_Death_Rate,
+          title = "Death Rate",
+          opacity = 0.8
+        )
+      
+    } else if(selected == "map3") {
+      # MAP 3: County Level (FIXED)
+      data <- County_Pesticide_Life()
+      
+      if(is.null(data) || nrow(data) == 0) {
+        return(leaflet() %>% 
+                 addProviderTiles(providers$CartoDB.Positron) %>% 
+                 setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+                 addPopups(-98.5, 39.8283, "No county data available after merging"))
+      }
+      
+      print(paste("Map 3 - Total rows with coordinates:", nrow(data)))
+      print(paste("Map 3 - Rows with life expectancy:", sum(!is.na(data$Avg_Life_Expectancy))))
+      
+      # If we have life expectancy data, color by it
+      if("Avg_Life_Expectancy" %in% names(data) && sum(!is.na(data$Avg_Life_Expectancy)) > 0) {
+        
+        # Filter to only rows with valid life expectancy
+        data_with_life <- data %>% filter(!is.na(Avg_Life_Expectancy))
+        
+        print(paste("Map 3 - Using", nrow(data_with_life), "counties with life expectancy"))
+        
+        pal <- colorNumeric(
+          palette = "YlOrRd",
+          domain = data_with_life$Avg_Life_Expectancy,
+          reverse = TRUE
+        )
+        
+        leaflet(data_with_life) %>%
+          addProviderTiles(providers$CartoDB.Positron) %>%
+          setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+          addCircleMarkers(
+            lng = ~lng,
+            lat = ~lat,
+            radius = 3,
+            fillColor = ~pal(Avg_Life_Expectancy),
+            color = "white",
+            weight = 0.5,
+            opacity = 0.8,
+            fillOpacity = 0.7,
+            popup = ~paste(
+              "<div style='padding: 5px;'>",
+              "<strong>", county_name, "</strong><br>",
+              "State: ", state_name, "<br>",
+              "Life Exp: ", round(Avg_Life_Expectancy, 1), " yrs<br>",
+              if(!is.na(Avg_Pesticide)) paste("Pesticide:", round(Avg_Pesticide, 2), " lbs<br>") else "",
+              "</div>"
+            )
+          ) %>%
+          addLegend(
+            position = "bottomright",
+            pal = pal,
+            values = ~Avg_Life_Expectancy,
+            title = "Life Expectancy",
+            opacity = 0.8
+          )
+      } else {
+        # Just show all counties without color coding
+        print("Map 3 - No life expectancy data, showing counties only")
+        
+        leaflet(data) %>%
+          addProviderTiles(providers$CartoDB.Positron) %>%
+          setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+          addCircleMarkers(
+            lng = ~lng,
+            lat = ~lat,
+            radius = 3,
+            color = "blue",
+            fillOpacity = 0.5,
+            stroke = FALSE,
+            popup = ~paste("<strong>", county_name, "</strong><br>State:", state_name)
+          )
+      }
+    } else {
+      # Default blank map
+      leaflet() %>%
+        addProviderTiles(providers$CartoDB.Positron) %>%
+        setView(lng = -98.5, lat = 39.5, zoom = 4)
+    }
   })
   
   # ===========================================================================
@@ -491,7 +557,10 @@ function(input, output, session) {
       rownames = FALSE,
       class = 'cell-border stripe hover'
     ) %>%
-      formatRound(columns = c("Avg_Death_Rate", "Avg_Deaths"), digits = 2)
+      formatRound(
+        columns = intersect(c("Avg_Death_Rate", "Avg_Deaths"), names(Parkinson_Data())),
+        digits = 2
+      )
   })
   
   output$data_table_farms <- renderDT({
@@ -503,11 +572,14 @@ function(input, output, session) {
       rownames = FALSE,
       class = 'cell-border stripe hover'
     ) %>%
-      formatRound(columns = c("Area_operated_Acres", "Acres_Operated_Millions"), digits = 2)
+      formatRound(
+        columns = intersect(c("Area_operated_Acres", "Acres_Operated_Millions"), names(Farm_Data())),
+        digits = 2
+      )
   })
   
   # ===========================================================================
-  # DOWNLOAD HANDLERS
+  # DOWNLOAD HANDLER
   # ===========================================================================
   
   output$download_combined <- downloadHandler(
