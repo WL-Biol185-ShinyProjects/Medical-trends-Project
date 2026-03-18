@@ -613,25 +613,65 @@ function(input, output, session) {
     req(county_pesticide_merged())
     data <- as.data.frame(county_pesticide_merged())
     
-    plot_ly(
-      data,
-      x = ~log10(AVG_ESTIMATE),
-      y = ~Avg_Life_Expectancy,
-      type = "scatter",
-      mode = "markers",
-      marker = list(color = "#2d5016", size = 5, opacity = 0.5),
-      text = ~paste("County:", county_name,
-                    "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 2),
-                    "<br>Life Expectancy:", round(Avg_Life_Expectancy, 2)),
-      hoverinfo = "text"
-    ) %>%
+    # Calculate stats
+    model     <- lm(Avg_Life_Expectancy ~ log10(AVG_ESTIMATE), data = data)
+    cor_val   <- round(cor(log10(data$AVG_ESTIMATE), data$Avg_Life_Expectancy), 3)
+    r_squared <- round(summary(model)$r.squared, 3)
+    coef_table <- summary(model)$coefficients
+    p_val     <- if(nrow(coef_table) >= 2) round(coef_table[2, 4], 4) else NA
+    
+    # Build regression line
+    x_seq    <- seq(min(log10(data$AVG_ESTIMATE)), max(log10(data$AVG_ESTIMATE)), length.out = 100)
+    y_fitted <- coef(model)[1] + coef(model)[2] * x_seq
+    
+    plot_ly() %>%
+      # Scatter points
+      add_trace(
+        data = data,
+        x = ~log10(AVG_ESTIMATE),
+        y = ~Avg_Life_Expectancy,
+        type = "scatter",
+        mode = "markers",
+        marker = list(color = "#2d5016", size = 5, opacity = 0.5),
+        text = ~paste("County:", county_name,
+                      "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 2),
+                      "<br>Life Expectancy:", round(Avg_Life_Expectancy, 2)),
+        hoverinfo = "text",
+        name = "Counties"
+      ) %>%
+      # Regression line
+      add_trace(
+        x = x_seq,
+        y = y_fitted,
+        type = "scatter",
+        mode = "lines",
+        line = list(color = "darkred", dash = "dash", width = 2),
+        hoverinfo = "skip",
+        name = "Regression Line"
+      ) %>%
+      # Layout
       layout(
-        title = paste0(input$selected_pesticide, ": Pesticide Use vs. Avg Life Expectancy by County"),
+        title = list(
+          text = paste0(input$selected_pesticide, ": Pesticide Use vs. Avg Life Expectancy by County"),
+          font = list(size = 15)
+        ),
         xaxis = list(title = paste0(input$selected_pesticide, " AVG_ESTIMATE (log scale)")),
-        yaxis = list(title = "Avg Life Expectancy (years)")
+        yaxis = list(title = "Avg Life Expectancy (years)"),
+        hovermode = "closest",
+        annotations = list(
+          list(
+            x = max(log10(data$AVG_ESTIMATE)) * 0.85,
+            y = min(data$Avg_Life_Expectancy) + 1,
+            text = paste0("r = ", cor_val, "<br>R² = ", r_squared, "<br>p = ", p_val),
+            showarrow = FALSE,
+            font = list(color = "darkred", size = 13),
+            bgcolor = "white",
+            bordercolor = "darkred",
+            borderwidth = 1
+          )
+        )
       )
   })
-  
   
   # Correlation text - updates when dropdown changes
   output$cor_county_pesticide_life <- renderPrint({

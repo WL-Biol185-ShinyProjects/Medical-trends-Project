@@ -8,6 +8,7 @@ Expectancy_State_Data <- read.csv("Clean Datasets+website code/LifeExpectancySta
 Pesticide_County_Data  <- read.csv("Clean Datasets+website code/county_pesticides_data_clean.csv", stringsAsFactors = FALSE)
 Farm_Data  <- read.csv("Clean Datasets+website code/Farm_Data_2024.csv", stringsAsFactors = FALSE)
 
+#//////////////////////// Farm & Parkinsons relation ///////////////////
 
 #Farm & Parkinsons Data Analysis (State)
 FarmParkinsonData <- data.frame(State = Farm_Data$State, NumberOfFarms = Farm_Data$Number_Of_Farms, DeathRate = Parkinson_Data$Avg_Death_Rate)
