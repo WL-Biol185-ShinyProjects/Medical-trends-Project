@@ -272,7 +272,7 @@ fluidPage(
         font-size: 1.2em;
         color: #666;
       }
-<<<<<<< HEAD
+
       
     
     /* ---- HOME PAGE TEMPLATE STYLES ---- */
@@ -490,8 +490,6 @@ fluidPage(
       margin-bottom: 0.3rem;
     }
     
-=======
->>>>>>> 7e375579bf73418f970823ab9e6ae8d58a469aa0
     "))
   ),
   
@@ -511,43 +509,101 @@ fluidPage(
     # HOME TAB
     # =========================================================================
     tabPanel("Home",
-             div(class = "main-container",
-                 div(class = "hero-section",
-                     h1("Medical Trends Analysis Dashboard"),
-                     
-                     p("Welcome to our BIOL-185 project analyzing Parkinson's data across the United States. This interactive dashboard explores the relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States. This interactive dashboard integrates multiple datasets to visualize geographic patterns and correlations."),
-                     
-                     p("Exploring relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States.")
-                     
-                 ),
+             
+             div(class = "home-hero",
+                 h1("Medical Trends Analysis Dashboard"),
+                 p(class = "hero-subtitle",
+                   "Exploring Parkinson's Disease, Pesticide Exposure & Life Expectancy across the United States")
+             ),
+             
+             div(class = "home-section",
                  
-                 
-                 uiOutput("stats_boxes" ),
-                 
-                 div(class = "stats-boxes",
-                     div(class = "stat-box",
-                         h4("States Covered"),
-                         p(textOutput("n_states")),
-                         span("across the U.S.")
+                 div(class = "about-card",
+                     div(class = "about-card-text",
+                         h2("About This Project"),
+                         p("Parkinson's disease affects millions of Americans, yet the environmental
+           drivers behind its geographic distribution remain poorly understood. This
+           project investigates whether pesticide use and agricultural intensity are
+           associated with higher Parkinson's mortality rates across U.S. states and counties."),
+                         p("Our interactive dashboard integrates CDC mortality data, USDA pesticide
+           and farm records, and CDC WONDER life-expectancy figures to visualize
+           geographic patterns and surface potential correlations.")
                      ),
-                     div(class = "stat-box",
-                         h4("Counties Analyzed"),
-                         p(textOutput("n_counties")),
-                         span("county-level records")
-                     ),
-                     div(class = "stat-box",
-                         h4("Avg Annual Rate"),
-                         p(textOutput("avg_rate")),
-                         span("per 100,000 population")
-                     ),
-                     div(class = "stat-box",
-                         h4("Years Covered"),
-                         p("2017 - 2021"),
-                         span("incidence data")
+                     
+                     tags$svg(
+                       class = "about-illustration",
+                       viewBox = "0 0 220 240",
+                       xmlns = "http://www.w3.org/2000/svg",
+                       tags$circle(cx="110", cy="120", r="100", fill="#e8f5e2"),
+                       tags$ellipse(cx="90",  cy="160", rx="18", ry="50", fill="#4a7c2a",
+                                    transform="rotate(-20 90 160)"),
+                       tags$ellipse(cx="110", cy="155", rx="18", ry="55", fill="#2d5016",
+                                    transform="rotate(0 110 155)"),
+                       tags$ellipse(cx="130", cy="160", rx="18", ry="50", fill="#4a7c2a",
+                                    transform="rotate(20 130 160)"),
+                       tags$ellipse(cx="75",  cy="165", rx="14", ry="42", fill="#6aaa3a",
+                                    transform="rotate(-35 75 165)"),
+                       tags$ellipse(cx="145", cy="165", rx="14", ry="42", fill="#6aaa3a",
+                                    transform="rotate(35 145 165)"),
+                       tags$circle(cx="85",  cy="80", r="7", fill="#2d5016"),
+                       tags$circle(cx="110", cy="68", r="7", fill="#4a7c2a"),
+                       tags$circle(cx="135", cy="80", r="7", fill="#2d5016"),
+                       tags$line(x1="85", y1="80", x2="110", y2="68",
+                                 stroke="#6aaa3a", `stroke-width`="2"),
+                       tags$line(x1="110", y1="68", x2="135", y2="80",
+                                 stroke="#6aaa3a", `stroke-width`="2"),
+                       tags$circle(cx="88",  cy="98", r="6", fill="#4a7c2a"),
+                       tags$circle(cx="110", cy="90", r="6", fill="#2d5016"),
+                       tags$circle(cx="132", cy="98", r="6", fill="#4a7c2a"),
+                       tags$line(x1="88", y1="98", x2="110", y2="90",
+                                 stroke="#6aaa3a", `stroke-width`="2"),
+                       tags$line(x1="110", y1="90", x2="132", y2="98",
+                                 stroke="#6aaa3a", `stroke-width`="2")
                      )
                  ),
-                 div(class = "content-box",
-                     h2("Research Questions"),
+                 
+                 h2(class = "features-heading", "Key Features"),
+                 div(class = "features-grid",
+                     div(class = "feature-card",
+                         tags$h3("Interactive Maps"),
+                         tags$p("Explore Parkinson's mortality, pesticide use, and life expectancy
+                geographically across all U.S. states and counties.")
+                     ),
+                     div(class = "feature-card",
+                         tags$h3("Correlation Analysis"),
+                         tags$p("Compare pesticide exposure and farm density against disease rates
+                to surface potential environmental risk patterns.")
+                     ),
+                     div(class = "feature-card",
+                         tags$h3("Evidence-Based Data"),
+                         tags$p("Built on CDC, USDA, and CDC WONDER datasets with transparent
+                methodology and acknowledged limitations.")
+                     )
+                 ),
+                 
+                 div(class = "how-to-card",
+                     tags$h2("How to Use This Dashboard"),
+                     div(class = "steps-grid",
+                         div(class = "step",
+                             div(class = "step-number", "1"),
+                             tags$h3("Select a Topic"),
+                             tags$p("Navigate using the tabs to explore maps, visualizations, or raw data tables.")
+                         ),
+                         div(class = "step",
+                             div(class = "step-number", "2"),
+                             tags$h3("Apply Filters"),
+                             tags$p("Use the sidebar controls on the Maps tab to switch between datasets.")
+                         ),
+                         div(class = "step",
+                             div(class = "step-number", "3"),
+                             tags$h3("Explore Insights"),
+                             tags$p("Interact with the maps and charts to discover geographic patterns and correlations.")
+                         )
+                     )
+                 ),
+                 
+                 div(class = "home-plain-card",
+                     tags$h2("Research Questions"),
                      tags$ul(
                        tags$li("Is there a relationship between pesticide use and Parkinson's disease rates?"),
                        tags$li("How does agricultural intensity (number of farms) correlate with health outcomes?"),
@@ -556,19 +612,21 @@ fluidPage(
                      )
                  ),
                  
-                 div(class = "content-box",
-                     h2("Datasets Used"),
+                 div(class = "home-plain-card",
+                     tags$h2("Datasets Used"),
                      tags$ul(
-                       tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " - Parkinson's death rates by state"),
-                       tags$li(tags$strong("pesticides_by_county.csv"), " - Pesticide usage by county"),
-                       tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " - Life expectancy by state"),
-                       tags$li(tags$strong("ExpectancyData_clean.csv"), " - Life expectancy by county"),
-                       tags$li(tags$strong("Farm_Data_2024.csv"), " - Number and size of farms by state"),
-                       tags$li(tags$strong("cfips_location.csv"), " - County coordinates (cfips, name, lng, lat)")
+                       tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " — Parkinson's death rates by state"),
+                       tags$li(tags$strong("pesticides_by_county.csv"), " — Pesticide usage by county"),
+                       tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " — Life expectancy by state"),
+                       tags$li(tags$strong("ExpectancyData_clean.csv"), " — Life expectancy by county"),
+                       tags$li(tags$strong("Farm_Data_2024.csv"), " — Number and size of farms by state"),
+                       tags$li(tags$strong("cfips_location.csv"), " — County coordinates (cfips, name, lng, lat)")
                      )
                  )
+                 
              )
-    ),
+    ), 
+    
     
     # =========================================================================
     # MAPS TAB - With Sidebar Selector
