@@ -1,4 +1,3 @@
-
 library(shiny)
 library(ggplot2)
 library(plotly)
@@ -578,6 +577,7 @@ function(input, output, session) {
       )
   })
   
+
   
   # =============================================================================
   # SERVER ADDITION - COUNTY PESTICIDE VS LIFE EXPECTANCY
@@ -686,8 +686,6 @@ function(input, output, session) {
     data <- county_pesticide_merged()
     summary(lm(Avg_Life_Expectancy ~ AVG_ESTIMATE, data = data))
   })
-  
-  
   
   # ===========================================================================
   # DOWNLOAD HANDLER
