@@ -376,14 +376,7 @@ fluidPage(
     # =========================================================================
     # DATA VISUALIZATION TAB
     # =========================================================================
-    # =============================================================================
-    # UI ADDITION - DATA VISUALIZATION TAB ONLY
-    # =============================================================================
-    # INSTRUCTIONS:
-    # Find your existing tabPanel("Data Visualization", ...) in ui.R and replace
-    # the ENTIRE block with this. Everything is identical to what you had before,
-    # with the new county pesticide section added at the bottom.
-    # =============================================================================
+ 
     
     tabPanel("Data Visualization",
              div(class = "main-container",
