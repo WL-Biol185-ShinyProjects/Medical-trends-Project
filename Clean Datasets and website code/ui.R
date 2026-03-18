@@ -15,7 +15,7 @@ fluidPage(
   # Custom CSS
   tags$head(
     tags$style(HTML("
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;600;700&display=swap');
       
       * {
         margin: 0;
@@ -43,29 +43,45 @@ fluidPage(
       }
       
       .nav-tabs {
-        border-bottom: none;
-        background: #2d5016;
+        border-bottom: none !important;
+        background: #2d5016 !important;
         padding-left: 40px;
       }
       
       .nav-tabs > li > a {
-        color: rgba(255,255,255,0.85);
-        background: transparent;
-        border: none;
+        color: rgba(255,255,255,0.85) !important;
+        background: transparent !important;
+        border: none !important;
         padding: 16px 28px;
         font-weight: 500;
         font-size: 15px;
       }
       
       .nav-tabs > li > a:hover {
-        background: rgba(255,255,255,0.1);
-        color: white;
+        background: rgba(255,255,255,0.1) !important;
+        color: white !important;
+        border: none !important;
       }
       
-      .nav-tabs > li.active > a {
-        color: white;
-        background: #4a7c2a;
-        border-bottom: 3px solid #ffc857;
+      .nav-tabs > li.active > a,
+      .nav-tabs > li.active > a:focus,
+      .nav-tabs > li.active > a:hover {
+        color: white !important;
+        background: #4a7c2a !important;
+        border: none !important;
+        border-bottom: 3px solid #ffc857 !important;
+      }
+      
+      .navbar {
+        background: #2d5016 !important;
+        border: none !important;
+        margin-bottom: 0 !important;
+        margin-top: 0 !important;
+      }
+      
+      .navbar-default {
+        background-color: #2d5016 !important;
+        border-color: transparent !important;
       }
       
       .main-container {
@@ -256,6 +272,226 @@ fluidPage(
         font-size: 1.2em;
         color: #666;
       }
+<<<<<<< HEAD
+      
+    
+    /* ---- HOME PAGE TEMPLATE STYLES ---- */
+      
+      .home-hero {
+        text-align: center;
+        padding: 5rem 2rem 3.5rem;
+        background: #f5f5f5;
+      }
+    
+    .home-hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: #1a3d0a;
+        margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+    
+    .home-hero .hero-subtitle {
+      font-size: 1.05rem;
+      color: #666;
+        font-weight: 300;
+      margin: 0;
+    }
+    
+    .home-section {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 3rem 2rem;
+    }
+    
+    .home-section > * {
+      max-width: 100%;
+    }
+    
+    .about-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 2.5rem 3rem;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    
+    .about-card-text { flex: 1; }
+    
+    .about-card h2 {
+      font-family: 'Lora', serif !important;
+      font-size: 1.5rem !important;
+      font-weight: 700 !important;
+      color: #1a3d0a !important;
+      margin-bottom: 1rem !important;
+      border-bottom: none !important;
+      padding-bottom: 0 !important;
+    }
+
+    
+    .home-hero h1 {
+      font-family: 'Lora', serif !important;
+      font-size: clamp(2rem, 5vw, 3rem) !important;
+      font-weight: 700 !important;
+      color: #1a3d0a !important;
+      margin-bottom: 0.75rem !important;
+      letter-spacing: -0.01em !important;
+    }
+    
+    .how-to-card h2 {
+      font-family: 'Lora', serif !important;
+      font-size: 1.6rem !important;
+      font-weight: 700 !important;
+      color: white !important;
+      margin-bottom: 2.5rem !important;
+    }
+    
+    .home-plain-card h2 {
+      font-family: 'Lora', serif !important;
+      font-size: 1.4rem !important;
+      font-weight: 700 !important;
+      color: #1a3d0a !important;
+      margin-bottom: 1.25rem !important;
+      border-bottom: 3px solid #4a7c2a !important;
+      padding-bottom: 0.6rem !important;
+    }
+    
+    .about-card p {
+      font-size: 0.95rem;
+      color: #4a4a4a;
+        line-height: 1.75;
+      margin-bottom: 0.75rem;
+    }
+    
+    .about-card p:last-child { margin-bottom: 0; }
+    
+    .about-illustration { width: 200px; flex-shrink: 0; }
+    
+    .features-heading {
+      font-family: 'Lora', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1a3d0a;
+        text-align: center;
+      margin: 0.5rem 0 1.25rem;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    
+    .feature-card {
+      background: white !important;
+      border-radius: 10px !important;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07) !important;
+      padding: 1.75rem 1.5rem !important;
+      border-top: 4px solid #4a7c2a !important;
+    }
+    
+    .feature-card h3 {
+      font-family: 'Lora', serif !important;
+      font-size: 1rem !important;
+      font-weight: 700 !important;
+      color: #1a3d0a !important;
+      margin-bottom: 0.5rem !important;
+    }
+    
+    .feature-card p {
+      font-size: 0.875rem !important;
+      color: #6b7280 !important;
+      line-height: 1.6 !important;
+      margin: 0 !important;
+    }
+    
+    .how-to-card {
+      background: #1a3d0a;
+        border-radius: 12px;
+      padding: 3rem 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .how-to-card h2 {
+      font-family: 'Lora', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 2.5rem;
+    }
+    
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    
+    .step { text-align: center; }
+    
+    .step-number {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      font-family: 'Lora', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+    
+    .step h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+    
+    .step p {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+      margin: 0;
+    }
+    
+    .home-plain-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 2.5rem 3rem;
+      margin-bottom: 2rem;
+    }
+    
+    .home-plain-card h2 {
+      font-family: 'Lora', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a3d0a;
+        margin-bottom: 1.25rem;
+      border-bottom: 3px solid #4a7c2a;
+      padding-bottom: 0.6rem;
+    }
+    
+    .home-plain-card ul { padding-left: 1.25rem; }
+    
+    .home-plain-card li {
+      font-size: 0.95rem;
+      color: #4a4a4a;
+        line-height: 1.75;
+      margin-bottom: 0.3rem;
+    }
+    
+=======
+>>>>>>> 7e375579bf73418f970823ab9e6ae8d58a469aa0
     "))
   ),
   
