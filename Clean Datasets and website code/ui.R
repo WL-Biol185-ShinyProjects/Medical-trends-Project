@@ -1,6 +1,7 @@
 library(shiny)
 library(DT)
 library(leaflet)
+library (plotly)
 
 # =============================================================================
 # UI DEFINITION
