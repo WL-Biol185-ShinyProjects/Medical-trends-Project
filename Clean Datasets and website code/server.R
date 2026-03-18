@@ -500,7 +500,6 @@ function(input, output, session) {
   # DATA TABLES
   # ===========================================================================
   
-<<<<<<< HEAD:Clean Datasets+website code/server.R
   output$data_table_parkinson <- renderDT({
     req(Parkinson_Data())
     
@@ -531,7 +530,7 @@ function(input, output, session) {
       )
   })
   
-=======
+
   # =============================================================================
   # SERVER ADDITION - COUNTY PESTICIDE VS LIFE EXPECTANCY
   # =============================================================================
@@ -601,8 +600,6 @@ function(input, output, session) {
   })
   
   
-  
->>>>>>> 950a88cca4509a9ad49c93f10ffe7218a2331138:Clean Datasets and website code/server.R
   # ===========================================================================
   # DOWNLOAD HANDLER
   # ===========================================================================
