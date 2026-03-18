@@ -405,6 +405,24 @@ fluidPage(
                           )
                    )
                  ),
+                # State level Farm Count VS Parkinsons data
+                  div(class = "plot-container",
+                     h2("Number of Farms vs. Parkinson's Death Rate by State"),
+                     p("State-level scatter plot showing the relationship between number of farms and Parkinson's average death rate."),
+                     
+                     fluidRow(
+                       column(8,
+                              plotlyOutput("plot_farm_parkinson_detailed", height = "500px")
+                       ),
+                       column(4,
+                              h4("Correlation Result"),
+                              verbatimTextOutput("cor_farm_parkinson_detailed"),
+                              br(),
+                              h4("Regression Summary"),
+                              verbatimTextOutput("reg_farm_parkinson_detailed")
+                       )
+                     )
+                 ),
                  
                  # County-level pesticide vs life expectancy
                  div(class = "plot-container",
