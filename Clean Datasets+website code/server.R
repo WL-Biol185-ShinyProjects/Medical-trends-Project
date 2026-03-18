@@ -6,6 +6,7 @@ library(dplyr)
 library(DT)
 library(leaflet)
 
+
 # =============================================================================
 # SERVER FUNCTION
 # =============================================================================
@@ -325,217 +326,185 @@ function(input, output, session) {
   
   output$map_description <- renderUI({
     switch(input$selected_map,
-           "map1" = div(
-             p(style = "font-size: 0.9em; line-height: 1.6;",
-               "This map shows the relationship between Parkinson's disease death rates and pesticide use across states.",
-               br(), br(),
-               strong("Circle size:"), " State location", br(),
-               strong("Color:"), " Death rate (yellow to red)")
+           "map1" = div(class = "map-info",
+                        p("This map shows the relationship between Parkinson's disease death rates and pesticide use across states."),
+                        p(strong("Color:"), " Death rate (yellow to red)")
            ),
-           "map2" = div(
-             p(style = "font-size: 0.9em; line-height: 1.6;",
-               "This map shows the relationship between Parkinson's disease death rates and agricultural intensity.",
-               br(), br(),
-               strong("Circle size:"), " State location", br(),
-               strong("Color:"), " Death rate (red to purple)")
+           "map2" = div(class = "map-info",
+                        p("This map shows the relationship between Parkinson's disease death rates and agricultural intensity."),
+                        p(strong("Color:"), " Death rate (red to purple)")
            ),
-           "map3" = div(
-             p(style = "font-size: 0.9em; line-height: 1.6;",
-               "This county-level map shows pesticide exposure and life expectancy.",
-               br(), br(),
-               strong("County points:"), " Small dots", br(),
-               strong("Color:"), " Life expectancy (yellow to red)")
+           "map3" = div(class = "map-info",
+                        p("This county-level map shows pesticide exposure and life expectancy."),
+                        p(strong("Color:"), " Life expectancy (yellow to red)")
            ),
            p("Select a map to view details.")
     )
   })
   
   # ===========================================================================
-  # MAIN MAP OUTPUT (switches based on selection)
+  # MAIN MAP OUTPUT (CHOROPLETH - switches based on selection)
   # ===========================================================================
   
   output$main_map <- renderLeaflet({
     selected <- input$selected_map
     
     if(selected == "map1") {
-      # MAP 1: Parkinson's vs Pesticides (FIXED)
+      # MAP 1: PARKINSON'S VS PESTICIDES (STATE LEVEL CHOROPLETH)
       req(Parkinson_Pesticide_State())
       data <- Parkinson_Pesticide_State()
       
-      data <- data %>% filter(!is.na(Latitude), !is.na(Longitude), !is.na(Avg_Death_Rate))
+      # Load US states GeoJSON
+      states <- geojson_read("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json", what = "sp")
       
-      print(paste("Map 1 - Rows with valid data:", nrow(data)))
+      # Map state names to abbreviations
+      state_name_to_abbr <- setNames(data$State, c(
+        "Alabama"="AL","Alaska"="AK","Arizona"="AZ","Arkansas"="AR","California"="CA","Colorado"="CO",
+        "Connecticut"="CT","Delaware"="DE","Florida"="FL","Georgia"="GA","Hawaii"="HI","Idaho"="ID",
+        "Illinois"="IL","Indiana"="IN","Iowa"="IA","Kansas"="KS","Kentucky"="KY","Louisiana"="LA",
+        "Maine"="ME","Maryland"="MD","Massachusetts"="MA","Michigan"="MI","Minnesota"="MN","Mississippi"="MS",
+        "Missouri"="MO","Montana"="MT","Nebraska"="NE","Nevada"="NV","New Hampshire"="NH","New Jersey"="NJ",
+        "New Mexico"="NM","New York"="NY","North Carolina"="NC","North Dakota"="ND","Ohio"="OH","Oklahoma"="OK",
+        "Oregon"="OR","Pennsylvania"="PA","Rhode Island"="RI","South Carolina"="SC","South Dakota"="SD",
+        "Tennessee"="TN","Texas"="TX","Utah"="UT","Vermont"="VT","Virginia"="VA","Washington"="WA",
+        "West Virginia"="WV","Wisconsin"="WI","Wyoming"="WY"
+      )[states$name])
       
-      if(nrow(data) == 0) {
-        return(leaflet() %>% 
-                 addProviderTiles(providers$CartoDB.Positron) %>% 
-                 setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-                 addPopups(-98.5, 39.8283, "No data with valid coordinates found"))
-      }
+      # Merge data
+      states$death_rate <- data$Avg_Death_Rate[match(state_name_to_abbr, data$State)]
+      states$pesticide <- data$Avg_Pesticide[match(state_name_to_abbr, data$State)]
       
-      pal <- colorNumeric(
-        palette = "YlOrRd",
-        domain = data$Avg_Death_Rate
-      )
+      pal <- colorNumeric("YlOrRd", domain = states$death_rate, na.color = "#cccccc")
       
-      leaflet(data) %>%
+      labels <- sprintf("<strong>%s</strong><br/>Death Rate: %s<br/>Pesticide: %s lbs",
+                        states$name,
+                        ifelse(is.na(states$death_rate), "N/A", round(states$death_rate, 2)),
+                        ifelse(is.na(states$pesticide), "N/A", round(states$pesticide, 0))) %>% 
+        lapply(htmltools::HTML)
+      
+      leaflet(states) %>%
         addProviderTiles(providers$CartoDB.Positron) %>%
         setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-        addCircleMarkers(
-          lng = ~Longitude,
-          lat = ~Latitude,
-          radius = 8,
-          fillColor = ~pal(Avg_Death_Rate),
-          color = "white",
+        addPolygons(
+          fillColor = ~pal(death_rate),
           weight = 1.5,
           opacity = 1,
-          fillOpacity = 0.8,
-          popup = ~paste(
-            "<div style='font-family: Inter, sans-serif; padding: 10px;'>",
-            "<h4 style='margin: 0 0 10px 0; color: #8B4513;'>", State, "</h4>",
-            "<strong>Death Rate:</strong> ", round(Avg_Death_Rate, 2), "<br>",
-            if("Avg_Deaths" %in% names(data)) paste("<strong>Avg Deaths:</strong>", round(Avg_Deaths, 1), "<br>") else "",
-            if("Avg_Pesticide" %in% names(data)) paste("<strong>Pesticide Use:</strong>", round(Avg_Pesticide, 2), " lbs<br>") else "",
-            "</div>"
-          ),
-          label = ~paste(State, "-", round(Avg_Death_Rate, 2)),
+          color = "white",
+          fillOpacity = 0.7,
+          highlight = highlightOptions(weight = 3, color = "#666", fillOpacity = 0.9, bringToFront = TRUE),
+          label = labels,
           labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
         ) %>%
-        addLegend(
-          position = "bottomright",
-          pal = pal,
-          values = ~Avg_Death_Rate,
-          title = "Death Rate",
-          opacity = 0.8
-        )
+        addLegend(pal = pal, values = ~death_rate, opacity = 1, 
+                  title = "Death Rate", position = "bottomright")
       
     } else if(selected == "map2") {
-      # MAP 2: Parkinson's vs Farms (WORKING)
+      # MAP 2: PARKINSON'S VS FARMS (STATE LEVEL CHOROPLETH)
       req(Parkinson_Farm_State())
       data <- Parkinson_Farm_State()
       
-      data <- data %>% 
-        filter(!is.na(Latitude), !is.na(Longitude), !is.na(Avg_Death_Rate))
+      # Load US states GeoJSON
+      states <- geojson_read("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json", what = "sp")
       
-      print(paste("Map 2 - Rows with valid data:", nrow(data)))
+      # Map state names to abbreviations
+      state_name_to_abbr <- setNames(data$State, c(
+        "Alabama"="AL","Alaska"="AK","Arizona"="AZ","Arkansas"="AR","California"="CA","Colorado"="CO",
+        "Connecticut"="CT","Delaware"="DE","Florida"="FL","Georgia"="GA","Hawaii"="HI","Idaho"="ID",
+        "Illinois"="IL","Indiana"="IN","Iowa"="IA","Kansas"="KS","Kentucky"="KY","Louisiana"="LA",
+        "Maine"="ME","Maryland"="MD","Massachusetts"="MA","Michigan"="MI","Minnesota"="MN","Mississippi"="MS",
+        "Missouri"="MO","Montana"="MT","Nebraska"="NE","Nevada"="NV","New Hampshire"="NH","New Jersey"="NJ",
+        "New Mexico"="NM","New York"="NY","North Carolina"="NC","North Dakota"="ND","Ohio"="OH","Oklahoma"="OK",
+        "Oregon"="OR","Pennsylvania"="PA","Rhode Island"="RI","South Carolina"="SC","South Dakota"="SD",
+        "Tennessee"="TN","Texas"="TX","Utah"="UT","Vermont"="VT","Virginia"="VA","Washington"="WA",
+        "West Virginia"="WV","Wisconsin"="WI","Wyoming"="WY"
+      )[states$name])
       
-      if(nrow(data) == 0) {
-        return(leaflet() %>% 
-                 addProviderTiles(providers$CartoDB.Positron) %>% 
-                 setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-                 addPopups(-98.5, 39.8283, "No valid data for Map 2"))
-      }
+      # Merge data
+      states$death_rate <- data$Avg_Death_Rate[match(state_name_to_abbr, data$State)]
+      states$farms <- data$Number_Of_Farms[match(state_name_to_abbr, data$State)]
       
-      pal <- colorNumeric(
-        palette = "RdPu",
-        domain = data$Avg_Death_Rate
-      )
+      pal <- colorNumeric("RdPu", domain = states$death_rate, na.color = "#cccccc")
       
-      leaflet(data) %>%
+      labels <- sprintf("<strong>%s</strong><br/>Death Rate: %s<br/>Farms: %s",
+                        states$name,
+                        ifelse(is.na(states$death_rate), "N/A", round(states$death_rate, 2)),
+                        ifelse(is.na(states$farms), "N/A", format(round(states$farms), big.mark = ","))) %>% 
+        lapply(htmltools::HTML)
+      
+      leaflet(states) %>%
         addProviderTiles(providers$CartoDB.Positron) %>%
         setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-        addCircleMarkers(
-          lng = ~Longitude,
-          lat = ~Latitude,
-          radius = 8,
-          fillColor = ~pal(Avg_Death_Rate),
-          color = "white",
+        addPolygons(
+          fillColor = ~pal(death_rate),
           weight = 1.5,
           opacity = 1,
-          fillOpacity = 0.8,
-          popup = ~paste(
-            "<div style='font-family: Inter, sans-serif; padding: 10px;'>",
-            "<h4 style='margin: 0 0 10px 0; color: #8B4513;'>", State, "</h4>",
-            "<strong>Death Rate:</strong> ", round(Avg_Death_Rate, 2), "<br>",
-            if("Avg_Deaths" %in% names(data)) paste("<strong>Avg Deaths:</strong>", round(Avg_Deaths, 1), "<br>") else "",
-            if("Number_Of_Farms" %in% names(data)) paste("<strong>Farms:</strong>", format(Number_Of_Farms, big.mark = ","), "<br>") else "",
-            if("Acres_Operated_Millions" %in% names(data)) paste("<strong>Acres:</strong>", round(Acres_Operated_Millions, 2), " M<br>") else "",
-            "</div>"
-          ),
-          label = ~paste(State, "-", round(Avg_Death_Rate, 2)),
+          color = "white",
+          fillOpacity = 0.7,
+          highlight = highlightOptions(weight = 3, color = "#666", fillOpacity = 0.9, bringToFront = TRUE),
+          label = labels,
           labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
         ) %>%
-        addLegend(
-          position = "bottomright",
-          pal = pal,
-          values = ~Avg_Death_Rate,
-          title = "Death Rate",
-          opacity = 0.8
-        )
+        addLegend(pal = pal, values = ~death_rate, opacity = 1, 
+                  title = "Death Rate", position = "bottomright")
       
     } else if(selected == "map3") {
-      # MAP 3: County Level (FIXED)
+      # MAP 3: PESTICIDES VS LIFE EXPECTANCY (COUNTY LEVEL CHOROPLETH)
+      req(County_Pesticide_Life())
       data <- County_Pesticide_Life()
       
-      if(is.null(data) || nrow(data) == 0) {
+      # Filter by selected state
+      if(!is.null(input$state_selector_map3) && input$state_selector_map3 != "all") {
+        data <- data %>% filter(state_name == input$state_selector_map3)
+      }
+      
+      data_with_life <- data %>% filter(!is.na(Avg_Life_Expectancy), !is.na(county_fips))
+      
+      if(nrow(data_with_life) == 0) {
         return(leaflet() %>% 
                  addProviderTiles(providers$CartoDB.Positron) %>% 
-                 setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-                 addPopups(-98.5, 39.8283, "No county data available after merging"))
+                 setView(lng = -98.5, lat = 39.5, zoom = 4))
       }
       
-      print(paste("Map 3 - Total rows with coordinates:", nrow(data)))
-      print(paste("Map 3 - Rows with life expectancy:", sum(!is.na(data$Avg_Life_Expectancy))))
+      # Load US counties GeoJSON
+      counties <- geojson_read("https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json", what = "sp")
       
-      # If we have life expectancy data, color by it
-      if("Avg_Life_Expectancy" %in% names(data) && sum(!is.na(data$Avg_Life_Expectancy)) > 0) {
-        
-        # Filter to only rows with valid life expectancy
-        data_with_life <- data %>% filter(!is.na(Avg_Life_Expectancy))
-        
-        print(paste("Map 3 - Using", nrow(data_with_life), "counties with life expectancy"))
-        
-        pal <- colorNumeric(
-          palette = "YlOrRd",
-          domain = data_with_life$Avg_Life_Expectancy,
-          reverse = TRUE
-        )
-        
-        leaflet(data_with_life) %>%
-          addProviderTiles(providers$CartoDB.Positron) %>%
-          setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-          addCircleMarkers(
-            lng = ~lng,
-            lat = ~lat,
-            radius = 3,
-            fillColor = ~pal(Avg_Life_Expectancy),
-            color = "white",
-            weight = 0.5,
-            opacity = 0.8,
-            fillOpacity = 0.7,
-            popup = ~paste(
-              "<div style='padding: 5px;'>",
-              "<strong>", county_name, "</strong><br>",
-              "State: ", state_name, "<br>",
-              "Life Exp: ", round(Avg_Life_Expectancy, 1), " yrs<br>",
-              if(!is.na(Avg_Pesticide)) paste("Pesticide:", round(Avg_Pesticide, 2), " lbs<br>") else "",
-              "</div>"
-            )
-          ) %>%
-          addLegend(
-            position = "bottomright",
-            pal = pal,
-            values = ~Avg_Life_Expectancy,
-            title = "Life Expectancy",
-            opacity = 0.8
-          )
-      } else {
-        # Just show all counties without color coding
-        print("Map 3 - No life expectancy data, showing counties only")
-        
-        leaflet(data) %>%
-          addProviderTiles(providers$CartoDB.Positron) %>%
-          setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-          addCircleMarkers(
-            lng = ~lng,
-            lat = ~lat,
-            radius = 3,
-            color = "blue",
-            fillOpacity = 0.5,
-            stroke = FALSE,
-            popup = ~paste("<strong>", county_name, "</strong><br>State:", state_name)
-          )
-      }
+      # Match data to counties
+      counties$life_exp <- data_with_life$Avg_Life_Expectancy[match(counties$id, data_with_life$county_fips)]
+      counties$pesticide <- data_with_life$Avg_Pesticide[match(counties$id, data_with_life$county_fips)]
+      counties$county_name <- data_with_life$county_name[match(counties$id, data_with_life$county_fips)]
+      counties$state_name <- data_with_life$state_name[match(counties$id, data_with_life$county_fips)]
+      
+      # Filter to only counties with data
+      counties_with_data <- counties[!is.na(counties$life_exp), ]
+      
+      pal <- colorNumeric("YlOrRd", domain = counties_with_data$life_exp, reverse = TRUE, na.color = "#cccccc")
+      
+      labels <- sprintf("<strong>%s, %s</strong><br/>Life Expectancy: %s years<br/>Pesticide: %s lbs",
+                        counties_with_data$county_name,
+                        counties_with_data$state_name,
+                        round(counties_with_data$life_exp, 1),
+                        round(counties_with_data$pesticide, 1)) %>% 
+        lapply(htmltools::HTML)
+      
+      zoom_level <- if(input$state_selector_map3 == "all") 4 else 6
+      center_lng <- if(input$state_selector_map3 == "all") -98.5 else mean(counties_with_data@bbox[1,])
+      center_lat <- if(input$state_selector_map3 == "all") 39.5 else mean(counties_with_data@bbox[2,])
+      
+      leaflet(counties_with_data) %>%
+        addProviderTiles(providers$CartoDB.Positron) %>%
+        setView(lng = center_lng, lat = center_lat, zoom = zoom_level) %>%
+        addPolygons(
+          fillColor = ~pal(life_exp),
+          weight = 1,
+          opacity = 1,
+          color = "white",
+          fillOpacity = 0.7,
+          highlight = highlightOptions(weight = 2, color = "#666", fillOpacity = 0.9, bringToFront = TRUE),
+          label = labels,
+          labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
+        ) %>%
+        addLegend(pal = pal, values = ~life_exp, opacity = 1, 
+                  title = "Life Expectancy<br/>(years)", position = "bottomright")
     } else {
       # Default blank map
       leaflet() %>%
