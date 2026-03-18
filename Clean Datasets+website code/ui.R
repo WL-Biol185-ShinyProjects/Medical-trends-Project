@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 
 library(plotly)
->>>>>>> 473e5170b6275ddd7944b3e5a2242b8ac5b7f958
 library(shiny)
 library(DT)
 library(leaflet)
