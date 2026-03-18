@@ -623,7 +623,7 @@ fluidPage(
              div(class = "main-container",
                  h1(class = "page-header", "Data Visualizations"),
                  
-<<<<<<< HEAD
+
                  # Scatter plots
                  div(class = "plot-container",
                      plotlyOutput("plot_parkinson_pesticide", height = 500)
@@ -693,14 +693,14 @@ fluidPage(
                               verbatimTextOutput("reg_county_pesticide_life")
                        )
                      )
-=======
+
                  div(class = "empty-state",
                      div(class = "empty-state-icon", "📊"),
                      div(class = "empty-state-text", 
                          "Visualization space reserved for future charts and graphs.",
                          br(), br(),
                          "Check the 'Maps' tab to explore geographic patterns.")
->>>>>>> e190ec872f58ca656d2e848b2353b8a636d7318e
+
                  )
              )
     ),
