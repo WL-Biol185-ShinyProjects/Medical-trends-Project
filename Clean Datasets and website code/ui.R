@@ -692,7 +692,7 @@ fluidPage(
                               h4("Regression Summary"),
                               verbatimTextOutput("reg_county_pesticide_life")
                        )
-                     )
+                     ),
 
                  div(class = "empty-state",
                      div(class = "empty-state-icon", "📊"),
@@ -770,13 +770,4 @@ fluidPage(
              )
     )
   )
-)
-
-
-
-
-
-
-
-
-
+))
