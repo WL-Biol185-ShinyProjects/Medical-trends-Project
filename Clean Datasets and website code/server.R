@@ -500,6 +500,7 @@ function(input, output, session) {
   # DATA TABLES
   # ===========================================================================
   
+<<<<<<< HEAD:Clean Datasets+website code/server.R
   output$data_table_parkinson <- renderDT({
     req(Parkinson_Data())
     
@@ -530,6 +531,78 @@ function(input, output, session) {
       )
   })
   
+=======
+  # =============================================================================
+  # SERVER ADDITION - COUNTY PESTICIDE VS LIFE EXPECTANCY
+  # =============================================================================
+  # INSTRUCTIONS:
+  # Paste this block into your server.R, anywhere inside the server function.
+  # A good place is right after your existing plot outputs (plot_top_farms etc.)
+  # and before the closing } of the server function.
+  # =============================================================================
+  
+  # Reactive: re-filters and merges data whenever dropdown selection changes
+  county_pesticide_merged <- reactive({
+    req(input$selected_pesticide)
+    req(Pesticide_County_Data())   # add req() checks
+    req(Expectancy_Data())
+    
+    pest_subset <- Pesticide_County_Data() %>%   # add () here
+      filter(compound == input$selected_pesticide) %>%
+      select(county_name, AVG_ESTIMATE) %>%
+      group_by(county_name) %>%
+      summarise(AVG_ESTIMATE = mean(AVG_ESTIMATE, na.rm = TRUE))
+    
+    expectancy_clean <- Expectancy_Data() %>%    # add () here
+      group_by(County) %>%
+      summarise(Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE))
+    
+    inner_join(pest_subset, expectancy_clean, by = c("county_name" = "County")) %>%
+      filter(!is.na(AVG_ESTIMATE), !is.na(Avg_Life_Expectancy), AVG_ESTIMATE > 0)
+  })
+  
+  # Scatter plot - updates when dropdown changes
+  output$plot_county_pesticide_life <- renderPlotly({
+    req(county_pesticide_merged())
+    data <- as.data.frame(county_pesticide_merged())
+    
+    plot_ly(
+      data,
+      x = ~log10(AVG_ESTIMATE),
+      y = ~Avg_Life_Expectancy,
+      type = "scatter",
+      mode = "markers",
+      marker = list(color = "#2d5016", size = 5, opacity = 0.5),
+      text = ~paste("County:", county_name,
+                    "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 2),
+                    "<br>Life Expectancy:", round(Avg_Life_Expectancy, 2)),
+      hoverinfo = "text"
+    ) %>%
+      layout(
+        title = paste0(input$selected_pesticide, ": Pesticide Use vs. Avg Life Expectancy by County"),
+        xaxis = list(title = paste0(input$selected_pesticide, " AVG_ESTIMATE (log scale)")),
+        yaxis = list(title = "Avg Life Expectancy (years)")
+      )
+  })
+  
+  
+  # Correlation text - updates when dropdown changes
+  output$cor_county_pesticide_life <- renderPrint({
+    req(county_pesticide_merged())
+    data <- county_pesticide_merged()
+    cor.test(data$AVG_ESTIMATE, data$Avg_Life_Expectancy)
+  })
+  
+  # Regression summary text - updates when dropdown changes
+  output$reg_county_pesticide_life <- renderPrint({
+    req(county_pesticide_merged())
+    data <- county_pesticide_merged()
+    summary(lm(Avg_Life_Expectancy ~ AVG_ESTIMATE, data = data))
+  })
+  
+  
+  
+>>>>>>> 950a88cca4509a9ad49c93f10ffe7218a2331138:Clean Datasets and website code/server.R
   # ===========================================================================
   # DOWNLOAD HANDLER
   # ===========================================================================

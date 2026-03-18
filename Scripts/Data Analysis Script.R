@@ -2,11 +2,12 @@
 library(ggplot2)
 library(dplyr)
 
-Parkinson_Data <- read.csv("Clean Datasets/Parkinsons_mortality_rates_clean.csv", stringsAsFactors = FALSE)
-Expectancy_Data <- read.csv("Clean Datasets/ExpectancyData_clean.csv", stringsAsFactors = FALSE)
-Expectancy_State_Data <- read.csv("Clean Datasets/LifeExpectancyStateData_clean.csv", stringsAsFactors = FALSE)
-Pesticide_County_Data  <- read.csv("Clean Datasets/county_pesticides_data_clean.csv", stringsAsFactors = FALSE)
-Farm_Data  <- read.csv("Clean Datasets/Farm_Data_2024.csv", stringsAsFactors = FALSE)
+Parkinson_Data <- read.csv("Clean Datasets+website code/Parkinsons_mortality_rates_clean.csv", stringsAsFactors = FALSE)
+Expectancy_Data <- read.csv("Clean Datasets+website code/ExpectancyData_clean.csv", stringsAsFactors = FALSE)
+Expectancy_State_Data <- read.csv("Clean Datasets+website code/LifeExpectancyStateData_clean.csv", stringsAsFactors = FALSE)
+Pesticide_County_Data  <- read.csv("Clean Datasets+website code/county_pesticides_data_clean.csv", stringsAsFactors = FALSE)
+Farm_Data  <- read.csv("Clean Datasets+website code/Farm_Data_2024.csv", stringsAsFactors = FALSE)
+
 
 #Farm & Parkinsons Data Analysis (State)
 FarmParkinsonData <- data.frame(State = Farm_Data$State, NumberOfFarms = Farm_Data$Number_Of_Farms, DeathRate = Parkinson_Data$Avg_Death_Rate)
@@ -65,7 +66,7 @@ for (pesticide in pesticides) {
    # filter(!is.na(AVG_ESTIMATE), !is.na(Avg_Life_Expectancy))  # drop missing values
   
   # Average pesticide estimates per county first
-  pest_subset <- county_pesticides_data_clean %>%
+  pest_subset <- "Clean Datasets+website code/county_pesticides_data_clean.csv" %>%
     filter(compound == pesticide) %>%
     select(county_name, AVG_ESTIMATE) %>%
     group_by(county_name) %>%
@@ -154,16 +155,3 @@ for (pesticide in pesticides) {
   ggsave(filename, plot = p, width = 10, height = 7, dpi = 150)
   cat("\nPlot saved as:", filename, "\n")
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
