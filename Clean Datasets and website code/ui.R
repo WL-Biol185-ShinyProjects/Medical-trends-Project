@@ -624,12 +624,84 @@ fluidPage(
              div(class = "main-container",
                  h1(class = "page-header", "Data Visualizations"),
                  
+
+                 # Scatter plots
+                 div(class = "plot-container",
+                     plotlyOutput("plot_parkinson_pesticide", height = 500)
+                 ),
+                 
+                 div(class = "plot-container",
+                     plotlyOutput("plot_parkinson_farms", height = 500)
+                 ),
+                 
+                 div(class = "plot-container",
+                     plotlyOutput("plot_pesticide_life_expectancy", height = 500)
+                 ),
+                 
+                 # Bar charts
+                 fluidRow(
+                   column(6,
+                          div(class = "plot-container",
+                              plotlyOutput("plot_top_parkinsons", height = 500)
+                          )
+                   ),
+                   column(6,
+                          div(class = "plot-container",
+                              plotlyOutput("plot_top_farms", height = 500)
+                          )
+                   )
+                 ),
+                # State level Farm Count VS Parkinsons data
+                  div(class = "plot-container",
+                     h2("Number of Farms vs. Parkinson's Death Rate by State"),
+                     p("State-level scatter plot showing the relationship between number of farms and Parkinson's average death rate."),
+                     
+                     fluidRow(
+                       column(8,
+                              plotlyOutput("plot_farm_parkinson_detailed", height = "500px")
+                       ),
+                       column(4,
+                              h4("Correlation Result"),
+                              verbatimTextOutput("cor_farm_parkinson_detailed"),
+                              br(),
+                              h4("Regression Summary"),
+                              verbatimTextOutput("reg_farm_parkinson_detailed")
+                       )
+                     )
+                 ),
+                 
+                 # County-level pesticide vs life expectancy
+                 div(class = "plot-container",
+                     h2("Pesticide Use vs. Life Expectancy by County"),
+                     p("Select a pesticide to view its relationship with average life expectancy at the county level."),
+                     
+                     selectInput(
+                       inputId  = "selected_pesticide",
+                       label    = "Select Pesticide:",
+                       choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
+                       selected = "Glyphosate"
+                     ),
+                     
+                     fluidRow(
+                       column(8,
+                              plotlyOutput("plot_county_pesticide_life", height = "500px")
+                       ),
+                       column(4,
+                              h4("Correlation Result"),
+                              verbatimTextOutput("cor_county_pesticide_life"),
+                              br(),
+                              h4("Regression Summary"),
+                              verbatimTextOutput("reg_county_pesticide_life")
+                       )
+                     )
+
                  div(class = "empty-state",
                      div(class = "empty-state-icon", "📊"),
                      div(class = "empty-state-text", 
                          "Visualization space reserved for future charts and graphs.",
                          br(), br(),
                          "Check the 'Maps' tab to explore geographic patterns.")
+
                  )
              )
     ),
