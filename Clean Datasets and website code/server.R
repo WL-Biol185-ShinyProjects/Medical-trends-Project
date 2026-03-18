@@ -4,7 +4,6 @@ library(plotly)
 library(dplyr)
 library(DT)
 library(leaflet)
-library(jsonlite)
 
 # =============================================================================
 # SERVER FUNCTION
@@ -92,18 +91,30 @@ function(input, output, session) {
     stringsAsFactors = FALSE
   )
   
-  # State name to abbreviation mapping
-  state_name_abbrev <- c(
-    "Alabama"="AL","Alaska"="AK","Arizona"="AZ","Arkansas"="AR","California"="CA","Colorado"="CO",
-    "Connecticut"="CT","Delaware"="DE","Florida"="FL","Georgia"="GA","Hawaii"="HI","Idaho"="ID",
-    "Illinois"="IL","Indiana"="IN","Iowa"="IA","Kansas"="KS","Kentucky"="KY","Louisiana"="LA",
-    "Maine"="ME","Maryland"="MD","Massachusetts"="MA","Michigan"="MI","Minnesota"="MN","Mississippi"="MS",
-    "Missouri"="MO","Montana"="MT","Nebraska"="NE","Nevada"="NV","New Hampshire"="NH","New Jersey"="NJ",
-    "New Mexico"="NM","New York"="NY","North Carolina"="NC","North Dakota"="ND","Ohio"="OH","Oklahoma"="OK",
-    "Oregon"="OR","Pennsylvania"="PA","Rhode Island"="RI","South Carolina"="SC","South Dakota"="SD",
-    "Tennessee"="TN","Texas"="TX","Utah"="UT","Vermont"="VT","Virginia"="VA","Washington"="WA",
-    "West Virginia"="WV","Wisconsin"="WI","Wyoming"="WY"
-  )
+  # ===========================================================================
+  # STATE COORDINATES - Fixed state centers
+  # ===========================================================================
+  
+  State_Coords <- reactive({
+    data.frame(
+      State = c("AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA",
+                "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD",
+                "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH",
+                "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC",
+                "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY", "DC"),
+      Latitude = c(64.2, 32.3, 34.7, 34.0, 36.8, 39.5, 41.6, 38.9, 27.8, 32.2,
+                   21.3, 42.0, 44.0, 40.6, 40.3, 38.5, 37.8, 30.4, 42.4, 39.0,
+                   45.2, 44.3, 46.4, 38.6, 32.3, 46.9, 35.8, 47.5, 41.5, 43.2,
+                   40.2, 34.5, 38.8, 43.0, 40.4, 35.5, 44.0, 41.2, 41.8, 34.0,
+                   44.4, 35.8, 31.0, 39.3, 37.5, 44.0, 47.5, 44.5, 38.6, 43.0, 38.9),
+      Longitude = c(-152.4, -86.9, -92.4, -111.1, -119.4, -105.8, -72.7, -75.5, -81.7, -83.4,
+                    -157.8, -93.5, -114.7, -89.4, -86.1, -98.4, -84.3, -92.3, -71.4, -76.6,
+                    -69.4, -85.6, -94.7, -92.2, -89.7, -110.0, -78.6, -100.4, -99.9, -71.6,
+                    -74.5, -106.0, -117.0, -75.5, -82.9, -97.5, -120.5, -77.2, -71.5, -81.0,
+                    -100.4, -86.4, -97.5, -111.7, -78.7, -72.6, -120.5, -89.5, -80.5, -107.5, -77.0),
+      stringsAsFactors = FALSE
+    )
+  })
   
   # ===========================================================================
   # PROCESS AND MERGE DATA
@@ -141,23 +152,65 @@ function(input, output, session) {
     return(state_pest)
   })
   
-  # Merged datasets for maps
-  Parkinson_Pesticide_State <- reactive({
-    req(Parkinson_Data())
+  # Merge Parkinson's with state coordinates
+  Parkinson_With_Coords <- reactive({
+    req(Parkinson_Data(), State_Coords())
+    
     data <- Parkinson_Data()
-    if(!is.null(Pesticide_State_Data())) {
-      data <- data %>% left_join(Pesticide_State_Data(), by = "State")
-    }
-    data %>% filter(!is.na(Avg_Death_Rate))
+    coords <- State_Coords()
+    
+    merged <- data %>%
+      left_join(coords, by = "State")
+    
+    return(merged)
   })
   
+  # Merge Farm data with coordinates  
+  Farm_With_Coords <- reactive({
+    req(Farm_Data(), State_Coords())
+    
+    data <- Farm_Data()
+    coords <- State_Coords()
+    
+    merged <- data %>%
+      left_join(coords, by = "State")
+    
+    return(merged)
+  })
+  
+  # Combined: Parkinson's + Pesticides
+  Parkinson_Pesticide_State <- reactive({
+    req(Parkinson_With_Coords(), Pesticide_State_Data())
+    
+    parkinson <- Parkinson_With_Coords()
+    pesticide <- Pesticide_State_Data()
+    
+    merged <- parkinson %>%
+      left_join(pesticide, by = "State")
+    
+    return(merged)
+  })
+  
+  # Combined: Parkinson's + Farms
   Parkinson_Farm_State <- reactive({
-    req(Parkinson_Data(), Farm_Data())
-    Parkinson_Data() %>%
-      left_join(Farm_Data() %>% select(State, Number_Of_Farms, Acres_Operated_Millions), by = "State") %>%
-      filter(!is.na(Avg_Death_Rate))
+    req(Parkinson_With_Coords(), Farm_With_Coords())
+    
+    parkinson <- Parkinson_With_Coords()
+    farms <- Farm_With_Coords()
+    
+    park_cols <- names(parkinson)
+    farm_cols <- setdiff(names(farms), c("Latitude", "Longitude"))
+    
+    farms_select <- farms %>%
+      select(all_of(farm_cols))
+    
+    merged <- parkinson %>%
+      left_join(farms_select, by = "State")
+    
+    return(merged)
   })
   
+  # County-level data for Map 3
   County_Pesticide_Life <- reactive({
     req(Pesticide_County_Data(), Expectancy_Data(), County_Coords())
     
@@ -206,23 +259,12 @@ function(input, output, session) {
     
     # Keep only rows with coordinates
     merged <- merged %>%
-      filter(!is.na(lat), !is.na(lng), !is.na(county_fips))
+      filter(!is.na(lat), !is.na(lng))
+    
+    print(paste("Map 3 - Total counties with coordinates:", nrow(merged)))
+    print(paste("Map 3 - Counties with life expectancy:", sum(!is.na(merged$Avg_Life_Expectancy))))
     
     return(merged)
-  })
-  
-  # Update state selector for Map 3
-  observe({
-    req(County_Pesticide_Life())
-    states <- County_Pesticide_Life() %>%
-      filter(!is.na(state_name)) %>%
-      distinct(state_name) %>%
-      arrange(state_name) %>%
-      pull(state_name)
-    
-    updateSelectInput(session, "state_selector_map3",
-                      choices = c("All States" = "all", setNames(states, states)),
-                      selected = "all")
   })
   
   # ===========================================================================
@@ -265,6 +307,45 @@ function(input, output, session) {
             div(class = "stat-number", states_count),
             div(class = "stat-label", "States Analyzed")
         )
+    )
+  })
+  
+  # ===========================================================================
+  # MAP SELECTOR OUTPUTS
+  # ===========================================================================
+  
+  output$map_title <- renderText({
+    switch(input$selected_map,
+           "map1" = "Parkinson's Death Rate vs. Pesticide Use (State Level)",
+           "map2" = "Parkinson's Death Rate vs. Number of Farms (State Level)",
+           "map3" = "Pesticides vs. Life Expectancy (County Level)",
+           "Select a map")
+  })
+  
+  output$map_description <- renderUI({
+    switch(input$selected_map,
+           "map1" = div(
+             p(style = "font-size: 0.9em; line-height: 1.6;",
+               "This map shows the relationship between Parkinson's disease death rates and pesticide use across states.",
+               br(), br(),
+               strong("Circle size:"), " State location", br(),
+               strong("Color:"), " Death rate (yellow to red)")
+           ),
+           "map2" = div(
+             p(style = "font-size: 0.9em; line-height: 1.6;",
+               "This map shows the relationship between Parkinson's disease death rates and agricultural intensity.",
+               br(), br(),
+               strong("Circle size:"), " State location", br(),
+               strong("Color:"), " Death rate (red to purple)")
+           ),
+           "map3" = div(
+             p(style = "font-size: 0.9em; line-height: 1.6;",
+               "This county-level map shows pesticide exposure and life expectancy.",
+               br(), br(),
+               strong("County points:"), " Small dots", br(),
+               strong("Color:"), " Life expectancy (yellow to red)")
+           ),
+           p("Select a map to view details.")
     )
   })
   
@@ -495,110 +576,6 @@ function(input, output, session) {
         digits = 2
       )
   })
-  
-  # ===========================================================================
-  # DATA TABLES
-  # ===========================================================================
-  
-  output$data_table_parkinson <- renderDT({
-    req(Parkinson_Data())
-    
-    datatable(
-      Parkinson_Data(),
-      options = list(pageLength = 15, scrollX = TRUE),
-      rownames = FALSE,
-      class = 'cell-border stripe hover'
-    ) %>%
-      formatRound(
-        columns = intersect(c("Avg_Death_Rate", "Avg_Deaths"), names(Parkinson_Data())),
-        digits = 2
-      )
-  })
-  
-  output$data_table_farms <- renderDT({
-    req(Farm_Data())
-    
-    datatable(
-      Farm_Data(),
-      options = list(pageLength = 15, scrollX = TRUE),
-      rownames = FALSE,
-      class = 'cell-border stripe hover'
-    ) %>%
-      formatRound(
-        columns = intersect(c("Area_operated_Acres", "Acres_Operated_Millions"), names(Farm_Data())),
-        digits = 2
-      )
-  })
-  
-
-  # =============================================================================
-  # SERVER ADDITION - COUNTY PESTICIDE VS LIFE EXPECTANCY
-  # =============================================================================
-  # INSTRUCTIONS:
-  # Paste this block into your server.R, anywhere inside the server function.
-  # A good place is right after your existing plot outputs (plot_top_farms etc.)
-  # and before the closing } of the server function.
-  # =============================================================================
-  
-  # Reactive: re-filters and merges data whenever dropdown selection changes
-  county_pesticide_merged <- reactive({
-    req(input$selected_pesticide)
-    req(Pesticide_County_Data())   # add req() checks
-    req(Expectancy_Data())
-    
-    pest_subset <- Pesticide_County_Data() %>%   # add () here
-      filter(compound == input$selected_pesticide) %>%
-      select(county_name, AVG_ESTIMATE) %>%
-      group_by(county_name) %>%
-      summarise(AVG_ESTIMATE = mean(AVG_ESTIMATE, na.rm = TRUE))
-    
-    expectancy_clean <- Expectancy_Data() %>%    # add () here
-      group_by(County) %>%
-      summarise(Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE))
-    
-    inner_join(pest_subset, expectancy_clean, by = c("county_name" = "County")) %>%
-      filter(!is.na(AVG_ESTIMATE), !is.na(Avg_Life_Expectancy), AVG_ESTIMATE > 0)
-  })
-  
-  # Scatter plot - updates when dropdown changes
-  output$plot_county_pesticide_life <- renderPlotly({
-    req(county_pesticide_merged())
-    data <- as.data.frame(county_pesticide_merged())
-    
-    plot_ly(
-      data,
-      x = ~log10(AVG_ESTIMATE),
-      y = ~Avg_Life_Expectancy,
-      type = "scatter",
-      mode = "markers",
-      marker = list(color = "#2d5016", size = 5, opacity = 0.5),
-      text = ~paste("County:", county_name,
-                    "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 2),
-                    "<br>Life Expectancy:", round(Avg_Life_Expectancy, 2)),
-      hoverinfo = "text"
-    ) %>%
-      layout(
-        title = paste0(input$selected_pesticide, ": Pesticide Use vs. Avg Life Expectancy by County"),
-        xaxis = list(title = paste0(input$selected_pesticide, " AVG_ESTIMATE (log scale)")),
-        yaxis = list(title = "Avg Life Expectancy (years)")
-      )
-  })
-  
-  
-  # Correlation text - updates when dropdown changes
-  output$cor_county_pesticide_life <- renderPrint({
-    req(county_pesticide_merged())
-    data <- county_pesticide_merged()
-    cor.test(data$AVG_ESTIMATE, data$Avg_Life_Expectancy)
-  })
-  
-  # Regression summary text - updates when dropdown changes
-  output$reg_county_pesticide_life <- renderPrint({
-    req(county_pesticide_merged())
-    data <- county_pesticide_merged()
-    summary(lm(Avg_Life_Expectancy ~ AVG_ESTIMATE, data = data))
-  })
-  
   
   # ===========================================================================
   # DOWNLOAD HANDLER

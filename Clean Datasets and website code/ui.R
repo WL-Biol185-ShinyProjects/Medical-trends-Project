@@ -1,5 +1,3 @@
-
-library(plotly)
 library(shiny)
 library(DT)
 library(leaflet)
@@ -272,155 +270,66 @@ fluidPage(
     # =========================================================================
     # HOME TAB
     # =========================================================================
-    # tabPanel("Home",
-    #          div(class = "main-container",
-    #              div(class = "hero-section",
-    #                  h1("Medical Trends Analysis Dashboard"),
-    #                  
-    #                  p("Welcome to our BIOL-185 project analyzing Parkinson's data across the United States. This interactive dashboard explores the relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States. This interactive dashboard integrates multiple datasets to visualize geographic patterns and correlations."),
-    #                  
-    #                  p("Exploring relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States.")
-    #                  
-    #              ),
-    #              
-    #              
-    #              uiOutput("stats_boxes" ),
-    #              
-    #              div(class = "stats-boxes",
-    #                  div(class = "stat-box",
-    #                      h4("States Covered"),
-    #                      p(textOutput("n_states")),
-    #                      span("across the U.S.")
-    #                  ),
-    #                  div(class = "stat-box",
-    #                      h4("Counties Analyzed"),
-    #                      p(textOutput("n_counties")),
-    #                      span("county-level records")
-    #                  ),
-    #                  div(class = "stat-box",
-    #                      h4("Avg Annual Rate"),
-    #                      p(textOutput("avg_rate")),
-    #                      span("per 100,000 population")
-    #                  ),
-    #                  div(class = "stat-box",
-    #                      h4("Years Covered"),
-    #                      p("2017 - 2021"),
-    #                      span("incidence data")
-    #                  )
-    #              ),
-    #              div(class = "content-box",
-    #                  h2("Research Questions"),
-    #                  tags$ul(
-    #                    tags$li("Is there a relationship between pesticide use and Parkinson's disease rates?"),
-    #                    tags$li("How does agricultural intensity (number of farms) correlate with health outcomes?"),
-    #                    tags$li("What are the geographic patterns of Parkinson's disease across states?"),
-    #                    tags$li("How does pesticide exposure relate to life expectancy at the county level?")
-    #                  )
-    #              ),
-    #              
-    #              div(class = "content-box",
-    #                  h2("Datasets Used"),
-    #                  tags$ul(
-    #                    tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " - Parkinson's death rates by state"),
-    #                    tags$li(tags$strong("county_pesticides_data_clean.csv"), " - Pesticide usage by county"),
-    #                    tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " - Life expectancy by state"),
-    #                    tags$li(tags$strong("ExpectancyData_clean.csv"), " - Life expectancy by county"),
-    #                    tags$li(tags$strong("Farm_Data_2024.csv"), " - Number and size of farms by state"),
-    #                    tags$li(tags$strong("cfips_location.csv"), " - County coordinates (cfips, name, lng, lat)")
-    #                  )
-    #              )
-    #          )
-    # ),
-    # 
-    
-    tabPanel(
-      "Home",
-      fluidPage(
-        style = "padding: 0; background-color: #f4f6f8;",
-        
-        # Hero Section
-        div(class = "hero-section",
-            h1("Melanoma Case Studies"),
-            p("Understanding melanoma incidence patterns across the United States")
-        ),
-        
-        # About This Project Card
-        div(class = "content-card",
-            div(class = "card-text",
-                h2("About This Project"),
-                p("Melanoma is the most serious type of skin cancer, developing from 
-              the cells that give skin its color. This dashboard explores melanoma 
-              incidence patterns across U.S. counties using data from the National 
-              Cancer Institute and CDC."),
-                p("Our interactive dashboard visualizes county-level data on melanoma 
-              cases, UV exposure, demographics, and healthcare access covering 
-              the years 2017-2021.")
-            ),
-            div(class = "card-image",
-                tags$img(src = "cs-Accuracy-Dermoscopic-Criteria-Diagnosis-Melanoma-Situ-600x400.jpg",
-                         alt = "Melanoma Examples")
-            )
-        ),
-        
-        # Key Features Section
-        div(class = "features-section",
-            h2("Key Features"),
-            div(class = "feature-cards",
-                div(class = "feature-card",
-                    h4("Interactive Maps"),
-                    p("View melanoma cases and rates across U.S. counties.")
-                ),
-                div(class = "feature-card",
-                    h4("UV Analysis"),
-                    p("Explore UV radiation intensity by county.")
-                ),
-                div(class = "feature-card",
-                    h4("Statistical Insights"),
-                    p("Dive into regression models and bivariate analysis.")
-                )
-            )
-        ),
-        
-        # How to Use - Dark Section
-        div(class = "how-to-section",
-            h2("How to Use This Dashboard"),
-            div(class = "steps-row",
-                div(class = "step",
-                    div(class = "step-number", "1"),
-                    h4("Select a Topic"),
-                    p("Navigate using the tabs to explore different melanoma data layers.")
-                ),
-                div(class = "step",
-                    div(class = "step-number", "2"),
-                    h4("Apply Filters"),
-                    p("Use dropdown menus to focus on specific states or counties.")
-                ),
-                div(class = "step",
-                    div(class = "step-number", "3"),
-                    h4("Explore Insights"),
-                    p("Interact with visualizations to discover patterns and trends.")
-                )
-            )
-        ),
-        
-        # About the Data Card
-        div(class = "content-card reverse",
-            div(class = "card-image",
-                tags$img(src = "melanoma-stages.jpeg", alt = "Melanoma Stages")
-            ),
-            div(class = "card-text",
-                h2("About This Data"),
-                tags$strong("Data Sources:"),
-                p("The data in this project comes from the National Cancer Institute 
-              (NCI) in conjunction with the Centers for Disease Control and 
-              Prevention (CDC). All melanoma incidence data covers the years 
-              2017-2021."),
-                p("County-level UV radiation intensity data was sourced from the 
-              NCI GIS Portal covering 2020-2024.")
-            )
-        )
-      )
+    tabPanel("Home",
+             div(class = "main-container",
+                 div(class = "hero-section",
+                     h1("Medical Trends Analysis Dashboard"),
+                     
+                     p("Welcome to our BIOL-185 project analyzing Parkinson's data across the United States. This interactive dashboard explores the relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States. This interactive dashboard integrates multiple datasets to visualize geographic patterns and correlations."),
+                     
+                     p("Exploring relationships between Parkinson's disease, pesticide exposure, agricultural practices, and life expectancy across the United States.")
+                     
+                 ),
+                 
+                 
+                 uiOutput("stats_boxes" ),
+                 
+                 div(class = "stats-boxes",
+                     div(class = "stat-box",
+                         h4("States Covered"),
+                         p(textOutput("n_states")),
+                         span("across the U.S.")
+                     ),
+                     div(class = "stat-box",
+                         h4("Counties Analyzed"),
+                         p(textOutput("n_counties")),
+                         span("county-level records")
+                     ),
+                     div(class = "stat-box",
+                         h4("Avg Annual Rate"),
+                         p(textOutput("avg_rate")),
+                         span("per 100,000 population")
+                     ),
+                     div(class = "stat-box",
+                         h4("Years Covered"),
+                         p("2017 - 2021"),
+                         span("incidence data")
+                     )
+                 ),
+                 div(class = "content-box",
+                     h2("Research Questions"),
+                     tags$ul(
+                       tags$li("Is there a relationship between pesticide use and Parkinson's disease rates?"),
+                       tags$li("How does agricultural intensity (number of farms) correlate with health outcomes?"),
+                       tags$li("What are the geographic patterns of Parkinson's disease across states?"),
+                       tags$li("How does pesticide exposure relate to life expectancy at the county level?")
+                     )
+                 ),
+                 
+                 div(class = "content-box",
+                     h2("Datasets Used"),
+                     tags$ul(
+                       tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " - Parkinson's death rates by state"),
+                       tags$li(tags$strong("pesticides_by_county.csv"), " - Pesticide usage by county"),
+                       tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " - Life expectancy by state"),
+                       tags$li(tags$strong("ExpectancyData_clean.csv"), " - Life expectancy by county"),
+                       tags$li(tags$strong("Farm_Data_2024.csv"), " - Number and size of farms by state"),
+                       tags$li(tags$strong("cfips_location.csv"), " - County coordinates (cfips, name, lng, lat)")
+                     )
+                 )
+             )
     ),
+    
     # =========================================================================
     # MAPS TAB - With Sidebar Selector
     # =========================================================================
@@ -463,69 +372,21 @@ fluidPage(
     ),
     
     # =========================================================================
-    # DATA VISUALIZATION TAB
+    # DATA VISUALIZATION TAB (EMPTY)
     # =========================================================================
-
     tabPanel("Data Visualization",
              div(class = "main-container",
                  h1(class = "page-header", "Data Visualizations"),
                  
-                 # --- Existing plots (unchanged) ---
-                 div(class = "plot-container",
-                     plotlyOutput("plot_parkinson_pesticide", height = 500)
-                 ),
-                 
-                 div(class = "plot-container",
-                     plotlyOutput("plot_parkinson_farms", height = 500)
-                 ),
-                 
-                 div(class = "plot-container",
-                     plotlyOutput("plot_pesticide_life_expectancy", height = 500)
-                 ),
-                 
-                 fluidRow(
-                   column(6,
-                          div(class = "plot-container",
-                              plotlyOutput("plot_top_parkinsons", height = 500)
-                          )
-                   ),
-                   column(6,
-                          div(class = "plot-container",
-                              plotlyOutput("plot_top_farms", height = 500)
-                          )
-                   )
-                 ),
-                 
-                 # --- NEW: County-level pesticide vs life expectancy ---
-                 div(class = "plot-container",
-                     h2("Pesticide Use vs. Life Expectancy by County"),
-                     p("Select a pesticide to view its relationship with average life expectancy at the county level."),
-                     
-                     # Dropdown
-                     selectInput(
-                       inputId  = "selected_pesticide",
-                       label    = "Select Pesticide:",
-                       choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
-                       selected = "Glyphosate"
-                     ),
-                     
-                     # Plot on left, stats on right
-                     fluidRow(
-                       column(8,
-                              plotlyOutput("plot_county_pesticide_life", height = "500px")
-                       ),
-                       column(4,
-                              h4("Correlation Result"),
-                              verbatimTextOutput("cor_county_pesticide_life"),
-                              br(),
-                              h4("Regression Summary"),
-                              verbatimTextOutput("reg_county_pesticide_life")
-                       )
-                     )
+                 div(class = "empty-state",
+                     div(class = "empty-state-icon", "📊"),
+                     div(class = "empty-state-text", 
+                         "Visualization space reserved for future charts and graphs.",
+                         br(), br(),
+                         "Check the 'Maps' tab to explore geographic patterns.")
                  )
              )
     ),
-    
     
     # =========================================================================
     # DATA TABLES TAB
@@ -593,3 +454,12 @@ fluidPage(
     )
   )
 )
+
+
+
+
+
+
+
+
+
