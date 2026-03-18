@@ -12,7 +12,7 @@ fluidPage(
   # Custom CSS
   tags$head(
     tags$style(HTML("
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;600;700&display=swap');
       
       * {
         margin: 0;
@@ -40,29 +40,45 @@ fluidPage(
       }
       
       .nav-tabs {
-        border-bottom: none;
-        background: #2d5016;
+        border-bottom: none !important;
+        background: #2d5016 !important;
         padding-left: 40px;
       }
       
       .nav-tabs > li > a {
-        color: rgba(255,255,255,0.85);
-        background: transparent;
-        border: none;
+        color: rgba(255,255,255,0.85) !important;
+        background: transparent !important;
+        border: none !important;
         padding: 16px 28px;
         font-weight: 500;
         font-size: 15px;
       }
       
       .nav-tabs > li > a:hover {
-        background: rgba(255,255,255,0.1);
-        color: white;
+        background: rgba(255,255,255,0.1) !important;
+        color: white !important;
+        border: none !important;
       }
       
-      .nav-tabs > li.active > a {
-        color: white;
-        background: #4a7c2a;
-        border-bottom: 3px solid #ffc857;
+      .nav-tabs > li.active > a,
+      .nav-tabs > li.active > a:focus,
+      .nav-tabs > li.active > a:hover {
+        color: white !important;
+        background: #4a7c2a !important;
+        border: none !important;
+        border-bottom: 3px solid #ffc857 !important;
+      }
+      
+      .navbar {
+        background: #2d5016 !important;
+        border: none !important;
+        margin-bottom: 0 !important;
+        margin-top: 0 !important;
+      }
+      
+      .navbar-default {
+        background-color: #2d5016 !important;
+        border-color: transparent !important;
       }
       
       .main-container {
@@ -280,9 +296,13 @@ fluidPage(
     }
     
     .home-section {
-      max-width: 900px;
+      max-width: 100%;
       margin: 0 auto;
-      padding: 0 2rem 2rem;
+      padding: 0 3rem 2rem;
+    }
+    
+    .home-section > * {
+      max-width: 100%;
     }
     
     .about-card {
@@ -299,13 +319,41 @@ fluidPage(
     .about-card-text { flex: 1; }
     
     .about-card h2 {
-      font-family: 'Lora', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #1a3d0a;
-        margin-bottom: 1rem;
+      font-family: 'Lora', serif !important;
+      font-size: 1.5rem !important;
+      font-weight: 700 !important;
+      color: #1a3d0a !important;
+      margin-bottom: 1rem !important;
       border-bottom: none !important;
       padding-bottom: 0 !important;
+    }
+
+    
+    .home-hero h1 {
+      font-family: 'Lora', serif !important;
+      font-size: clamp(2rem, 5vw, 3rem) !important;
+      font-weight: 700 !important;
+      color: #1a3d0a !important;
+      margin-bottom: 0.75rem !important;
+      letter-spacing: -0.01em !important;
+    }
+    
+    .how-to-card h2 {
+      font-family: 'Lora', serif !important;
+      font-size: 1.6rem !important;
+      font-weight: 700 !important;
+      color: white !important;
+      margin-bottom: 2.5rem !important;
+    }
+    
+    .home-plain-card h2 {
+      font-family: 'Lora', serif !important;
+      font-size: 1.4rem !important;
+      font-weight: 700 !important;
+      color: #1a3d0a !important;
+      margin-bottom: 1.25rem !important;
+      border-bottom: 3px solid #4a7c2a !important;
+      padding-bottom: 0.6rem !important;
     }
     
     .about-card p {
@@ -336,26 +384,26 @@ fluidPage(
     }
     
     .feature-card {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-      padding: 1.75rem 1.5rem;
-      border-top: 4px solid #4a7c2a;
+      background: white !important;
+      border-radius: 10px !important;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07) !important;
+      padding: 1.75rem 1.5rem !important;
+      border-top: 4px solid #4a7c2a !important;
     }
     
     .feature-card h3 {
-      font-family: 'Lora', serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #1a3d0a;
-        margin-bottom: 0.5rem;
+      font-family: 'Lora', serif !important;
+      font-size: 1rem !important;
+      font-weight: 700 !important;
+      color: #1a3d0a !important;
+      margin-bottom: 0.5rem !important;
     }
     
     .feature-card p {
-      font-size: 0.875rem;
-      color: #6b7280;
-        line-height: 1.6;
-      margin: 0;
+      font-size: 0.875rem !important;
+      color: #6b7280 !important;
+      line-height: 1.6 !important;
+      margin: 0 !important;
     }
     
     .how-to-card {
