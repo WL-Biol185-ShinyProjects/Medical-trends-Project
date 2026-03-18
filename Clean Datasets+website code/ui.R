@@ -333,7 +333,7 @@ fluidPage(
     ),
     
     # =========================================================================
-    # MAPS TAB - With Sidebar Selector 
+    # MAPS TAB - With Sidebar Selector
     # =========================================================================
     tabPanel("Maps",
              div(class = "main-container",
@@ -359,19 +359,7 @@ fluidPage(
                          hr(),
                          
                          h3("Map Info"),
-                         uiOutput("map_description"),
-                         
-                         # State selector for Map 3 only
-                         conditionalPanel(
-                           condition = "input.selected_map == 'map3'",
-                           div(class = "state-selector-section",
-                               tags$label("Select State:"),
-                               selectInput("state_selector_map3", 
-                                           label = NULL,
-                                           choices = c("All States" = "all"),
-                                           selected = "all")
-                           )
-                         )
+                         uiOutput("map_description")
                      ),
                      
                      # Main map area
