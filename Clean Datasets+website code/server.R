@@ -582,11 +582,6 @@ function(input, output, session) {
   # =============================================================================
   # SERVER ADDITION - COUNTY PESTICIDE VS LIFE EXPECTANCY
   # =============================================================================
-  # INSTRUCTIONS:
-  # Paste this block into your server.R, anywhere inside the server function.
-  # A good place is right after your existing plot outputs (plot_top_farms etc.)
-  # and before the closing } of the server function.
-  # =============================================================================
   
   # Reactive: re-filters and merges data whenever dropdown selection changes
   county_pesticide_merged <- reactive({
