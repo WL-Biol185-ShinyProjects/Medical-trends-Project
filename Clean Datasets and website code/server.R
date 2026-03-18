@@ -1,3 +1,4 @@
+
 library(shiny)
 library(ggplot2)
 library(plotly)
@@ -575,6 +576,209 @@ function(input, output, session) {
         columns = intersect(c("Area_operated_Acres", "Acres_Operated_Millions"), names(Farm_Data())),
         digits = 2
       )
+  })
+  
+  
+  
+  # =============================================================================
+  # SERVER ADDITION - COUNTY PESTICIDE VS LIFE EXPECTANCY
+  # =============================================================================
+  # INSTRUCTIONS:
+  # Paste this block into your server.R, anywhere inside the server function.
+  # A good place is right after your existing plot outputs (plot_top_farms etc.)
+  # and before the closing } of the server function.
+  # =============================================================================
+  
+  # Reactive: re-filters and merges data whenever dropdown selection changes
+  county_pesticide_merged <- reactive({
+    req(input$selected_pesticide)
+    req(Pesticide_County_Data())   # add req() checks
+    req(Expectancy_Data())
+    
+    pest_subset <- Pesticide_County_Data() %>%   # add () here
+      filter(compound == input$selected_pesticide) %>%
+      select(county_name, AVG_ESTIMATE) %>%
+      group_by(county_name) %>%
+      summarise(AVG_ESTIMATE = mean(AVG_ESTIMATE, na.rm = TRUE))
+    
+    expectancy_clean <- Expectancy_Data() %>%    # add () here
+      group_by(County) %>%
+      summarise(Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE))
+    
+    inner_join(pest_subset, expectancy_clean, by = c("county_name" = "County")) %>%
+      filter(!is.na(AVG_ESTIMATE), !is.na(Avg_Life_Expectancy), AVG_ESTIMATE > 0)
+  })
+  
+  # Scatter plot - updates when dropdown changes
+  output$plot_county_pesticide_life <- renderPlotly({
+    req(county_pesticide_merged())
+    data <- as.data.frame(county_pesticide_merged())
+    
+    # Calculate stats
+    model     <- lm(Avg_Life_Expectancy ~ log10(AVG_ESTIMATE), data = data)
+    cor_val   <- round(cor(log10(data$AVG_ESTIMATE), data$Avg_Life_Expectancy), 3)
+    r_squared <- round(summary(model)$r.squared, 3)
+    coef_table <- summary(model)$coefficients
+    p_val     <- if(nrow(coef_table) >= 2) round(coef_table[2, 4], 4) else NA
+    
+    # Build regression line
+    x_seq    <- seq(min(log10(data$AVG_ESTIMATE)), max(log10(data$AVG_ESTIMATE)), length.out = 100)
+    y_fitted <- coef(model)[1] + coef(model)[2] * x_seq
+    
+    plot_ly() %>%
+      # Scatter points
+      add_trace(
+        data = data,
+        x = ~log10(AVG_ESTIMATE),
+        y = ~Avg_Life_Expectancy,
+        type = "scatter",
+        mode = "markers",
+        marker = list(color = "#2d5016", size = 5, opacity = 0.5),
+        text = ~paste("County:", county_name,
+                      "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 2),
+                      "<br>Life Expectancy:", round(Avg_Life_Expectancy, 2)),
+        hoverinfo = "text",
+        name = "Counties"
+      ) %>%
+      # Regression line
+      add_trace(
+        x = x_seq,
+        y = y_fitted,
+        type = "scatter",
+        mode = "lines",
+        line = list(color = "darkred", dash = "dash", width = 2),
+        hoverinfo = "skip",
+        name = "Regression Line"
+      ) %>%
+      # Layout
+      layout(
+        title = list(
+          text = paste0(input$selected_pesticide, ": Pesticide Use vs. Avg Life Expectancy by County"),
+          font = list(size = 15)
+        ),
+        xaxis = list(title = paste0(input$selected_pesticide, " AVG_ESTIMATE (log scale)")),
+        yaxis = list(title = "Avg Life Expectancy (years)"),
+        hovermode = "closest",
+        annotations = list(
+          list(
+            x = max(log10(data$AVG_ESTIMATE)) * 0.85,
+            y = min(data$Avg_Life_Expectancy) + 1,
+            text = paste0("r = ", cor_val, "<br>R² = ", r_squared, "<br>p = ", p_val),
+            showarrow = FALSE,
+            font = list(color = "darkred", size = 13),
+            bgcolor = "white",
+            bordercolor = "darkred",
+            borderwidth = 1
+          )
+        )
+      )
+  })
+  
+  # Correlation text - updates when dropdown changes
+  output$cor_county_pesticide_life <- renderPrint({
+    req(county_pesticide_merged())
+    data <- county_pesticide_merged()
+    cor.test(data$AVG_ESTIMATE, data$Avg_Life_Expectancy)
+  })
+  
+  # Regression summary text - updates when dropdown changes
+  output$reg_county_pesticide_life <- renderPrint({
+    req(county_pesticide_merged())
+    data <- county_pesticide_merged()
+    summary(lm(Avg_Life_Expectancy ~ AVG_ESTIMATE, data = data))
+  })
+  
+  # Reactive: merge farm and parkinson's data by state
+  farm_parkinson_merged <- reactive({
+    req(Farm_Data(), Parkinson_Data())
+    
+    farm    <- as.data.frame(Farm_Data())
+    park    <- as.data.frame(Parkinson_Data())
+    
+    data.frame(
+      State         = farm$State,
+      NumberOfFarms = farm$Number_Of_Farms,
+      DeathRate     = park$Avg_Death_Rate
+    ) %>%
+      filter(!is.na(NumberOfFarms), !is.na(DeathRate))
+  })
+  
+  # Scatter plot
+  output$plot_farm_parkinson_detailed <- renderPlotly({
+    req(farm_parkinson_merged())
+    data <- farm_parkinson_merged()
+    
+    model     <- lm(DeathRate ~ NumberOfFarms, data = data)
+    cor_val   <- round(cor(data$NumberOfFarms, data$DeathRate, use = "complete.obs"), 3)
+    r_squared <- round(summary(model)$r.squared, 3)
+    coef_table <- summary(model)$coefficients
+    p_val     <- if(nrow(coef_table) >= 2) round(coef_table[2, 4], 4) else NA
+    
+    # Regression line
+    x_seq    <- seq(min(data$NumberOfFarms), max(data$NumberOfFarms), length.out = 100)
+    y_fitted <- coef(model)[1] + coef(model)[2] * x_seq
+    
+    plot_ly() %>%
+      add_trace(
+        data = data,
+        x = ~NumberOfFarms,
+        y = ~DeathRate,
+        type = "scatter",
+        mode = "markers+text",
+        marker = list(color = "#2d5016", size = 7, opacity = 0.7),
+        text = ~State,
+        textposition = "top center",
+        textfont = list(size = 9, color = "gray30"),
+        hovertext = ~paste("State:", State,
+                           "<br>Number of Farms:", format(NumberOfFarms, big.mark = ","),
+                           "<br>Death Rate:", round(DeathRate, 2)),
+        hoverinfo = "text",
+        name = "States"
+      ) %>%
+      add_trace(
+        x = x_seq,
+        y = y_fitted,
+        type = "scatter",
+        mode = "lines",
+        line = list(color = "darkred", dash = "dash", width = 2),
+        hoverinfo = "skip",
+        name = "Regression Line"
+      ) %>%
+      layout(
+        title = list(
+          text = "Number of Farms vs. Parkinson's Avg Death Rate by State",
+          font = list(size = 15)
+        ),
+        xaxis = list(title = "Number of Farms"),
+        yaxis = list(title = "Avg Death Rate (Parkinson's)"),
+        hovermode = "closest",
+        annotations = list(
+          list(
+            x = max(data$NumberOfFarms) * 0.85,
+            y = min(data$DeathRate) + 0.5,
+            text = paste0("r = ", cor_val, "<br>R² = ", r_squared, "<br>p = ", p_val),
+            showarrow = FALSE,
+            font = list(color = "darkred", size = 13),
+            bgcolor = "white",
+            bordercolor = "darkred",
+            borderwidth = 1
+          )
+        )
+      )
+  })
+  
+  # Correlation text output
+  output$cor_farm_parkinson_detailed <- renderPrint({
+    req(farm_parkinson_merged())
+    data <- farm_parkinson_merged()
+    cor.test(data$NumberOfFarms, data$DeathRate)
+  })
+  
+  # Regression summary text output
+  output$reg_farm_parkinson_detailed <- renderPrint({
+    req(farm_parkinson_merged())
+    data <- farm_parkinson_merged()
+    summary(lm(DeathRate ~ NumberOfFarms, data = data))
   })
   
   # ===========================================================================
