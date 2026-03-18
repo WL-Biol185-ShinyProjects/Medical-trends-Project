@@ -376,14 +376,7 @@ fluidPage(
     # =========================================================================
     # DATA VISUALIZATION TAB
     # =========================================================================
-    # =============================================================================
-    # UI ADDITION - DATA VISUALIZATION TAB ONLY
-    # =============================================================================
-    # INSTRUCTIONS:
-    # Find your existing tabPanel("Data Visualization", ...) in ui.R and replace
-    # the ENTIRE block with this. Everything is identical to what you had before,
-    # with the new county pesticide section added at the bottom.
-    # =============================================================================
+
     
     tabPanel("Data Visualization",
              div(class = "main-container",
@@ -424,8 +417,8 @@ fluidPage(
                      selectInput(
                        inputId  = "selected_pesticide",
                        label    = "Select Pesticide:",
-                       choices  = c("2,4-D", "glyphosate", "paraquat", "chlorpyrifos"),
-                       selected = "glyphosate"
+                       choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
+                       selected = "Glyphosate"
                      ),
                      
                      # Plot on left, stats on right
