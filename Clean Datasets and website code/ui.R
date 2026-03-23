@@ -695,35 +695,39 @@ fluidPage(
     # DATA VISUALIZATION TAB (EMPTY)
     # =========================================================================
     tabPanel("Data Visualization",
-             div(class = "main-container",
+             
+              div(class = "main-container",
                  h1(class = "page-header", "Data Visualizations"),
                  
-                 # Scatter plots
+                 
+                 # State-level pesticide vs Parkinson's mortality
                  div(class = "plot-container",
-                     plotlyOutput("plot_parkinson_pesticide", height = 500)
+                     h2("Pesticide Use vs. Parkinson's Mortality Rate by State"),
+                     p("Select a pesticide to view its relationship with average Parkinson's death rate at the state level. States with missing pesticide data are excluded."),
+                     
+                     selectInput(
+                       inputId  = "selected_state_pesticide",
+                       label    = "Select Pesticide:",
+                       choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
+                       selected = "Glyphosate"
+                     ),
+                     
+                     fluidRow(
+                       column(8,
+                              plotlyOutput("plot_state_pesticide_parkinson", height = "500px")
+                       ),
+                       column(4,
+                              h4("Correlation Result"),
+                              verbatimTextOutput("cor_state_pesticide_parkinson"),
+                              br(),
+                              h4("Regression Summary"),
+                              verbatimTextOutput("reg_state_pesticide_parkinson")
+                       )
+                     )
                  ),
                  
-                 div(class = "plot-container",
-                     plotlyOutput("plot_parkinson_farms", height = 500)
-                 ),
                  
-                 div(class = "plot-container",
-                     plotlyOutput("plot_pesticide_life_expectancy", height = 500)
-                 ),
-                 
-                 # Bar charts
-                 fluidRow(
-                   column(6,
-                          div(class = "plot-container",
-                              plotlyOutput("plot_top_parkinsons", height = 500)
-                          )
-                   ),
-                   column(6,
-                          div(class = "plot-container",
-                              plotlyOutput("plot_top_farms", height = 500)
-                          )
-                   )
-                 ),
+                
                  # State level Farm Count VS Parkinsons data
                  div(class = "plot-container",
                      h2("Number of Farms vs. Parkinson's Death Rate by State"),
@@ -767,7 +771,34 @@ fluidPage(
                               verbatimTextOutput("reg_county_pesticide_life")
                        )
                      )
-                 )
+                 ), 
+                 
+                 # Scatter plots
+                 div(class = "plot-container",
+                     plotlyOutput("plot_parkinson_pesticide", height = 500)
+                 ),
+                 
+                 div(class = "plot-container",
+                     plotlyOutput("plot_parkinson_farms", height = 500)
+                 ),
+                 
+                 div(class = "plot-container",
+                     plotlyOutput("plot_pesticide_life_expectancy", height = 500)
+                 ),
+                 
+                 # Bar charts
+                 fluidRow(
+                   column(6,
+                          div(class = "plot-container",
+                              plotlyOutput("plot_top_parkinsons", height = 500)
+                          )
+                   ),
+                   column(6,
+                          div(class = "plot-container",
+                              plotlyOutput("plot_top_farms", height = 500)
+                          )
+                   )
+                 ),
              )
     ),
     
