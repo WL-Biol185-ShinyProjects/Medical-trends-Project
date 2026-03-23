@@ -839,32 +839,6 @@ fluidPage(
                      DTOutput("tukey_exposure_parkinson_table")
                  ),
                  
-                 # Scatter plots
-                 div(class = "plot-container",
-                     plotlyOutput("plot_parkinson_pesticide", height = 500)
-                 ),
-                 
-                 div(class = "plot-container",
-                     plotlyOutput("plot_parkinson_farms", height = 500)
-                 ),
-                 
-                 div(class = "plot-container",
-                     plotlyOutput("plot_pesticide_life_expectancy", height = 500)
-                 ),
-                 
-                 # Bar charts
-                 fluidRow(
-                   column(6,
-                          div(class = "plot-container",
-                              plotlyOutput("plot_top_parkinsons", height = 500)
-                          )
-                   ),
-                   column(6,
-                          div(class = "plot-container",
-                              plotlyOutput("plot_top_farms", height = 500)
-                          )
-                   )
-                 ),
              )
     ),
     
