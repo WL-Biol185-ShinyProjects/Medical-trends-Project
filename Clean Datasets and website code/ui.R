@@ -640,7 +640,7 @@ fluidPage(
                        tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " — Life expectancy by state"),
                        tags$li(tags$strong("ExpectancyData_clean.csv"), " — Life expectancy by county"),
                        tags$li(tags$strong("Farm_Data_2024.csv"), " — Number and size of farms by state"),
-                       tags$li(tags$strong("cfips_location.csv"), " — County coordinates (cfips, name, lng, lat)")
+                       tags$li(tags$strong("cfips_location.csv"), " — County coordinates (County Federal Processing Standard codes, county names, longitude, latitude)")
                      ),
                      div(class = "card-image-wrapper",
                          tags$img(src = "datasets_image.jpg", class = "bottom-stack-img")
