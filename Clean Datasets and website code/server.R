@@ -625,7 +625,7 @@ function(input, output, session) {
     p_val      <- if (nrow(coef_table) >= 2) round(coef_table[2, 4], 4) else NA
     
     # Regression line
-    x_seq    <- seq(min(data$AVG_ESTIMATE), max(log10(data$AVG_ESTIMATE)), length.out = 100)
+    x_seq    <- seq(min(data$AVG_ESTIMATE), max(data$AVG_ESTIMATE), length.out = 100)
     y_fitted <- coef(model)[1] + coef(model)[2] * x_seq
     
     plot_ly() %>%
@@ -648,6 +648,7 @@ function(input, output, session) {
       ) %>%
       # Regression line
       add_trace(
+       # inherit    = FALSE,  
         x         = x_seq,
         y         = y_fitted,
         type      = "scatter",

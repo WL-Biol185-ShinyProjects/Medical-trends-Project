@@ -705,32 +705,7 @@ fluidPage(
                  ),
                  
                  
-                 # Scatter plots
-                 div(class = "plot-container",
-                     plotlyOutput("plot_parkinson_pesticide", height = 500)
-                 ),
-                 
-                 div(class = "plot-container",
-                     plotlyOutput("plot_parkinson_farms", height = 500)
-                 ),
-                 
-                 div(class = "plot-container",
-                     plotlyOutput("plot_pesticide_life_expectancy", height = 500)
-                 ),
-                 
-                 # Bar charts
-                 fluidRow(
-                   column(6,
-                          div(class = "plot-container",
-                              plotlyOutput("plot_top_parkinsons", height = 500)
-                          )
-                   ),
-                   column(6,
-                          div(class = "plot-container",
-                              plotlyOutput("plot_top_farms", height = 500)
-                          )
-                   )
-                 ),
+                
                  # State level Farm Count VS Parkinsons data
                  div(class = "plot-container",
                      h2("Number of Farms vs. Parkinson's Death Rate by State"),
@@ -774,7 +749,34 @@ fluidPage(
                               verbatimTextOutput("reg_county_pesticide_life")
                        )
                      )
-                 )
+                 ), 
+                 
+                 # Scatter plots
+                 div(class = "plot-container",
+                     plotlyOutput("plot_parkinson_pesticide", height = 500)
+                 ),
+                 
+                 div(class = "plot-container",
+                     plotlyOutput("plot_parkinson_farms", height = 500)
+                 ),
+                 
+                 div(class = "plot-container",
+                     plotlyOutput("plot_pesticide_life_expectancy", height = 500)
+                 ),
+                 
+                 # Bar charts
+                 fluidRow(
+                   column(6,
+                          div(class = "plot-container",
+                              plotlyOutput("plot_top_parkinsons", height = 500)
+                          )
+                   ),
+                   column(6,
+                          div(class = "plot-container",
+                              plotlyOutput("plot_top_farms", height = 500)
+                          )
+                   )
+                 ),
              )
     ),
     
