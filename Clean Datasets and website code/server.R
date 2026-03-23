@@ -891,6 +891,205 @@ function(input, output, session) {
     summary(lm(DeathRate ~ NumberOfFarms, data = data))
   })
   
+  
+  # =============================================================================
+## ANOVA: COUNTY PESTICIDE EXPOSURE LEVEL VS LIFE EXPECTANCY
+# =============================================================================
+
+# Helper function: bin a numeric vector into Low/Medium/High by tertile
+assign_tertiles <- function(x) {
+  breaks <- quantile(x, probs = c(0, 1/3, 2/3, 1), na.rm = TRUE)
+  # If breaks are not unique (e.g. lots of zeros), fall back to ntile
+  if (length(unique(breaks)) < 4) {
+    tertile_num <- dplyr::ntile(x, 3)
+    return(factor(tertile_num, levels = 1:3, labels = c("Low", "Medium", "High")))
+  }
+  cut(x,
+      breaks         = breaks,
+      labels         = c("Low", "Medium", "High"),
+      include.lowest = TRUE)
+}
+
+# Reactive: filter by selected compound, join with life expectancy, bin into tertiles
+anova_exposure_life_data <- reactive({
+  req(input$anova_county_compound)
+  req(Pesticide_County_Data(), Expectancy_Data())
+  
+  pest <- Pesticide_County_Data() %>%
+    filter(compound == input$anova_county_compound) %>%
+    select(county_name, AVG_ESTIMATE) %>%
+    group_by(county_name) %>%
+    summarise(AVG_ESTIMATE = mean(AVG_ESTIMATE, na.rm = TRUE)) %>%
+    filter(!is.na(AVG_ESTIMATE), AVG_ESTIMATE > 0) %>%
+    mutate(exposure_group = assign_tertiles(AVG_ESTIMATE))
+  
+  exp_clean <- Expectancy_Data() %>%
+    group_by(County) %>%
+    summarise(Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE))
+  
+  inner_join(pest, exp_clean, by = c("county_name" = "County")) %>%
+    filter(!is.na(Avg_Life_Expectancy), !is.na(exposure_group))
+})
+
+# Box plot
+output$plot_anova_exposure_life <- renderPlotly({
+  req(anova_exposure_life_data())
+  data <- anova_exposure_life_data()
+  
+  aov_model <- aov(Avg_Life_Expectancy ~ exposure_group, data = data)
+  p_val     <- round(summary(aov_model)[[1]][["Pr(>F)"]][1], 4)
+  
+  # Group sizes for subtitle
+  group_sizes <- data %>%
+    count(exposure_group) %>%
+    mutate(label = paste0(exposure_group, " (n=", n, ")"))
+  
+  plot_ly(
+    data      = data,
+    x         = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+    y         = ~Avg_Life_Expectancy,
+    type      = "box",
+    color     = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+    colors    = c("#a7c957", "#f4a261", "#bc4749"),
+    boxpoints = "outliers",
+    hoverinfo = "y+name"
+  ) %>%
+    layout(
+      title = list(
+        text = paste0(input$anova_county_compound,
+                      ": Exposure Level vs. Life Expectancy (ANOVA p = ", p_val, ")"),
+        font = list(size = 14)
+      ),
+      xaxis      = list(title = "Pesticide Exposure Group"),
+      yaxis      = list(title = "Avg Life Expectancy (years)"),
+      showlegend = FALSE
+    )
+})
+
+# ANOVA summary
+output$anova_exposure_life <- renderPrint({
+  req(anova_exposure_life_data())
+  data <- anova_exposure_life_data()
+  summary(aov(Avg_Life_Expectancy ~ exposure_group, data = data))
+})
+
+# Tukey printed output
+output$tukey_exposure_life_print <- renderPrint({
+  req(anova_exposure_life_data())
+  data <- anova_exposure_life_data()
+  TukeyHSD(aov(Avg_Life_Expectancy ~ exposure_group, data = data))
+})
+
+# Tukey table
+output$tukey_exposure_life_table <- renderDataTable({
+  req(anova_exposure_life_data())
+  data <- anova_exposure_life_data()
+  
+  tukey_result <- TukeyHSD(aov(Avg_Life_Expectancy ~ exposure_group, data = data))
+  tukey_df     <- as.data.frame(tukey_result$exposure_group)
+  tukey_df     <- tibble::rownames_to_column(tukey_df, var = "Comparison")
+  
+  colnames(tukey_df) <- c("Comparison", "Difference", "Lower CI", "Upper CI", "Adjusted p-value")
+  tukey_df <- tukey_df %>%
+    mutate(across(where(is.numeric), ~ round(., 4)))
+  
+  DT::datatable(tukey_df, options = list(pageLength = 10, scrollX = TRUE)) %>%
+    DT::formatStyle(
+      "Adjusted p-value",
+      backgroundColor = DT::styleInterval(0.05, c("#d4edda", "white"))
+    )
+})
+
+
+# =============================================================================
+## ANOVA: STATE PESTICIDE EXPOSURE LEVEL VS PARKINSON'S DEATH RATE
+# =============================================================================
+
+# Reactive: filter by selected compound, join with Parkinson's data, bin into tertiles
+anova_exposure_parkinson_data <- reactive({
+  req(input$anova_state_compound)
+  req(State_Pesticide_Data(), Parkinson_Data())
+  
+  pest <- State_Pesticide_Data() %>%
+    filter(compound == input$anova_state_compound) %>%
+    select(state_name, AVG_ESTIMATE) %>%
+    group_by(state_name) %>%
+    summarise(AVG_ESTIMATE = mean(AVG_ESTIMATE, na.rm = TRUE)) %>%
+    filter(!is.na(AVG_ESTIMATE), AVG_ESTIMATE > 0) %>%
+    mutate(exposure_group = assign_tertiles(AVG_ESTIMATE))
+  
+  park_clean <- Parkinson_Data() %>%
+    group_by(Location) %>%
+    summarise(Avg_Death_Rate = mean(Avg_Death_Rate, na.rm = TRUE))
+  
+  inner_join(pest, park_clean, by = c("state_name" = "Location")) %>%
+    filter(!is.na(Avg_Death_Rate), !is.na(exposure_group))
+})
+
+# Box plot
+output$plot_anova_exposure_parkinson <- renderPlotly({
+  req(anova_exposure_parkinson_data())
+  data <- anova_exposure_parkinson_data()
+  
+  aov_model <- aov(Avg_Death_Rate ~ exposure_group, data = data)
+  p_val     <- round(summary(aov_model)[[1]][["Pr(>F)"]][1], 4)
+  
+  plot_ly(
+    data      = data,
+    x         = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+    y         = ~Avg_Death_Rate,
+    type      = "box",
+    color     = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+    colors    = c("#a7c957", "#f4a261", "#bc4749"),
+    boxpoints = "outliers",
+    hoverinfo = "y+name"
+  ) %>%
+    layout(
+      title = list(
+        text = paste0(input$anova_state_compound,
+                      ": Exposure Level vs. Parkinson's Death Rate (ANOVA p = ", p_val, ")"),
+        font = list(size = 14)
+      ),
+      xaxis      = list(title = "Pesticide Exposure Group"),
+      yaxis      = list(title = "Avg Parkinson's Death Rate"),
+      showlegend = FALSE
+    )
+})
+
+# ANOVA summary
+output$anova_exposure_parkinson <- renderPrint({
+  req(anova_exposure_parkinson_data())
+  data <- anova_exposure_parkinson_data()
+  summary(aov(Avg_Death_Rate ~ exposure_group, data = data))
+})
+
+# Tukey printed output
+output$tukey_exposure_parkinson_print <- renderPrint({
+  req(anova_exposure_parkinson_data())
+  data <- anova_exposure_parkinson_data()
+  TukeyHSD(aov(Avg_Death_Rate ~ exposure_group, data = data))
+})
+
+# Tukey table
+output$tukey_exposure_parkinson_table <- renderDataTable({
+  req(anova_exposure_parkinson_data())
+  data <- anova_exposure_parkinson_data()
+  
+  tukey_result <- TukeyHSD(aov(Avg_Death_Rate ~ exposure_group, data = data))
+  tukey_df     <- as.data.frame(tukey_result$exposure_group)
+  tukey_df     <- tibble::rownames_to_column(tukey_df, var = "Comparison")
+  
+  colnames(tukey_df) <- c("Comparison", "Difference", "Lower CI", "Upper CI", "Adjusted p-value")
+  tukey_df <- tukey_df %>%
+    mutate(across(where(is.numeric), ~ round(., 4)))
+  
+  DT::datatable(tukey_df, options = list(pageLength = 10, scrollX = TRUE)) %>%
+    DT::formatStyle(
+      "Adjusted p-value",
+      backgroundColor = DT::styleInterval(0.05, c("#d4edda", "white"))
+    )
+})
+  
   # ===========================================================================
   # DOWNLOAD HANDLER
   # ===========================================================================

@@ -749,7 +749,73 @@ fluidPage(
                               verbatimTextOutput("reg_county_pesticide_life")
                        )
                      )
-                 ), 
+                 ),
+                 
+                 # =============================================================================
+                 # ANOVA SECTION: EXPOSURE LEVEL VS HEALTH OUTCOMES
+                 # =============================================================================
+                 
+                 # --- ANOVA 1: County Pesticide Exposure vs Life Expectancy ---
+                 div(class = "plot-container",
+                     h2("ANOVA: Pesticide Exposure Level vs. Life Expectancy (County-Level)"),
+                     p("Counties are grouped into Low, Medium, and High exposure tertiles for each 
+       pesticide. One-way ANOVA tests whether life expectancy differs significantly 
+       across exposure levels. Select a pesticide to view its results."),
+                     
+                     selectInput(
+                       inputId  = "anova_county_compound",
+                       label    = "Select Pesticide:",
+                       choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
+                       selected = "Glyphosate"
+                     ),
+                     
+                     fluidRow(
+                       column(8,
+                              plotlyOutput("plot_anova_exposure_life", height = "500px")
+                       ),
+                       column(4,
+                              h4("ANOVA Summary"),
+                              verbatimTextOutput("anova_exposure_life"),
+                              br(),
+                              h4("Tukey Post-Hoc Summary"),
+                              verbatimTextOutput("tukey_exposure_life_print")
+                       )
+                     ),
+                     br(),
+                     h4("Tukey Post-Hoc Table"),
+                     DTOutput("tukey_exposure_life_table")
+                 ),
+                 
+                 # --- ANOVA 2: State Pesticide Exposure vs Parkinson's Mortality ---
+                 div(class = "plot-container",
+                     h2("ANOVA: Pesticide Exposure Level vs. Parkinson's Death Rate (State-Level)"),
+                     p("States are grouped into Low, Medium, and High exposure tertiles for each 
+       pesticide. One-way ANOVA tests whether Parkinson's death rate differs 
+       significantly across exposure levels. Select a pesticide to view its results."),
+                     
+                     selectInput(
+                       inputId  = "anova_state_compound",
+                       label    = "Select Pesticide:",
+                       choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
+                       selected = "Glyphosate"
+                     ),
+                     
+                     fluidRow(
+                       column(8,
+                              plotlyOutput("plot_anova_exposure_parkinson", height = "500px")
+                       ),
+                       column(4,
+                              h4("ANOVA Summary"),
+                              verbatimTextOutput("anova_exposure_parkinson"),
+                              br(),
+                              h4("Tukey Post-Hoc Summary"),
+                              verbatimTextOutput("tukey_exposure_parkinson_print")
+                       )
+                     ),
+                     br(),
+                     h4("Tukey Post-Hoc Table"),
+                     DTOutput("tukey_exposure_parkinson_table")
+                 ),
                  
                  # Scatter plots
                  div(class = "plot-container",
