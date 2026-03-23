@@ -293,14 +293,14 @@ fluidPage(
     }
     
     .home-hero .hero-subtitle {
-      font-size: 1.05rem;
+      font-size: 1.5rem !important;
       color: #666;
         font-weight: 300;
       margin: 0;
     }
     
     .home-section {
-      max-width: 100%;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 0 3rem 2rem;
     }
@@ -320,18 +320,26 @@ fluidPage(
       align-items: center;
     }
     
-    .about-card-text { flex: 1; }
+    .about-card-text { 
+      flex: 0 0 60%; }
     
     .about-card h2 {
       font-family: 'Lora', serif !important;
-      font-size: 1.5rem !important;
+      font-size: 1.9rem !important;
       font-weight: 700 !important;
       color: #1a3d0a !important;
       margin-bottom: 1rem !important;
       border-bottom: none !important;
       padding-bottom: 0 !important;
     }
-
+    .about-illustration {
+      flex: 0 0 35%;         /* Image takes up 35% */
+      max-width: 400px;      /* Prevents it from getting absurdly huge */
+      width: 100%;           /* Ensures it fills its 35% container */
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Optional: makes the image pop */
+    }
     
     .home-hero h1 {
       font-family: 'Lora', serif !important;
@@ -344,7 +352,7 @@ fluidPage(
     
     .how-to-card h2 {
       font-family: 'Lora', serif !important;
-      font-size: 1.6rem !important;
+      font-size: 2.2rem !important;
       font-weight: 700 !important;
       color: white !important;
       margin-bottom: 2.5rem !important;
@@ -352,7 +360,7 @@ fluidPage(
     
     .home-plain-card h2 {
       font-family: 'Lora', serif !important;
-      font-size: 1.4rem !important;
+      font-size: 1.9rem !important;
       font-weight: 700 !important;
       color: #1a3d0a !important;
       margin-bottom: 1.25rem !important;
@@ -361,9 +369,9 @@ fluidPage(
     }
     
     .about-card p {
-      font-size: 0.95rem;
+      font-size: 1.5rem !important;
       color: #4a4a4a;
-        line-height: 1.75;
+      line-height: 1.8;
       margin-bottom: 0.75rem;
     }
     
@@ -372,8 +380,8 @@ fluidPage(
     .about-illustration { width: 200px; flex-shrink: 0; }
     
     .features-heading {
-      font-family: 'Lora', serif;
-      font-size: 1.5rem;
+      font-family: 'Lora', serif !important;
+      font-size: 2rem !important;
       font-weight: 600;
       color: #1a3d0a;
         text-align: center;
@@ -397,16 +405,16 @@ fluidPage(
     
     .feature-card h3 {
       font-family: 'Lora', serif !important;
-      font-size: 1rem !important;
+      font-size: 1.5rem !important;
       font-weight: 700 !important;
       color: #1a3d0a !important;
-      margin-bottom: 0.5rem !important;
+      margin-bottom: 0.6rem !important;
     }
     
     .feature-card p {
-      font-size: 0.875rem !important;
+      font-size: 1.5rem !important;
       color: #6b7280 !important;
-      line-height: 1.6 !important;
+      line-height: 1.7 !important;
       margin: 0 !important;
     }
     
@@ -435,13 +443,13 @@ fluidPage(
     .step { text-align: center; }
     
     .step-number {
-      width: 48px;
-      height: 48px;
+      width: 64px !important;
+      height: 64px !important;
       border-radius: 50%;
       background: rgba(255,255,255,0.15);
       color: white;
       font-family: 'Lora', serif;
-      font-size: 1.2rem;
+      font-size: 1.6rem !important;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -449,18 +457,18 @@ fluidPage(
       margin: 0 auto 1rem;
     }
     
-    .step h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: white;
-      margin-bottom: 0.5rem;
-    }
-    
     .step p {
-      font-size: 0.875rem;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.6;
+      font-size: 1.15rem !important;
+      color: rgba(255,255,255,0.8) !important;
+      line-height: 1.7 !important;
       margin: 0;
+    }
+      
+    .step h3 {
+      font-size: 1.2rem !important;
+      font-weight: 600;
+      color: white !important;
+      margin-bottom: 0.5rem;
     }
     
     .home-plain-card {
@@ -484,10 +492,44 @@ fluidPage(
     .home-plain-card ul { padding-left: 1.25rem; }
     
     .home-plain-card li {
-      font-size: 0.95rem;
+      font-size: 1.5rem !important;
       color: #4a4a4a;
-        line-height: 1.75;
+      line-height: 1.75;
       margin-bottom: 0.3rem;
+    }
+    
+    .plot-container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .home-plain-card {
+      display: flex;
+      flex-direction: column;
+      background: white;
+      padding: 35px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    /* Centering the image wrapper */
+    .card-image-wrapper {
+      display: flex;
+      justify-content: center; /* Centers image horizontally */
+      margin-top: 25px;       /* Pushes image away from the list */
+      width: 100%;
+    }
+    
+    /* Consistent styling for both bottom images */
+    .bottom-stack-img {
+      width: 100%;
+      max-width: 700px;      /* Matches the width of your farm photo */
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid #eee; /* Subtle border for a clean look */
     }
     
     "))
@@ -511,9 +553,9 @@ fluidPage(
     tabPanel("Home",
              
              div(class = "home-hero",
-                 h1("Medical Trends Analysis Dashboard"),
+                 h1("Parkinson's Disease and Environmental Factors Dashboard"),
                  p(class = "hero-subtitle",
-                   "Exploring Parkinson's Disease, Pesticide Exposure & Life Expectancy across the United States")
+                   "Exploring Parkinson's Disease, Agricultural Data, Pesticide Exposure & Life Expectancy across the United States")
              ),
              
              div(class = "home-section",
@@ -530,37 +572,12 @@ fluidPage(
            geographic patterns and surface potential correlations.")
                      ),
                      
-                     tags$svg(
+                     tags$img(
+                       src = "about_image.jpg",
                        class = "about-illustration",
-                       viewBox = "0 0 220 240",
-                       xmlns = "http://www.w3.org/2000/svg",
-                       tags$circle(cx="110", cy="120", r="100", fill="#e8f5e2"),
-                       tags$ellipse(cx="90",  cy="160", rx="18", ry="50", fill="#4a7c2a",
-                                    transform="rotate(-20 90 160)"),
-                       tags$ellipse(cx="110", cy="155", rx="18", ry="55", fill="#2d5016",
-                                    transform="rotate(0 110 155)"),
-                       tags$ellipse(cx="130", cy="160", rx="18", ry="50", fill="#4a7c2a",
-                                    transform="rotate(20 130 160)"),
-                       tags$ellipse(cx="75",  cy="165", rx="14", ry="42", fill="#6aaa3a",
-                                    transform="rotate(-35 75 165)"),
-                       tags$ellipse(cx="145", cy="165", rx="14", ry="42", fill="#6aaa3a",
-                                    transform="rotate(35 145 165)"),
-                       tags$circle(cx="85",  cy="80", r="7", fill="#2d5016"),
-                       tags$circle(cx="110", cy="68", r="7", fill="#4a7c2a"),
-                       tags$circle(cx="135", cy="80", r="7", fill="#2d5016"),
-                       tags$line(x1="85", y1="80", x2="110", y2="68",
-                                 stroke="#6aaa3a", `stroke-width`="2"),
-                       tags$line(x1="110", y1="68", x2="135", y2="80",
-                                 stroke="#6aaa3a", `stroke-width`="2"),
-                       tags$circle(cx="88",  cy="98", r="6", fill="#4a7c2a"),
-                       tags$circle(cx="110", cy="90", r="6", fill="#2d5016"),
-                       tags$circle(cx="132", cy="98", r="6", fill="#4a7c2a"),
-                       tags$line(x1="88", y1="98", x2="110", y2="90",
-                                 stroke="#6aaa3a", `stroke-width`="2"),
-                       tags$line(x1="110", y1="90", x2="132", y2="98",
-                                 stroke="#6aaa3a", `stroke-width`="2")
+                       alt = "Medical research illustration"
                      )
-                 ),
+                 ),      
                  
                  h2(class = "features-heading", "Key Features"),
                  div(class = "features-grid",
@@ -609,6 +626,9 @@ fluidPage(
                        tags$li("How does agricultural intensity (number of farms) correlate with health outcomes?"),
                        tags$li("What are the geographic patterns of Parkinson's disease across states?"),
                        tags$li("How does pesticide exposure relate to life expectancy at the county level?")
+                     ),
+                     div(class = "card-image-wrapper",
+                         tags$img(src = "questions_image.webp", class = "bottom-stack-img")
                      )
                  ),
                  
@@ -620,12 +640,14 @@ fluidPage(
                        tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " — Life expectancy by state"),
                        tags$li(tags$strong("ExpectancyData_clean.csv"), " — Life expectancy by county"),
                        tags$li(tags$strong("Farm_Data_2024.csv"), " — Number and size of farms by state"),
-                       tags$li(tags$strong("cfips_location.csv"), " — County coordinates (cfips, name, lng, lat)")
+                       tags$li(tags$strong("cfips_location.csv"), " — County coordinates (County Federal Processing Standard codes, county names, longitude, latitude)")
+                     ),
+                     div(class = "card-image-wrapper",
+                         tags$img(src = "datasets_image.jpg", class = "bottom-stack-img")
                      )
                  )
-                 
-             )
-    ), 
+             ) # End home-section
+    ), # End Home tabPanel
     
     
     # =========================================================================
@@ -858,15 +880,27 @@ fluidPage(
                      p("State-level Parkinson's mortality data."),
                      DTOutput("data_table_parkinson"),
                      br(),
-                     downloadButton("download_combined", "Download Combined Dataset", 
+                     downloadButton("download_data", "Download Dataset", 
                                     class = "btn btn-success btn-lg")
                  ),
                  
                  div(class = "content-box",
                      h2("Farm Data"),
                      p("State-level agricultural data."),
-                     DTOutput("data_table_farms")
-                 )
+                     DTOutput("data_table_farms"),
+                     br(),
+                     downloadButton("download_data", "Download Dataset", 
+                                    class = "btn btn-success btn-lg")
+                 ),
+                 
+                 div(class = "content-box",
+                     h2("Life Expectancy Data"),
+                     p("State-level life expectancy data."),
+                     DTOutput("data_table_life_expectancy"),
+                     br(),
+                     downloadButton("download_data", "Download Dataset", 
+                                    class = "btn btn-success btn-lg")
+                 ),
              )
     ),
     
