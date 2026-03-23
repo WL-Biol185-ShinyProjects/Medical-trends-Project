@@ -814,15 +814,27 @@ fluidPage(
                      p("State-level Parkinson's mortality data."),
                      DTOutput("data_table_parkinson"),
                      br(),
-                     downloadButton("download_combined", "Download Combined Dataset", 
+                     downloadButton("download_data", "Download Dataset", 
                                     class = "btn btn-success btn-lg")
                  ),
                  
                  div(class = "content-box",
                      h2("Farm Data"),
                      p("State-level agricultural data."),
-                     DTOutput("data_table_farms")
-                 )
+                     DTOutput("data_table_farms"),
+                     br(),
+                     downloadButton("download_data", "Download Dataset", 
+                                    class = "btn btn-success btn-lg")
+                 ),
+                 
+                 div(class = "content-box",
+                     h2("Life Expectancy Data"),
+                     p("State-level life expectancy data."),
+                     DTOutput("data_table_life_expectancy"),
+                     br(),
+                     downloadButton("download_data", "Download Dataset", 
+                                    class = "btn btn-success btn-lg")
+                 ),
              )
     ),
     
