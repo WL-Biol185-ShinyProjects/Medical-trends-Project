@@ -673,8 +673,37 @@ fluidPage(
     # DATA VISUALIZATION TAB (EMPTY)
     # =========================================================================
     tabPanel("Data Visualization",
-             div(class = "main-container",
+             
+              div(class = "main-container",
                  h1(class = "page-header", "Data Visualizations"),
+                 
+                 
+                 # State-level pesticide vs Parkinson's mortality
+                 div(class = "plot-container",
+                     h2("Pesticide Use vs. Parkinson's Mortality Rate by State"),
+                     p("Select a pesticide to view its relationship with average Parkinson's death rate at the state level. States with missing pesticide data are excluded."),
+                     
+                     selectInput(
+                       inputId  = "selected_state_pesticide",
+                       label    = "Select Pesticide:",
+                       choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
+                       selected = "Glyphosate"
+                     ),
+                     
+                     fluidRow(
+                       column(8,
+                              plotlyOutput("plot_state_pesticide_parkinson", height = "500px")
+                       ),
+                       column(4,
+                              h4("Correlation Result"),
+                              verbatimTextOutput("cor_state_pesticide_parkinson"),
+                              br(),
+                              h4("Regression Summary"),
+                              verbatimTextOutput("reg_state_pesticide_parkinson")
+                       )
+                     )
+                 ),
+                 
                  
                  # Scatter plots
                  div(class = "plot-container",
