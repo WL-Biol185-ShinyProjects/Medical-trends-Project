@@ -740,7 +740,6 @@ function(input, output, session) {
       addLegend(pal = pal, values = ~Avg_Life_Expectancy, opacity = 1,
                 title = "Life Expectancy<br/>(years)", position = "bottomright")
   })
-  
   # ===========================================================================
   # DATA TABLES
   # ===========================================================================
