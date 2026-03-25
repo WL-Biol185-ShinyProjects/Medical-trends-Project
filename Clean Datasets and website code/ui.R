@@ -699,6 +699,248 @@ fluidPage(
               div(class = "main-container",
                  h1(class = "page-header", "Data Visualizations"),
                  
+                 # =============================================================================
+                 # DATA VISUALIZATION SUMMARY BANNER
+                 # =============================================================================
+                 
+                 HTML('
+<div style="
+  background: linear-gradient(135deg, #1a3009 0%, #2d5016 60%, #3d6b1f 100%);
+  border-radius: 12px;
+  padding: 36px 40px 32px 40px;
+  margin-bottom: 36px;
+  box-shadow: 0 4px 24px rgba(45,80,22,0.18);
+  color: white;
+  font-family: Georgia, serif;
+">
+
+  <!-- Banner header -->
+  <div style="text-align: center; margin-bottom: 32px;">
+    <div style="
+      font-size: 11px;
+      font-family: monospace;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #a7c957;
+      margin-bottom: 8px;
+    ">Analysis Overview</div>
+    <h2 style="
+      margin: 0 0 10px 0;
+      font-size: 26px;
+      font-weight: normal;
+      letter-spacing: 1px;
+      color: white;
+    ">Understanding the Visualizations</h2>
+    <p style="
+      margin: 0 auto;
+      max-width: 680px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.7;
+      font-family: Arial, sans-serif;
+    ">
+      This dashboard investigates relationships between agricultural pesticide exposure 
+      and neurological health outcomes using county- and state-level data across the 
+      United States. Use the dropdown menus within each section to explore statistical results and data visualizations by 
+      pesticide compound.
+    </p>
+  </div>
+
+  <!-- Divider -->
+  <div style="border-top: 1px solid rgba(167,201,87,0.3); margin-bottom: 32px;"></div>
+
+  <!-- Four columns -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 24px;">
+
+    <!-- Column 1: Scatter Plot -->
+    <div style="
+      background: rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 24px 20px;
+      border-top: 3px solid #a7c957;
+    ">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8" cy="32" r="3" fill="#a7c957"/>
+          <circle cx="14" cy="24" r="3" fill="#a7c957"/>
+          <circle cx="20" cy="26" r="3" fill="#a7c957"/>
+          <circle cx="26" cy="16" r="3" fill="#a7c957"/>
+          <circle cx="32" cy="12" r="3" fill="#a7c957"/>
+          <circle cx="19" cy="20" r="3" fill="#a7c957" opacity="0.5"/>
+          <line x1="5" y1="35" x2="35" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <line x1="5" y1="35" x2="5" y2="5" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div style="
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #a7c957;
+        font-family: monospace;
+        text-align: center;
+        margin-bottom: 10px;
+      ">Scatter Plot</div>
+      <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
+        The scatter plots below visualize the raw relationship between pesticide exposure and health outcomes, 
+        with each point representing a county or state.
+      </p>
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
+        <div style="font-size: 11px; color: #a7c957; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
+        <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
+          View scatter plots comparing the following data: Pesticide Use vs. Parkinsons Death Rate, Number of Farms vs. Parkinsons Death rate, Pesticide Use vs. Life Expectancy
+        </p>
+        <div style="font-size: 11px; color: #a7c957; font-family: monospace; margin-bottom: 6px;">HOW TO INTERACT</div>
+        <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
+          Use the <strong style="color:white;">Select Pesticide</strong> dropdown to switch between compounds. Hover over points to see county or state details.
+        </p>
+      </div>
+    </div>
+
+    <!-- Column 2: Regression -->
+    <div style="
+      background: rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 24px 20px;
+      border-top: 3px solid #f4a261;
+    ">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8" cy="30" r="2.5" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="14" cy="26" r="2.5" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="20" cy="22" r="2.5" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="26" cy="17" r="2.5" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="32" cy="13" r="2.5" fill="rgba(255,255,255,0.5)"/>
+          <line x1="5" y1="32" x2="35" y2="10" stroke="#f4a261" stroke-width="2" stroke-dasharray="4 2"/>
+          <line x1="5" y1="35" x2="35" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <line x1="5" y1="35" x2="5" y2="5" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div style="
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #f4a261;
+        font-family: monospace;
+        text-align: center;
+        margin-bottom: 10px;
+      ">Regression</div>
+      <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
+        Linear regression models the direction and strength of the relationship, 
+        shown as a dashed trend line overlaid on the scatter plot.
+      </p>
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
+        <div style="font-size: 11px; color: #f4a261; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
+        <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
+          Same pairings as scatter plots. Full regression summary (coefficients, standard error, p-value) shown in the side panel.
+        </p>
+        <div style="font-size: 11px; color: #f4a261; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
+        <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
+          <strong style="color:white;">R²</strong> tells you how much variance is explained. <strong style="color:white;">p &lt; 0.05</strong> on the slope coefficient indicates a statistically significant trend.
+        </p>
+      </div>
+    </div>
+
+    <!-- Column 3: Correlation -->
+    <div style="
+      background: rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 24px 20px;
+      border-top: 3px solid #7ec8e3;
+    ">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="13" stroke="#7ec8e3" stroke-width="1.5" fill="none"/>
+          <circle cx="20" cy="20" r="7" stroke="#7ec8e3" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <line x1="20" y1="7" x2="20" y2="33" stroke="#7ec8e3" stroke-width="1" opacity="0.4"/>
+          <line x1="7" y1="20" x2="33" y2="20" stroke="#7ec8e3" stroke-width="1" opacity="0.4"/>
+          <text x="14" y="24" font-size="10" fill="#7ec8e3" font-family="monospace">r</text>
+        </svg>
+      </div>
+      <div style="
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #7ec8e3;
+        font-family: monospace;
+        text-align: center;
+        margin-bottom: 10px;
+      ">Correlation</div>
+      <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
+        Pearson\'s correlation coefficient (r) quantifies how strongly two variables 
+        move together, from &minus;1 (perfect negative) to +1 (perfect positive).
+      </p>
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
+        <div style="font-size: 11px; color: #7ec8e3; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
+        <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
+          Pesticide AVG_ESTIMATE vs. life expectancy (county) &bull; Pesticide AVG_ESTIMATE vs. Parkinson\'s death rate (state)
+        </p>
+        <div style="font-size: 11px; color: #7ec8e3; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
+        <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
+          The <strong style="color:white;">r value</strong> is shown on each scatter plot. The side panel gives the full test output including 95% confidence interval and p-value.
+        </p>
+      </div>
+    </div>
+
+    <!-- Column 4: ANOVA / Tukey -->
+    <div style="
+      background: rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 24px 20px;
+      border-top: 3px solid #e76f51;
+    ">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Three box plots schematic -->
+          <rect x="4" y="18" width="8" height="10" rx="1" stroke="#e76f51" stroke-width="1.5" fill="rgba(231,111,81,0.2)"/>
+          <line x1="8" y1="18" x2="8" y2="13" stroke="#e76f51" stroke-width="1.5"/>
+          <line x1="8" y1="28" x2="8" y2="33" stroke="#e76f51" stroke-width="1.5"/>
+          <line x1="5" y1="22" x2="11" y2="22" stroke="#e76f51" stroke-width="1.5"/>
+
+          <rect x="16" y="14" width="8" height="12" rx="1" stroke="#e76f51" stroke-width="1.5" fill="rgba(231,111,81,0.2)"/>
+          <line x1="20" y1="14" x2="20" y2="9" stroke="#e76f51" stroke-width="1.5"/>
+          <line x1="20" y1="26" x2="20" y2="31" stroke="#e76f51" stroke-width="1.5"/>
+          <line x1="17" y1="19" x2="23" y2="19" stroke="#e76f51" stroke-width="1.5"/>
+
+          <rect x="28" y="10" width="8" height="14" rx="1" stroke="#e76f51" stroke-width="1.5" fill="rgba(231,111,81,0.2)"/>
+          <line x1="32" y1="10" x2="32" y2="5" stroke="#e76f51" stroke-width="1.5"/>
+          <line x1="32" y1="24" x2="32" y2="29" stroke="#e76f51" stroke-width="1.5"/>
+          <line x1="29" y1="16" x2="35" y2="16" stroke="#e76f51" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div style="
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #e76f51;
+        font-family: monospace;
+        text-align: center;
+        margin-bottom: 10px;
+      ">ANOVA & Tukey</div>
+      <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
+        ANOVA tests whether health outcomes differ significantly across pesticide 
+        exposure quartiles (Low &rarr; High). Tukey\'s post-hoc identifies which 
+        specific pairs of groups drive that difference.
+      </p>
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
+        <div style="font-size: 11px; color: #e76f51; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
+        <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
+          County exposure quartiles vs. life expectancy &bull; State exposure quartiles vs. Parkinson\'s death rate
+        </p>
+        <div style="font-size: 11px; color: #e76f51; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
+        <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
+          ANOVA p &lt; 0.05 means at least one group differs. Check the <strong style="color:white;">Tukey table</strong> — pairs highlighted in green have adjusted p &lt; 0.05 and are significantly different from each other.
+        </p>
+      </div>
+    </div>
+
+  </div><!-- end grid -->
+</div><!-- end banner -->
+'),
+                 
+                 
+                 
+                 
+                 
                  
                  # State-level pesticide vs Parkinson's mortality
                  div(class = "plot-container",
