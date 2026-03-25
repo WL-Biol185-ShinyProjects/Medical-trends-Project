@@ -775,7 +775,7 @@ function(input, output, session) {
       )
   })
   
-
+  
   output$data_table_life_expectancy <- renderDT({
     req(Expectancy_State_Data())       # fixed: was Life_Expectancy_Data
     datatable(
@@ -809,7 +809,6 @@ function(input, output, session) {
       class = 'cell-border stripe hover'
     )
   })
-  
   # =============================================================================
   ## STATE PESTICIDE VS PARKINSON'S MORTALITY RATE
   # =============================================================================
@@ -1232,10 +1231,8 @@ function(input, output, session) {
   # ===========================================================================
   
   output$download_combined <- downloadHandler(
-    filename = function() {
-      paste("medical_trends_data_", Sys.Date(), ".csv", sep = "")
-    },
-    content = function(file) {
+    filename = function() paste0("medical_trends_data_", Sys.Date(), ".csv"),
+    content  = function(file) {
       req(Parkinson_Pesticide_State())
       write.csv(Parkinson_Pesticide_State(), file, row.names = FALSE)
     }
