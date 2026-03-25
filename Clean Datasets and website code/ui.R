@@ -285,7 +285,7 @@ fluidPage(
     
     .home-hero h1 {
       font-family: 'Lora', serif;
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(2.5rem, 6vw, 4rem);
       font-weight: 700;
       color: #1a3d0a;
         margin-bottom: 0.75rem;
@@ -325,7 +325,7 @@ fluidPage(
     
     .about-card h2 {
       font-family: 'Lora', serif !important;
-      font-size: 1.9rem !important;
+      font-size: 2.5rem !important;
       font-weight: 700 !important;
       color: #1a3d0a !important;
       margin-bottom: 1rem !important;
@@ -352,7 +352,7 @@ fluidPage(
     
     .how-to-card h2 {
       font-family: 'Lora', serif !important;
-      font-size: 2.2rem !important;
+      font-size: 2.5rem !important;
       font-weight: 700 !important;
       color: white !important;
       margin-bottom: 2.5rem !important;
@@ -381,7 +381,7 @@ fluidPage(
     
     .features-heading {
       font-family: 'Lora', serif !important;
-      font-size: 2rem !important;
+      font-size: 2.5rem !important;
       font-weight: 600;
       color: #1a3d0a;
         text-align: center;
@@ -405,7 +405,7 @@ fluidPage(
     
     .feature-card h3 {
       font-family: 'Lora', serif !important;
-      font-size: 1.5rem !important;
+      font-size: 1.9rem !important;
       font-weight: 700 !important;
       color: #1a3d0a !important;
       margin-bottom: 0.6rem !important;
@@ -458,14 +458,14 @@ fluidPage(
     }
     
     .step p {
-      font-size: 1.15rem !important;
+      font-size: 1.35rem !important;
       color: rgba(255,255,255,0.8) !important;
       line-height: 1.7 !important;
       margin: 0;
     }
       
     .step h3 {
-      font-size: 1.2rem !important;
+      font-size: 1.5rem !important;
       font-weight: 600;
       color: white !important;
       margin-bottom: 0.5rem;
@@ -526,7 +526,7 @@ fluidPage(
     /* Consistent styling for both bottom images */
     .bottom-stack-img {
       width: 100%;
-      max-width: 700px;      /* Matches the width of your farm photo */
+      max-width: 600px;      /* Matches the width of your farm photo */
       height: auto;
       border-radius: 8px;
       border: 1px solid #eee; /* Subtle border for a clean look */
@@ -882,43 +882,53 @@ fluidPage(
     # ABOUT TAB
     # =========================================================================
     tabPanel("About",
-             div(class = "main-container",
-                 div(class = "content-box",
-                     h2("About This Project"),
-                     
-                     tags$h3("Purpose"),
-                     p("This dashboard explores relationships between environmental factors and health outcomes across the United States."),
-                     
-                     tags$h3("Data Sources"),
+             
+             div(class = "home-hero",
+                 h1("About This Project"),
+                 p(class = "hero-subtitle", "BIOL-185 Course Project - Winter 2026")
+             ),
+             
+             div(class = "home-section",
+                 
+                 div(class = "home-plain-card",
+                     tags$h2("Purpose"),
+                     tags$p("This dashboard explores relationships between environmental factors
+                  and health outcomes across the United States.")
+                 ),
+                 
+                 div(class = "home-plain-card",
+                     tags$h2("Data Sources"),
                      tags$ul(
                        tags$li("CDC - Parkinson's disease mortality"),
                        tags$li("USDA - Pesticide usage and farm statistics"),
                        tags$li("CDC WONDER - Life expectancy data"),
                        tags$li("Census - County coordinate data (cfips_location.csv)")
-                     ),
-                     
-                     tags$h3("Maps"),
-                     p("Three interactive maps visualize:"),
+                     )
+                 ),
+                 
+                 div(class = "home-plain-card",
+                     tags$h2("Maps"),
+                     tags$p("Three interactive maps visualize:"),
                      tags$ul(
                        tags$li(tags$strong("Map 1:"), " State-level Parkinson's death rates vs. pesticide use"),
                        tags$li(tags$strong("Map 2:"), " State-level Parkinson's death rates vs. farm density"),
                        tags$li(tags$strong("Map 3:"), " County-level pesticide exposure vs. life expectancy")
-                     ),
-                     
-                     tags$h3("Important Limitations"),
+                     )
+                 ),
+                 
+                 div(class = "home-plain-card",
+                     tags$h2("Important Limitations"),
                      tags$ul(
                        tags$li("Correlation does not imply causation"),
                        tags$li("Aggregated data may mask local variations"),
                        tags$li("Multiple confounding variables exist")
-                     ),
-                     
-                     br(),
-                     p(tags$em("BIOL-185 Course Project - March 2026"), 
-                       style = "color: #888; text-align: right;")
+                     )
                  )
-             )
+                 
+             ) # End home-section
+    ) # End About tabPanel
     )
   )
-)
+
 
 
