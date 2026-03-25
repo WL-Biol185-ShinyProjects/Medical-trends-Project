@@ -559,7 +559,6 @@ function(input, output, session) {
   
   output$data_table_parkinson <- renderDT({
     req(Parkinson_Data())
-    
     datatable(
       Parkinson_Data(),
       options = list(pageLength = 15, scrollX = TRUE),
@@ -574,7 +573,6 @@ function(input, output, session) {
   
   output$data_table_farms <- renderDT({
     req(Farm_Data())
-    
     datatable(
       Farm_Data(),
       options = list(pageLength = 15, scrollX = TRUE),
@@ -585,6 +583,40 @@ function(input, output, session) {
         columns = intersect(c("Area_operated_Acres", "Acres_Operated_Millions"), names(Farm_Data())),
         digits = 2
       )
+  })
+  
+  output$data_table_life_expectancy <- renderDT({
+    req(Expectancy_State_Data())       # fixed: was Life_Expectancy_Data
+    datatable(
+      Expectancy_State_Data(),
+      options = list(pageLength = 15, scrollX = TRUE),
+      rownames = FALSE,
+      class = 'cell-border stripe hover'
+    ) %>%
+      formatRound(
+        columns = intersect(c("Avg_Life_Expectancy", "Avg_Range_Min"), names(Expectancy_State_Data())),
+        digits = 2
+      )
+  })
+  
+  output$data_table_county_pesticides <- renderDT({
+    req(Pesticide_County_Data())       # fixed: was County_Pesticide_Data
+    datatable(
+      Pesticide_County_Data(),
+      options = list(pageLength = 15, scrollX = TRUE),
+      rownames = FALSE,
+      class = 'cell-border stripe hover'
+    )
+  })
+  
+  output$data_table_state_pesticides <- renderDT({
+    req(State_Pesticide_Data())
+    datatable(
+      State_Pesticide_Data(),
+      options = list(pageLength = 15, scrollX = TRUE),
+      rownames = FALSE,
+      class = 'cell-border stripe hover'
+    )
   })
   
   # =============================================================================

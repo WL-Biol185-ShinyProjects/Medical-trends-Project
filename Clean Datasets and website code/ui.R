@@ -875,6 +875,24 @@ fluidPage(
                      downloadButton("download_data", "Download Dataset", 
                                     class = "btn btn-success btn-lg")
                  ),
+                 
+                 div(class = "content-box",
+                     h2("County Pesticide Data"),
+                     p("County-level pesticide data."),
+                     DTOutput("data_table_county_pesticides"),
+                     br(),
+                     downloadButton("download_data", "Download Dataset", 
+                                    class = "btn btn-success btn-lg")
+                 ),
+                 
+                 div(class = "content-box",
+                     h2("State Pesticide Data"),
+                     p("State-level pesticide data."),
+                     DTOutput("data_table_state_pesticides"),
+                     br(),
+                     downloadButton("download_data", "Download Dataset", 
+                                    class = "btn btn-success btn-lg")
+                 ),
              )
     ),
     
