@@ -1088,54 +1088,60 @@ fluidPage(
     # DATA TABLES TAB
     # =========================================================================
     tabPanel("Data Tables",
-             div(class = "main-container",
-                 h1(class = "page-header", "Data Tables"),
+             
+             div(class = "home-hero",
+                 h1("Data Tables"),
+                 p(class = "hero-subtitle", "Explore the raw datasets used in this analysis")
+             ),
+             
+             div(class = "home-section",
                  
-                 div(class = "content-box",
-                     h2("Parkinson's Disease Data"),
-                     p("State-level Parkinson's mortality data."),
+                 div(class = "home-plain-card",
+                     tags$h2("Parkinson's Disease Data"),
+                     tags$p("State-level Parkinson's mortality data."),
                      DTOutput("data_table_parkinson"),
                      br(),
-                     downloadButton("download_data", "Download Dataset", 
+                     downloadButton("download_parkinson", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "content-box",
-                     h2("Farm Data"),
-                     p("State-level agricultural data."),
+                 div(class = "home-plain-card",
+                     tags$h2("Farm Data"),
+                     tags$p("State-level agricultural data."),
                      DTOutput("data_table_farms"),
                      br(),
-                     downloadButton("download_data", "Download Dataset", 
+                     downloadButton("download_farms", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "content-box",
-                     h2("Life Expectancy Data"),
-                     p("State-level life expectancy data."),
+                 div(class = "home-plain-card",
+                     tags$h2("Life Expectancy Data"),
+                     tags$p("State-level life expectancy data."),
                      DTOutput("data_table_life_expectancy"),
                      br(),
-                     downloadButton("download_data", "Download Dataset", 
+                     downloadButton("download_life_expectancy", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "content-box",
-                     h2("County Pesticide Data"),
-                     p("County-level pesticide data."),
+                 div(class = "home-plain-card",
+                     tags$h2("County Pesticide Data"),
+                     tags$p("County-level pesticide data."),
                      DTOutput("data_table_county_pesticides"),
                      br(),
-                     downloadButton("download_data", "Download Dataset", 
+                     downloadButton("download_county_pesticides", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "content-box",
-                     h2("State Pesticide Data"),
-                     p("State-level pesticide data."),
+                 div(class = "home-plain-card",
+                     tags$h2("State Pesticide Data"),
+                     tags$p("State-level pesticide data."),
                      DTOutput("data_table_state_pesticides"),
                      br(),
-                     downloadButton("download_data", "Download Dataset", 
+                     downloadButton("download_state_pesticides", "Download Dataset",
                                     class = "btn btn-success btn-lg")
-                 ),
-             )
+                 )
+                 
+             ) # End home-section
     ),
     
     # =========================================================================
