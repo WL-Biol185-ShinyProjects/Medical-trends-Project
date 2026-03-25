@@ -775,15 +775,430 @@ function(input, output, session) {
       )
   })
   
+  
+  # =============================================================================
+  ## STATE PESTICIDE VS PARKINSON'S MORTALITY RATE
+  # =============================================================================
+  
+  state_pesticide_parkinson_merged <- reactive({
+    req(input$selected_state_pesticide, State_Pesticide_Data(), Parkinson_Data())
+    
+    pest_subset <- State_Pesticide_Data() %>%
+      filter(compound == input$selected_state_pesticide) %>%
+      select(state_name, AVG_ESTIMATE) %>%
+      group_by(state_name) %>%
+      summarise(AVG_ESTIMATE = mean(AVG_ESTIMATE, na.rm = TRUE))
+    
+    park_clean <- Parkinson_Data() %>%
+      select(Location, Avg_Death_Rate) %>%
+      group_by(Location) %>%
+      summarise(Avg_Death_Rate = mean(Avg_Death_Rate, na.rm = TRUE))
+    
+    inner_join(pest_subset, park_clean, by = c("state_name" = "Location")) %>%
+      filter(!is.na(AVG_ESTIMATE), !is.na(Avg_Death_Rate), AVG_ESTIMATE > 0)
+  })
+  
+  output$plot_state_pesticide_parkinson <- renderPlotly({
+    req(state_pesticide_parkinson_merged())
+    data <- as.data.frame(state_pesticide_parkinson_merged())
+    
+    model      <- lm(Avg_Death_Rate ~ AVG_ESTIMATE, data = data)
+    cor_val    <- round(cor(data$AVG_ESTIMATE, data$Avg_Death_Rate, use = "complete.obs"), 3)
+    r_squared  <- round(summary(model)$r.squared, 3)
+    coef_table <- summary(model)$coefficients
+    p_val      <- if (nrow(coef_table) >= 2) round(coef_table[2, 4], 4) else NA
+    
+    x_seq    <- seq(min(data$AVG_ESTIMATE), max(data$AVG_ESTIMATE), length.out = 100)
+    y_fitted <- coef(model)[1] + coef(model)[2] * x_seq
+    
+    plot_ly() %>%
+      add_trace(
+        data         = data,
+        x            = ~AVG_ESTIMATE,
+        y            = ~Avg_Death_Rate,
+        type         = "scatter",
+        mode         = "markers+text",
+        marker       = list(color = "#2d5016", size = 7, opacity = 0.7),
+        text         = ~state_name,
+        textposition = "top center",
+        textfont     = list(size = 9, color = "gray30"),
+        hovertext    = ~paste("State:", state_name,
+                              "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 4),
+                              "<br>Parkinson's Death Rate:", round(Avg_Death_Rate, 2)),
+        hoverinfo    = "text",
+        name         = "States"
+      ) %>%
+      add_trace(
+        x         = x_seq,
+        y         = y_fitted,
+        type      = "scatter",
+        mode      = "lines",
+        line      = list(color = "darkred", dash = "dash", width = 2),
+        hoverinfo = "skip",
+        name      = "Regression Line"
+      ) %>%
+      layout(
+        title = list(
+          text = paste0(input$selected_state_pesticide, ": Pesticide Use vs. Parkinson's Death Rate by State"),
+          font = list(size = 15)
+        ),
+        xaxis     = list(title = paste0(input$selected_state_pesticide, " AVG_ESTIMATE")),
+        yaxis     = list(title = "Avg Parkinson's Death Rate"),
+        hovermode = "closest",
+        annotations = list(list(
+          x           = max(data$AVG_ESTIMATE) * 0.85,
+          y           = min(data$Avg_Death_Rate) + 0.3,
+          text        = paste0("r = ", cor_val, "<br>R² = ", r_squared, "<br>p = ", p_val),
+          showarrow   = FALSE,
+          font        = list(color = "darkred", size = 13),
+          bgcolor     = "white",
+          bordercolor = "darkred",
+          borderwidth = 1
+        ))
+      )
+  })
+  
+  output$cor_state_pesticide_parkinson <- renderPrint({
+    req(state_pesticide_parkinson_merged())
+    cor.test(state_pesticide_parkinson_merged()$AVG_ESTIMATE,
+             state_pesticide_parkinson_merged()$Avg_Death_Rate)
+  })
+  
+  output$reg_state_pesticide_parkinson <- renderPrint({
+    req(state_pesticide_parkinson_merged())
+    summary(lm(Avg_Death_Rate ~ AVG_ESTIMATE, data = state_pesticide_parkinson_merged()))
+  })
+  
+  # =============================================================================
+  ## COUNTY PESTICIDE VS LIFE EXPECTANCY
+  # =============================================================================
+  
+  county_pesticide_merged <- reactive({
+    req(input$selected_pesticide, Pesticide_County_Data(), Expectancy_Data())
+    
+    pest_subset <- Pesticide_County_Data() %>%
+      filter(compound == input$selected_pesticide) %>%
+      select(county_name, AVG_ESTIMATE) %>%
+      group_by(county_name) %>%
+      summarise(AVG_ESTIMATE = mean(AVG_ESTIMATE, na.rm = TRUE))
+    
+    expectancy_clean <- Expectancy_Data() %>%
+      group_by(County) %>%
+      summarise(Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE))
+    
+    inner_join(pest_subset, expectancy_clean, by = c("county_name" = "County")) %>%
+      filter(!is.na(AVG_ESTIMATE), !is.na(Avg_Life_Expectancy), AVG_ESTIMATE > 0)
+  })
+  
+  output$plot_county_pesticide_life <- renderPlotly({
+    req(county_pesticide_merged())
+    data <- as.data.frame(county_pesticide_merged())
+    
+    model      <- lm(Avg_Life_Expectancy ~ log10(AVG_ESTIMATE), data = data)
+    cor_val    <- round(cor(log10(data$AVG_ESTIMATE), data$Avg_Life_Expectancy), 3)
+    r_squared  <- round(summary(model)$r.squared, 3)
+    coef_table <- summary(model)$coefficients
+    p_val      <- if (nrow(coef_table) >= 2) round(coef_table[2, 4], 4) else NA
+    
+    x_seq    <- seq(min(log10(data$AVG_ESTIMATE)), max(log10(data$AVG_ESTIMATE)), length.out = 100)
+    y_fitted <- coef(model)[1] + coef(model)[2] * x_seq
+    
+    plot_ly() %>%
+      add_trace(
+        data      = data,
+        x         = ~log10(AVG_ESTIMATE),
+        y         = ~Avg_Life_Expectancy,
+        type      = "scatter",
+        mode      = "markers",
+        marker    = list(color = "#2d5016", size = 5, opacity = 0.5),
+        text      = ~paste("County:", county_name,
+                           "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 2),
+                           "<br>Life Expectancy:", round(Avg_Life_Expectancy, 2)),
+        hoverinfo = "text",
+        name      = "Counties"
+      ) %>%
+      add_trace(
+        x         = x_seq,
+        y         = y_fitted,
+        type      = "scatter",
+        mode      = "lines",
+        line      = list(color = "darkred", dash = "dash", width = 2),
+        hoverinfo = "skip",
+        name      = "Regression Line"
+      ) %>%
+      layout(
+        title = list(
+          text = paste0(input$selected_pesticide, ": Pesticide Use vs. Avg Life Expectancy by County"),
+          font = list(size = 15)
+        ),
+        xaxis     = list(title = paste0(input$selected_pesticide, " AVG_ESTIMATE (log scale)")),
+        yaxis     = list(title = "Avg Life Expectancy (years)"),
+        hovermode = "closest",
+        annotations = list(list(
+          x           = max(log10(data$AVG_ESTIMATE)) * 0.85,
+          y           = min(data$Avg_Life_Expectancy) + 1,
+          text        = paste0("r = ", cor_val, "<br>R² = ", r_squared, "<br>p = ", p_val),
+          showarrow   = FALSE,
+          font        = list(color = "darkred", size = 13),
+          bgcolor     = "white",
+          bordercolor = "darkred",
+          borderwidth = 1
+        ))
+      )
+  })
+  
+  output$cor_county_pesticide_life <- renderPrint({
+    req(county_pesticide_merged())
+    cor.test(county_pesticide_merged()$AVG_ESTIMATE,
+             county_pesticide_merged()$Avg_Life_Expectancy)
+  })
+  
+  output$reg_county_pesticide_life <- renderPrint({
+    req(county_pesticide_merged())
+    summary(lm(Avg_Life_Expectancy ~ AVG_ESTIMATE, data = county_pesticide_merged()))
+  })
+  
+  # Farm vs Parkinson's
+  farm_parkinson_merged <- reactive({
+    req(Farm_Data(), Parkinson_Data())
+    farm <- as.data.frame(Farm_Data())
+    park <- as.data.frame(Parkinson_Data())
+    data.frame(
+      State         = farm$State,
+      NumberOfFarms = farm$Number_Of_Farms,
+      DeathRate     = park$Avg_Death_Rate
+    ) %>% filter(!is.na(NumberOfFarms), !is.na(DeathRate))
+  })
+  
+  output$plot_farm_parkinson_detailed <- renderPlotly({
+    req(farm_parkinson_merged())
+    data <- farm_parkinson_merged()
+    
+    model      <- lm(DeathRate ~ NumberOfFarms, data = data)
+    cor_val    <- round(cor(data$NumberOfFarms, data$DeathRate, use = "complete.obs"), 3)
+    r_squared  <- round(summary(model)$r.squared, 3)
+    coef_table <- summary(model)$coefficients
+    p_val      <- if (nrow(coef_table) >= 2) round(coef_table[2, 4], 4) else NA
+    
+    x_seq    <- seq(min(data$NumberOfFarms), max(data$NumberOfFarms), length.out = 100)
+    y_fitted <- coef(model)[1] + coef(model)[2] * x_seq
+    
+    plot_ly() %>%
+      add_trace(
+        data         = data,
+        x            = ~NumberOfFarms,
+        y            = ~DeathRate,
+        type         = "scatter",
+        mode         = "markers+text",
+        marker       = list(color = "#2d5016", size = 7, opacity = 0.7),
+        text         = ~State,
+        textposition = "top center",
+        textfont     = list(size = 9, color = "gray30"),
+        hovertext    = ~paste("State:", State,
+                              "<br>Number of Farms:", format(NumberOfFarms, big.mark = ","),
+                              "<br>Death Rate:", round(DeathRate, 2)),
+        hoverinfo    = "text",
+        name         = "States"
+      ) %>%
+      add_trace(
+        x         = x_seq,
+        y         = y_fitted,
+        type      = "scatter",
+        mode      = "lines",
+        line      = list(color = "darkred", dash = "dash", width = 2),
+        hoverinfo = "skip",
+        name      = "Regression Line"
+      ) %>%
+      layout(
+        title     = list(text = "Number of Farms vs. Parkinson's Avg Death Rate by State",
+                         font = list(size = 15)),
+        xaxis     = list(title = "Number of Farms"),
+        yaxis     = list(title = "Avg Death Rate (Parkinson's)"),
+        hovermode = "closest",
+        annotations = list(list(
+          x           = max(data$NumberOfFarms) * 0.85,
+          y           = min(data$DeathRate) + 0.5,
+          text        = paste0("r = ", cor_val, "<br>R² = ", r_squared, "<br>p = ", p_val),
+          showarrow   = FALSE,
+          font        = list(color = "darkred", size = 13),
+          bgcolor     = "white",
+          bordercolor = "darkred",
+          borderwidth = 1
+        ))
+      )
+  })
+  
+  output$cor_farm_parkinson_detailed <- renderPrint({
+    req(farm_parkinson_merged())
+    cor.test(farm_parkinson_merged()$NumberOfFarms, farm_parkinson_merged()$DeathRate)
+  })
+  
+  output$reg_farm_parkinson_detailed <- renderPrint({
+    req(farm_parkinson_merged())
+    summary(lm(DeathRate ~ NumberOfFarms, data = farm_parkinson_merged()))
+  })
+  
+  # =============================================================================
+  ## ANOVA: COUNTY PESTICIDE EXPOSURE LEVEL VS LIFE EXPECTANCY
+  # =============================================================================
+  
+  assign_tertiles <- function(x) {
+    breaks <- quantile(x, probs = c(0, 1/3, 2/3, 1), na.rm = TRUE)
+    if (length(unique(breaks)) < 4) {
+      return(factor(dplyr::ntile(x, 3), levels = 1:3, labels = c("Low", "Medium", "High")))
+    }
+    cut(x, breaks = breaks, labels = c("Low", "Medium", "High"), include.lowest = TRUE)
+  }
+  
+  anova_exposure_life_data <- reactive({
+    req(input$anova_county_compound, Pesticide_County_Data(), Expectancy_Data())
+    
+    pest <- Pesticide_County_Data() %>%
+      filter(compound == input$anova_county_compound) %>%
+      select(county_name, AVG_ESTIMATE) %>%
+      group_by(county_name) %>%
+      summarise(AVG_ESTIMATE = mean(AVG_ESTIMATE, na.rm = TRUE)) %>%
+      filter(!is.na(AVG_ESTIMATE), AVG_ESTIMATE > 0) %>%
+      mutate(exposure_group = assign_tertiles(AVG_ESTIMATE))
+    
+    exp_clean <- Expectancy_Data() %>%
+      group_by(County) %>%
+      summarise(Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE))
+    
+    inner_join(pest, exp_clean, by = c("county_name" = "County")) %>%
+      filter(!is.na(Avg_Life_Expectancy), !is.na(exposure_group))
+  })
+  
+  output$plot_anova_exposure_life <- renderPlotly({
+    req(anova_exposure_life_data())
+    data  <- anova_exposure_life_data()
+    p_val <- round(summary(aov(Avg_Life_Expectancy ~ exposure_group, data = data))[[1]][["Pr(>F)"]][1], 4)
+    
+    plot_ly(
+      data      = data,
+      x         = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+      y         = ~Avg_Life_Expectancy,
+      type      = "box",
+      color     = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+      colors    = c("#a7c957", "#f4a261", "#bc4749"),
+      boxpoints = "outliers",
+      hoverinfo = "y+name"
+    ) %>%
+      layout(
+        title = list(
+          text = paste0(input$anova_county_compound,
+                        ": Exposure Level vs. Life Expectancy (ANOVA p = ", p_val, ")"),
+          font = list(size = 14)
+        ),
+        xaxis      = list(title = "Pesticide Exposure Group"),
+        yaxis      = list(title = "Avg Life Expectancy (years)"),
+        showlegend = FALSE
+      )
+  })
+  
+  output$anova_exposure_life <- renderPrint({
+    req(anova_exposure_life_data())
+    summary(aov(Avg_Life_Expectancy ~ exposure_group, data = anova_exposure_life_data()))
+  })
+  
+  output$tukey_exposure_life_print <- renderPrint({
+    req(anova_exposure_life_data())
+    TukeyHSD(aov(Avg_Life_Expectancy ~ exposure_group, data = anova_exposure_life_data()))
+  })
+  
+  output$tukey_exposure_life_table <- renderDataTable({
+    req(anova_exposure_life_data())
+    tukey_df <- as.data.frame(
+      TukeyHSD(aov(Avg_Life_Expectancy ~ exposure_group, data = anova_exposure_life_data()))$exposure_group
+    )
+    tukey_df <- tibble::rownames_to_column(tukey_df, var = "Comparison")
+    colnames(tukey_df) <- c("Comparison", "Difference", "Lower CI", "Upper CI", "Adjusted p-value")
+    tukey_df <- tukey_df %>% mutate(across(where(is.numeric), ~ round(., 4)))
+    DT::datatable(tukey_df, options = list(pageLength = 10, scrollX = TRUE)) %>%
+      DT::formatStyle("Adjusted p-value",
+                      backgroundColor = DT::styleInterval(0.05, c("#d4edda", "white")))
+  })
+  
+  # =============================================================================
+  ## ANOVA: STATE PESTICIDE EXPOSURE LEVEL VS PARKINSON'S DEATH RATE
+  # =============================================================================
+  
+  anova_exposure_parkinson_data <- reactive({
+    req(input$anova_state_compound, State_Pesticide_Data(), Parkinson_Data())
+    
+    pest <- State_Pesticide_Data() %>%
+      filter(compound == input$anova_state_compound) %>%
+      select(state_name, AVG_ESTIMATE) %>%
+      group_by(state_name) %>%
+      summarise(AVG_ESTIMATE = mean(AVG_ESTIMATE, na.rm = TRUE)) %>%
+      filter(!is.na(AVG_ESTIMATE), AVG_ESTIMATE > 0) %>%
+      mutate(exposure_group = assign_tertiles(AVG_ESTIMATE))
+    
+    park_clean <- Parkinson_Data() %>%
+      group_by(Location) %>%
+      summarise(Avg_Death_Rate = mean(Avg_Death_Rate, na.rm = TRUE))
+    
+    inner_join(pest, park_clean, by = c("state_name" = "Location")) %>%
+      filter(!is.na(Avg_Death_Rate), !is.na(exposure_group))
+  })
+  
+  output$plot_anova_exposure_parkinson <- renderPlotly({
+    req(anova_exposure_parkinson_data())
+    data  <- anova_exposure_parkinson_data()
+    p_val <- round(summary(aov(Avg_Death_Rate ~ exposure_group, data = data))[[1]][["Pr(>F)"]][1], 4)
+    
+    plot_ly(
+      data      = data,
+      x         = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+      y         = ~Avg_Death_Rate,
+      type      = "box",
+      color     = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+      colors    = c("#a7c957", "#f4a261", "#bc4749"),
+      boxpoints = "outliers",
+      hoverinfo = "y+name"
+    ) %>%
+      layout(
+        title = list(
+          text = paste0(input$anova_state_compound,
+                        ": Exposure Level vs. Parkinson's Death Rate (ANOVA p = ", p_val, ")"),
+          font = list(size = 14)
+        ),
+        xaxis      = list(title = "Pesticide Exposure Group"),
+        yaxis      = list(title = "Avg Parkinson's Death Rate"),
+        showlegend = FALSE
+      )
+  })
+  
+  output$anova_exposure_parkinson <- renderPrint({
+    req(anova_exposure_parkinson_data())
+    summary(aov(Avg_Death_Rate ~ exposure_group, data = anova_exposure_parkinson_data()))
+  })
+  
+  output$tukey_exposure_parkinson_print <- renderPrint({
+    req(anova_exposure_parkinson_data())
+    TukeyHSD(aov(Avg_Death_Rate ~ exposure_group, data = anova_exposure_parkinson_data()))
+  })
+  
+  output$tukey_exposure_parkinson_table <- renderDataTable({
+    req(anova_exposure_parkinson_data())
+    tukey_df <- as.data.frame(
+      TukeyHSD(aov(Avg_Death_Rate ~ exposure_group, data = anova_exposure_parkinson_data()))$exposure_group
+    )
+    tukey_df <- tibble::rownames_to_column(tukey_df, var = "Comparison")
+    colnames(tukey_df) <- c("Comparison", "Difference", "Lower CI", "Upper CI", "Adjusted p-value")
+    tukey_df <- tukey_df %>% mutate(across(where(is.numeric), ~ round(., 4)))
+    DT::datatable(tukey_df, options = list(pageLength = 10, scrollX = TRUE)) %>%
+      DT::formatStyle("Adjusted p-value",
+                      backgroundColor = DT::styleInterval(0.05, c("#d4edda", "white")))
+  })
+  
   # ===========================================================================
   # DOWNLOAD HANDLER
   # ===========================================================================
   
   output$download_combined <- downloadHandler(
-    filename = function() {
-      paste("medical_trends_data_", Sys.Date(), ".csv", sep = "")
-    },
-    content = function(file) {
+    filename = function() paste0("medical_trends_data_", Sys.Date(), ".csv"),
+    content  = function(file) {
       req(Parkinson_Pesticide_State())
       write.csv(Parkinson_Pesticide_State(), file, row.names = FALSE)
     }
