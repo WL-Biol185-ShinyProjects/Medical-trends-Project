@@ -1,8 +1,4 @@
 # INTERMEDIATE COPY OF UI FOR SAVING 
-
-# INTERMEDIATE COPY OF UI FOR SAVING 
-
-
 library(shiny)
 library(DT)
 library(leaflet)
@@ -128,7 +124,7 @@ fluidPage(
         justify-content: center;
         width: 100%;
       }
-
+ 
       .stat-box {
         flex: 1;
         min-width: 0;
@@ -144,7 +140,7 @@ fluidPage(
         justify-content: center;
         align-items: center;
         box-sizing: border-box;
-}
+      }
       
       .stat-number {
         font-size: 2.5em;
@@ -274,7 +270,7 @@ fluidPage(
         font-size: 1.2em;
         color: #666;
       }
-
+ 
       
     
     /* ---- HOME PAGE TEMPLATE STYLES ---- */
@@ -335,12 +331,12 @@ fluidPage(
       padding-bottom: 0 !important;
     }
     .about-illustration {
-      flex: 0 0 35%;         /* Image takes up 35% */
-      max-width: 400px;      /* Prevents it from getting absurdly huge */
-      width: 100%;           /* Ensures it fills its 35% container */
+      flex: 0 0 35%;
+      max-width: 400px;
+      width: 100%;
       height: auto;
       border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Optional: makes the image pop */
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     
     .home-hero h1 {
@@ -501,47 +497,12 @@ fluidPage(
     }
     
     .plot-container {
-  background: white;
-  padding: 2.5rem 3rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-}
-
-.plot-container h2 {
-  font-family: 'Lora', serif !important;
-  font-size: 1.9rem !important;
-  font-weight: 700 !important;
-  color: #1a3d0a !important;
-  margin-bottom: 1.25rem !important;
-  border-bottom: 3px solid #4a7c2a !important;
-  padding-bottom: 0.6rem !important;
-}
-
-.plot-container > p {
-  font-size: 1.5rem !important;
-  color: #4a4a4a !important;
-  line-height: 1.8 !important;
-  margin-bottom: 1.25rem !important;
-}
-
-.plot-container h4 {
-  font-family: 'Lora', serif !important;
-  font-size: 1.35rem !important;
-  font-weight: 700 !important;
-  color: #2d5016 !important;
-  margin-bottom: 0.5rem !important;
-  border-bottom: 1px solid #e0e0e0 !important;
-  padding-bottom: 0.3rem !important;
-}
-
-.plot-container .selectize-input,
-.plot-container label {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1.3rem !important;
-  color: #333 !important;
-}
-
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
     .home-plain-card {
       display: flex;
       flex-direction: column;
@@ -552,21 +513,19 @@ fluidPage(
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
     
-    /* Centering the image wrapper */
     .card-image-wrapper {
       display: flex;
-      justify-content: center; /* Centers image horizontally */
-      margin-top: 25px;       /* Pushes image away from the list */
+      justify-content: center;
+      margin-top: 25px;
       width: 100%;
     }
     
-    /* Consistent styling for both bottom images */
     .bottom-stack-img {
       width: 100%;
-      max-width: 600px;      /* Matches the width of your farm photo */
+      max-width: 600px;
       height: auto;
       border-radius: 8px;
-      border: 1px solid #eee; /* Subtle border for a clean look */
+      border: 1px solid #eee;
     }
     
     "))
@@ -672,12 +631,12 @@ fluidPage(
                  div(class = "home-plain-card",
                      tags$h2("Datasets Used"),
                      tags$ul(
-                       tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " — Parkinson's death rates by state"),
-                       tags$li(tags$strong("pesticides_by_county.csv"), " — Pesticide usage by county"),
-                       tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " — Life expectancy by state"),
-                       tags$li(tags$strong("ExpectancyData_clean.csv"), " — Life expectancy by county"),
-                       tags$li(tags$strong("Farm_Data_2024.csv"), " — Number and size of farms by state"),
-                       tags$li(tags$strong("cfips_location.csv"), " — County coordinates (County Federal Processing Standard codes, county names, longitude, latitude)")
+                       tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " -- Parkinson's death rates by state"),
+                       tags$li(tags$strong("pesticides_by_county.csv"), " -- Pesticide usage by county"),
+                       tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " -- Life expectancy by state"),
+                       tags$li(tags$strong("ExpectancyData_clean.csv"), " -- Life expectancy by county"),
+                       tags$li(tags$strong("Farm_Data_2024.csv"), " -- Number and size of farms by state"),
+                       tags$li(tags$strong("cfips_location.csv"), " -- County coordinates (County Federal Processing Standard codes, county names, longitude, latitude)")
                      ),
                      div(class = "card-image-wrapper",
                          tags$img(src = "datasets_image.jpg", class = "bottom-stack-img")
@@ -688,14 +647,13 @@ fluidPage(
     
     
     # =========================================================================
-    # MAPS TAB - With Sidebar Selector
+    # MAPS TAB
     # =========================================================================
     tabPanel("Maps",
              div(class = "main-container",
                  h1(class = "page-header", "Geographic Analysis"),
                  
                  div(class = "map-viewer-container",
-                     # Sidebar with map selector
                      div(class = "map-sidebar",
                          h3("Select Map"),
                          div(class = "map-selector",
@@ -710,41 +668,46 @@ fluidPage(
                                selected = "map1"
                              )
                          ),
-                         
                          hr(),
-                         
                          h3("Map Info"),
                          uiOutput("map_description")
                      ),
-                     
-                     # Main map area
                      div(class = "map-content",
                          div(class = "map-title-bar",
                              textOutput("map_title")
                          ),
-                         leafletOutput("main_map", height = "640px")
+                         leafletOutput("main_map", height = "640px"),
+                         
+                         conditionalPanel(
+                           condition = "input.selected_map == 'map3'",
+                           div(
+                             style = "padding: 12px 20px; background: #f8f9fa; border-top: 1px solid #e0e0e0;",
+                             selectInput(
+                               inputId = "map3_state_selector",
+                               label   = "Zoom to State:",
+                               choices = c("All States" = "all"),
+                               selected = "all",
+                               width   = "280px"
+                             )
+                           )
+                         ) 
+                         
                      )
                  )
              )
     ),
     
     # =========================================================================
-    # DATA VISUALIZATION TAB (EMPTY)
+    # DATA VISUALIZATION TAB
     # =========================================================================
     tabPanel("Data Visualization",
              
-             div(class = "home-hero",
-                 h1( "Data Visualizations"),
-                 p(class = "hero-subtitle",
-                   "Explore statistical relationships between pesticide exposure and neurological health outcomes across U.S. states and counties")
-             ),
-             
-             div(class = "home-section", 
+             div(class = "main-container",
+                 h1(class = "page-header", "Data Visualizations"),
                  
-                 # =============================================================================
-                 # DATA VISUALIZATION SUMMARY BANNER
-                 # =============================================================================
-                 
+                 # ==========================================================
+                 # SUMMARY BANNER
+                 # ==========================================================
                  HTML('
 <div style="
   background: linear-gradient(135deg, #1a3009 0%, #2d5016 60%, #3d6b1f 100%);
@@ -755,81 +718,34 @@ fluidPage(
   color: white;
   font-family: Georgia, serif;
 ">
-
-  <!-- Banner header -->
   <div style="text-align: center; margin-bottom: 32px;">
-    <div style="
-      font-size: 11px;
-      font-family: monospace;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #a7c957;
-      margin-bottom: 8px;
-    ">Analysis Overview</div>
-    <h2 style="
-      margin: 0 0 10px 0;
-      font-size: 26px;
-      font-weight: normal;
-      letter-spacing: 1px;
-      color: white;
-    ">Understanding the Visualizations</h2>
-    <p style="
-      margin: 0 auto;
-      max-width: 680px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.75);
-      line-height: 1.7;
-      font-family: Arial, sans-serif;
-    ">
-      This dashboard investigates relationships between agricultural pesticide exposure 
-      and neurological health outcomes using county- and state-level data across the 
-      United States. Use the dropdown menus within each section to explore statistical results and data visualizations by 
-      pesticide compound.
+    <div style="font-size: 11px; font-family: monospace; letter-spacing: 4px; text-transform: uppercase; color: #a7c957; margin-bottom: 8px;">Analysis Overview</div>
+    <h2 style="margin: 0 0 10px 0; font-size: 26px; font-weight: normal; letter-spacing: 1px; color: white;">Understanding the Visualizations</h2>
+    <p style="margin: 0 auto; max-width: 680px; font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.7; font-family: Arial, sans-serif;">
+      This dashboard investigates relationships between agricultural pesticide exposure and neurological health outcomes using county- and state-level data across the United States. Use the dropdown menus within each section to explore statistical results and data visualizations by pesticide compound.
     </p>
   </div>
-
-  <!-- Divider -->
   <div style="border-top: 1px solid rgba(167,201,87,0.3); margin-bottom: 32px;"></div>
-
-  <!-- Four columns -->
   <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 24px;">
-
-    <!-- Column 1: Scatter Plot -->
-    <div style="
-      background: rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 24px 20px;
-      border-top: 3px solid #a7c957;
-    ">
+ 
+    <div style="background: rgba(255,255,255,0.07); border-radius: 10px; padding: 24px 20px; border-top: 3px solid #a7c957;">
       <div style="text-align: center; margin-bottom: 16px;">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="8" cy="32" r="3" fill="#a7c957"/>
-          <circle cx="14" cy="24" r="3" fill="#a7c957"/>
-          <circle cx="20" cy="26" r="3" fill="#a7c957"/>
-          <circle cx="26" cy="16" r="3" fill="#a7c957"/>
-          <circle cx="32" cy="12" r="3" fill="#a7c957"/>
-          <circle cx="19" cy="20" r="3" fill="#a7c957" opacity="0.5"/>
+          <circle cx="8" cy="32" r="3" fill="#a7c957"/><circle cx="14" cy="24" r="3" fill="#a7c957"/>
+          <circle cx="20" cy="26" r="3" fill="#a7c957"/><circle cx="26" cy="16" r="3" fill="#a7c957"/>
+          <circle cx="32" cy="12" r="3" fill="#a7c957"/><circle cx="19" cy="20" r="3" fill="#a7c957" opacity="0.5"/>
           <line x1="5" y1="35" x2="35" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
           <line x1="5" y1="35" x2="5" y2="5" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
         </svg>
       </div>
-      <div style="
-        font-size: 10px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #a7c957;
-        font-family: monospace;
-        text-align: center;
-        margin-bottom: 10px;
-      ">Scatter Plot</div>
+      <div style="font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #a7c957; font-family: monospace; text-align: center; margin-bottom: 10px;">Scatter Plot</div>
       <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-        The scatter plots below visualize the raw relationship between pesticide exposure and health outcomes, 
-        with each point representing a county or state.
+        The scatter plots below visualize the raw relationship between pesticide exposure and health outcomes, with each point representing a county or state.
       </p>
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #a7c957; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-          Scroll to view scatter plots comparing the following data: Pesticide Use vs. Parkinson\'s Death Rate, Number of Farms vs. Parkinson\'s Death rate, Pesticide Use vs. Life Expectancy
+          Pesticide Use vs. Parkinson\'s Death Rate | Number of Farms vs. Parkinson\'s Death Rate | Pesticide Use vs. Life Expectancy
         </p>
         <div style="font-size: 11px; color: #a7c957; font-family: monospace; margin-bottom: 6px;">HOW TO INTERACT</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
@@ -837,58 +753,35 @@ fluidPage(
         </p>
       </div>
     </div>
-
-    <!-- Column 2: Regression -->
-    <div style="
-      background: rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 24px 20px;
-      border-top: 3px solid #f4a261;
-    ">
+ 
+    <div style="background: rgba(255,255,255,0.07); border-radius: 10px; padding: 24px 20px; border-top: 3px solid #f4a261;">
       <div style="text-align: center; margin-bottom: 16px;">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="8" cy="30" r="2.5" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="14" cy="26" r="2.5" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="20" cy="22" r="2.5" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="26" cy="17" r="2.5" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="8" cy="30" r="2.5" fill="rgba(255,255,255,0.5)"/><circle cx="14" cy="26" r="2.5" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="20" cy="22" r="2.5" fill="rgba(255,255,255,0.5)"/><circle cx="26" cy="17" r="2.5" fill="rgba(255,255,255,0.5)"/>
           <circle cx="32" cy="13" r="2.5" fill="rgba(255,255,255,0.5)"/>
           <line x1="5" y1="32" x2="35" y2="10" stroke="#f4a261" stroke-width="2" stroke-dasharray="4 2"/>
           <line x1="5" y1="35" x2="35" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
           <line x1="5" y1="35" x2="5" y2="5" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
         </svg>
       </div>
-      <div style="
-        font-size: 10px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #f4a261;
-        font-family: monospace;
-        text-align: center;
-        margin-bottom: 10px;
-      ">Regression</div>
+      <div style="font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #f4a261; font-family: monospace; text-align: center; margin-bottom: 10px;">Regression</div>
       <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-        Linear regression models the direction and strength of the relationship between two variables, 
-        shown as a dashed trend line overlaid on the scatter plot.
+        Linear regression models the direction and strength of the relationship between two variables, shown as a dashed trend line overlaid on the scatter plot.
       </p>
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #f4a261; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-          Same pairings as scatter plots. Full regression summary (coefficients, standard error, p-value) are shown in the side panel.
+          Same pairings as scatter plots. Full regression summary is shown in the side panel.
         </p>
         <div style="font-size: 11px; color: #f4a261; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
-          The <strong style="color:white;">R²</strong> value reveals how well the trend line fits the data, with R² = 1 indicating a perfect fit. A value <strong style="color:white;">p &lt; 0.05</strong> on the slope coefficient indicates a statistically significant trend.
+          <strong style="color:white;">R²</strong> measures how well the trend line fits the data -- an R² of 0.40 means 40% of the variation in health outcomes is explained by pesticide exposure. <strong style="color:white;">p &lt; 0.05</strong> on the slope confirms the trend is unlikely to be due to chance.
         </p>
       </div>
     </div>
-
-    <!-- Column 3: Correlation -->
-    <div style="
-      background: rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 24px 20px;
-      border-top: 3px solid #7ec8e3;
-    ">
+ 
+    <div style="background: rgba(255,255,255,0.07); border-radius: 10px; padding: 24px 20px; border-top: 3px solid #7ec8e3;">
       <div style="text-align: center; margin-bottom: 16px;">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="20" cy="20" r="13" stroke="#7ec8e3" stroke-width="1.5" fill="none"/>
@@ -898,18 +791,9 @@ fluidPage(
           <text x="14" y="24" font-size="10" fill="#7ec8e3" font-family="monospace">r</text>
         </svg>
       </div>
-      <div style="
-        font-size: 10px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #7ec8e3;
-        font-family: monospace;
-        text-align: center;
-        margin-bottom: 10px;
-      ">Correlation</div>
+      <div style="font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #7ec8e3; font-family: monospace; text-align: center; margin-bottom: 10px;">Correlation</div>
       <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-        Pearson\'s correlation coefficient (r) quantifies how strongly two variables 
-        move together, from &minus;1 (perfect negative) to +1 (perfect positive).
+        Pearson\'s correlation coefficient (r) quantifies how strongly two variables move together, from -1 (perfect negative) to +1 (perfect positive).
       </p>
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #7ec8e3; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
@@ -918,173 +802,130 @@ fluidPage(
         </p>
         <div style="font-size: 11px; color: #7ec8e3; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
-          The <strong style="color:white;">r value</strong> is shown on each scatter plot. The side panel gives the full test output, including 95% confidence interval and p-value.
+          The <strong style="color:white;">r value</strong> is shown on each scatter plot. The side panel gives the full test output including 95% confidence interval and p-value.
         </p>
       </div>
     </div>
-
-    <!-- Column 4: ANOVA / Tukey -->
-    <div style="
-      background: rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 24px 20px;
-      border-top: 3px solid #e76f51;
-    ">
+ 
+    <div style="background: rgba(255,255,255,0.07); border-radius: 10px; padding: 24px 20px; border-top: 3px solid #e76f51;">
       <div style="text-align: center; margin-bottom: 16px;">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Three box plots schematic -->
           <rect x="4" y="18" width="8" height="10" rx="1" stroke="#e76f51" stroke-width="1.5" fill="rgba(231,111,81,0.2)"/>
           <line x1="8" y1="18" x2="8" y2="13" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="8" y1="28" x2="8" y2="33" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="5" y1="22" x2="11" y2="22" stroke="#e76f51" stroke-width="1.5"/>
-
           <rect x="16" y="14" width="8" height="12" rx="1" stroke="#e76f51" stroke-width="1.5" fill="rgba(231,111,81,0.2)"/>
           <line x1="20" y1="14" x2="20" y2="9" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="20" y1="26" x2="20" y2="31" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="17" y1="19" x2="23" y2="19" stroke="#e76f51" stroke-width="1.5"/>
-
           <rect x="28" y="10" width="8" height="14" rx="1" stroke="#e76f51" stroke-width="1.5" fill="rgba(231,111,81,0.2)"/>
           <line x1="32" y1="10" x2="32" y2="5" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="32" y1="24" x2="32" y2="29" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="29" y1="16" x2="35" y2="16" stroke="#e76f51" stroke-width="1.5"/>
         </svg>
       </div>
-      <div style="
-        font-size: 10px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #e76f51;
-        font-family: monospace;
-        text-align: center;
-        margin-bottom: 10px;
-      ">ANOVA & Tukey</div>
+      <div style="font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #e76f51; font-family: monospace; text-align: center; margin-bottom: 10px;">ANOVA & Tukey</div>
       <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-        We ran ANOVA tests to detect whether health outcomes differ significantly across pesticide 
-        exposure levels, classified as Low &rarr; High based on tertiles. Tukey\'s post-hoc identifies which 
-        specific pairs of groups drive that difference.
+        ANOVA tests whether health outcomes differ significantly across pesticide exposure levels (Low to High). Tukey\'s post-hoc identifies which specific pairs of groups drive that difference.
       </p>
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #e76f51; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-          County Pesticide Exposure Level vs. Life Expectancy &bull; State Pesticide Exposure Level vs. Parkinson\'s Death Rate
+          County Pesticide Exposure Level vs. Life Expectancy | State Pesticide Exposure Level vs. Parkinson\'s Death Rate
         </p>
         <div style="font-size: 11px; color: #e76f51; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
-          ANOVA p &lt; 0.05 means at least one group differs. Check the <strong style="color:white;">Tukey table</strong> — pairs highlighted in green have adjusted p &lt; 0.05 and are significantly different from each other.
+          ANOVA p &lt; 0.05 means at least one group differs. Check the <strong style="color:white;">Tukey table</strong> -- pairs highlighted in green have adjusted p &lt; 0.05 and are significantly different.
         </p>
       </div>
     </div>
-
-  </div><!-- end grid -->
-</div><!-- end banner -->
+ 
+  </div>
+</div>
 '),
                  
-                 
-                 
-                 
-                 
-                 
+                 # -----------------------------------------------------------------------
                  # State-level pesticide vs Parkinson's mortality
+                 # -----------------------------------------------------------------------
                  div(class = "plot-container",
                      h2("Pesticide Use vs. Parkinson's Mortality Rate by State"),
                      p("Select a pesticide to view its relationship with average Parkinson's death rate at the state level. States with missing pesticide data are excluded."),
-                     
                      selectInput(
                        inputId  = "selected_state_pesticide",
                        label    = "Select Pesticide:",
                        choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
                        selected = "Glyphosate"
                      ),
-                     
                      fluidRow(
                        column(8,
                               plotlyOutput("plot_state_pesticide_parkinson", height = "500px")
                        ),
                        column(4,
-                              h4("Correlation Result"),
-                              verbatimTextOutput("cor_state_pesticide_parkinson"),
-                              br(),
-                              h4("Regression Summary"),
-                              verbatimTextOutput("reg_state_pesticide_parkinson")
+                              uiOutput("stats_state_pesticide_parkinson")
                        )
                      )
                  ),
                  
-                 
-                 
+                 # -----------------------------------------------------------------------
                  # State level Farm Count VS Parkinsons data
+                 # -----------------------------------------------------------------------
                  div(class = "plot-container",
                      h2("Number of Farms vs. Parkinson's Death Rate by State"),
                      p("State-level scatter plot showing the relationship between number of farms and Parkinson's average death rate."),
-                     
                      fluidRow(
                        column(8,
                               plotlyOutput("plot_farm_parkinson_detailed", height = "500px")
                        ),
                        column(4,
-                              h4("Correlation Result"),
-                              verbatimTextOutput("cor_farm_parkinson_detailed"),
-                              br(),
-                              h4("Regression Summary"),
-                              verbatimTextOutput("reg_farm_parkinson_detailed")
+                              uiOutput("stats_farm_parkinson")
                        )
                      )
                  ),
                  
+                 # -----------------------------------------------------------------------
                  # County-level pesticide vs life expectancy
+                 # -----------------------------------------------------------------------
                  div(class = "plot-container",
                      h2("Pesticide Use vs. Life Expectancy by County"),
                      p("Select a pesticide to view its relationship with average life expectancy at the county level."),
-                     
                      selectInput(
                        inputId  = "selected_pesticide",
                        label    = "Select Pesticide:",
                        choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
                        selected = "Glyphosate"
                      ),
-                     
                      fluidRow(
                        column(8,
                               plotlyOutput("plot_county_pesticide_life", height = "500px")
                        ),
                        column(4,
-                              h4("Correlation Result"),
-                              verbatimTextOutput("cor_county_pesticide_life"),
-                              br(),
-                              h4("Regression Summary"),
-                              verbatimTextOutput("reg_county_pesticide_life")
+                              uiOutput("stats_county_pesticide_life")
                        )
                      )
                  ),
                  
                  # =============================================================================
-                 # ANOVA SECTION: EXPOSURE LEVEL VS HEALTH OUTCOMES
+                 # ANOVA SECTION
                  # =============================================================================
                  
                  # --- ANOVA 1: County Pesticide Exposure vs Life Expectancy ---
                  div(class = "plot-container",
                      h2("ANOVA: Pesticide Exposure Level vs. Life Expectancy (County-Level)"),
-                     p("Counties are grouped into Low, Medium, and High exposure tertiles for each 
-       pesticide. One-way ANOVA tests whether life expectancy differs significantly 
+                     p("Counties are grouped into Low, Medium, and High exposure tertiles for each
+       pesticide. One-way ANOVA tests whether life expectancy differs significantly
        across exposure levels. Select a pesticide to view its results."),
-                     
                      selectInput(
                        inputId  = "anova_county_compound",
                        label    = "Select Pesticide:",
                        choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
                        selected = "Glyphosate"
                      ),
-                     
                      fluidRow(
                        column(8,
                               plotlyOutput("plot_anova_exposure_life", height = "500px")
                        ),
                        column(4,
-                              h4("ANOVA Summary"),
-                              verbatimTextOutput("anova_exposure_life"),
-                              br(),
-                              h4("Tukey Post-Hoc Summary"),
-                              verbatimTextOutput("tukey_exposure_life_print")
+                              uiOutput("stats_anova_exposure_life")
                        )
                      ),
                      br(),
@@ -1095,95 +936,217 @@ fluidPage(
                  # --- ANOVA 2: State Pesticide Exposure vs Parkinson's Mortality ---
                  div(class = "plot-container",
                      h2("ANOVA: Pesticide Exposure Level vs. Parkinson's Death Rate (State-Level)"),
-                     p("States are grouped into Low, Medium, and High exposure tertiles for each 
-       pesticide. One-way ANOVA tests whether Parkinson's death rate differs 
+                     p("States are grouped into Low, Medium, and High exposure tertiles for each
+       pesticide. One-way ANOVA tests whether Parkinson's death rate differs
        significantly across exposure levels. Select a pesticide to view its results."),
-                     
                      selectInput(
                        inputId  = "anova_state_compound",
                        label    = "Select Pesticide:",
                        choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
                        selected = "Glyphosate"
                      ),
-                     
                      fluidRow(
                        column(8,
                               plotlyOutput("plot_anova_exposure_parkinson", height = "500px")
                        ),
                        column(4,
-                              h4("ANOVA Summary"),
-                              verbatimTextOutput("anova_exposure_parkinson"),
-                              br(),
-                              h4("Tukey Post-Hoc Summary"),
-                              verbatimTextOutput("tukey_exposure_parkinson_print")
+                              uiOutput("stats_anova_exposure_parkinson")
                        )
                      ),
                      br(),
                      h4("Tukey Post-Hoc Table"),
                      DTOutput("tukey_exposure_parkinson_table")
                  ),
-                 
-             )
-    ),
+                 # =============================================================================
+                 # STATISTICS GLOSSARY ACCORDION
+                 # =============================================================================
+                 div(class = "plot-container",
+                     h2(style = "color: #2d5016; font-size: 1.6em; font-weight: 700;
+                border-bottom: 3px solid #4a7c2a; padding-bottom: 12px; margin-bottom: 20px;",
+                        "Statistics Glossary"),
+                     p(style = "color: #666; font-size: 14px; margin-bottom: 20px;",
+                       "Click any term to expand its definition."),
+                     
+                     tags$style(HTML("
+      .glossary-item {
+        border-bottom: 1px solid #e8e8e8;
+      }
+      .glossary-btn {
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: left;
+        padding: 14px 8px;
+        font-size: 14px;
+        font-family: monospace;
+        font-weight: 600;
+        color: #2d5016;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        letter-spacing: 0.5px;
+      }
+      .glossary-btn:hover {
+        background: #f5f9f0;
+      }
+      .glossary-btn .arrow {
+        font-size: 11px;
+        color: #a7c957;
+        transition: transform 0.2s;
+      }
+      .glossary-btn.open .arrow {
+        transform: rotate(180deg);
+      }
+      .glossary-body {
+        display: none;
+        padding: 4px 12px 16px 12px;
+        font-size: 13.5px;
+        color: #444;
+        line-height: 1.7;
+        background: #fafdf7;
+        border-left: 3px solid #a7c957;
+        margin: 0 4px 8px 4px;
+        border-radius: 0 0 4px 4px;
+      }
+    ")),
+                     
+                     tags$script(HTML("
+      function toggleGlossary(btn) {
+        var body = btn.nextElementSibling;
+        var isOpen = body.style.display === 'block';
+        body.style.display = isOpen ? 'none' : 'block';
+        btn.classList.toggle('open', !isOpen);
+      }
+    ")),
+                     
+                     # Glossary terms in alphabetical order
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "95% Confidence Interval (CI)", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The range of values within which the true population parameter (e.g. the true correlation) 
+             is estimated to fall with 95% probability. A narrow CI indicates a more precise estimate. 
+             If the CI does not include zero, the result is statistically significant at p < 0.05.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "Adjusted p-value (Tukey)", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "A p-value that has been corrected for the fact that multiple pairwise comparisons are 
+             being made simultaneously (in Tukey's post-hoc test). Without this correction, the 
+             probability of a false positive would increase with each additional comparison. 
+             Adjusted p < 0.05 indicates a significant difference between a specific pair of groups.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "Adjusted R\u00b2", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "A version of R\u00b2 that is penalized for the number of predictors in the model. 
+             Unlike standard R\u00b2, it will decrease if a predictor is added that does not 
+             genuinely improve the model. Useful for comparing models with different numbers 
+             of variables.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "F-statistic", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The ratio of variance explained by the model to the unexplained (residual) variance. 
+             Used in both linear regression and ANOVA. A larger F-statistic indicates a stronger 
+             overall model fit. The associated p-value tells you whether this F is larger than 
+             you would expect by chance.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "p-value", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The probability of observing a result at least as extreme as the one found, 
+             assuming the null hypothesis (no relationship) is true. A p-value below 0.05 
+             is the conventional threshold for statistical significance, meaning there is 
+             less than a 5% chance the result is due to random variation alone.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "r (Pearson Correlation Coefficient)", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "Measures the strength and direction of the linear relationship between two variables. 
+             Ranges from -1 (perfect negative relationship) to +1 (perfect positive relationship). 
+             A value near 0 indicates little to no linear relationship. Note that correlation 
+             does not imply causation.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "R\u00b2 (Coefficient of Determination)", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The proportion of variance in the outcome variable (e.g. life expectancy) that is 
+             explained by the predictor (e.g. pesticide use). An R\u00b2 of 0.25 means 25% of 
+             the variation in the outcome is accounted for by the model. R\u00b2 ranges from 
+             0 (no fit) to 1 (perfect fit).")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "Slope", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The regression coefficient for the predictor variable. It represents how much the 
+             outcome variable is expected to change for each one-unit increase in the predictor. 
+             A positive slope indicates that higher pesticide exposure is associated with a higher 
+             outcome value; a negative slope indicates the reverse.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "Slope SE (Standard Error)", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The standard error of the slope estimate, measuring the precision of the regression 
+             coefficient. A smaller SE relative to the slope indicates a more reliable estimate. 
+             It is used to calculate the t-statistic and confidence interval for the slope.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "t-statistic", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "Used in the Pearson correlation test to determine whether the observed correlation 
+             is significantly different from zero. It is calculated as the correlation coefficient 
+             divided by its standard error. A larger absolute t-value corresponds to a smaller 
+             p-value and stronger evidence against the null hypothesis.")
+                     )
+                 )    
+             ) # end main-container
+    ), # end Data Visualization tabPanel
     
     # =========================================================================
     # DATA TABLES TAB
     # =========================================================================
     tabPanel("Data Tables",
-             
-             div(class = "home-hero",
-                 h1("Data Tables"),
-                 p(class = "hero-subtitle", "Explore the raw datasets used in this analysis")
-             ),
-             
-             div(class = "home-section",
+             div(class = "main-container",
+                 h1(class = "page-header", "Data Tables"),
                  
-                 div(class = "home-plain-card",
-                     tags$h2("Parkinson's Disease Data"),
-                     tags$p("State-level Parkinson's mortality data."),
+                 div(class = "content-box",
+                     h2("Parkinson's Disease Data"),
+                     p("State-level Parkinson's mortality data."),
                      DTOutput("data_table_parkinson"),
                      br(),
-                     downloadButton("download_parkinson", "Download Dataset",
+                     downloadButton("download_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "home-plain-card",
-                     tags$h2("Farm Data"),
-                     tags$p("State-level agricultural data."),
+                 div(class = "content-box",
+                     h2("Farm Data"),
+                     p("State-level agricultural data."),
                      DTOutput("data_table_farms"),
                      br(),
-                     downloadButton("download_farms", "Download Dataset",
+                     downloadButton("download_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "home-plain-card",
-                     tags$h2("Life Expectancy Data"),
-                     tags$p("State-level life expectancy data."),
+                 div(class = "content-box",
+                     h2("Life Expectancy Data"),
+                     p("State-level life expectancy data."),
                      DTOutput("data_table_life_expectancy"),
                      br(),
-                     downloadButton("download_life_expectancy", "Download Dataset",
-                                    class = "btn btn-success btn-lg")
-                 ),
-                 
-                 div(class = "home-plain-card",
-                     tags$h2("County Pesticide Data"),
-                     tags$p("County-level pesticide data."),
-                     DTOutput("data_table_county_pesticides"),
-                     br(),
-                     downloadButton("download_county_pesticides", "Download Dataset",
-                                    class = "btn btn-success btn-lg")
-                 ),
-                 
-                 div(class = "home-plain-card",
-                     tags$h2("State Pesticide Data"),
-                     tags$p("State-level pesticide data."),
-                     DTOutput("data_table_state_pesticides"),
-                     br(),
-                     downloadButton("download_state_pesticides", "Download Dataset",
+                     downloadButton("download_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  )
-                 
-             ) # End home-section
+             )
     ),
     
     # =========================================================================
@@ -1198,25 +1161,54 @@ fluidPage(
              
              div(class = "home-section",
                  
-                 div(class = "home-plain-card",
-                     tags$h2("Purpose"),
-                     tags$p("This dashboard explores relationships between environmental factors
-                  and health outcomes across the United States.")
-                 ),
-                 
-                 div(class = "home-plain-card",
-                     tags$h2("Data Sources"),
-                     tags$ul(
-                       tags$li("CDC - Parkinson's disease mortality"),
-                       tags$li("USDA - Pesticide usage and farm statistics"),
-                       tags$li("CDC WONDER - Life expectancy data"),
-                       tags$li("Census - County coordinate data (cfips_location.csv)")
+                 div(class = "about-card",
+                     div(class = "about-card-text",
+                         tags$h2("Purpose"),
+                         tags$p("Parkinson's disease affects millions of Americans, yet the environmental
+                     drivers behind its geographic distribution remain poorly understood. This
+                     dashboard explores whether pesticide use and agricultural intensity are
+                     associated with higher Parkinson's mortality rates and lower life expectancy
+                     across U.S. states and counties."),
+                         tags$p("Using statistical methods including Pearson correlation, linear regression,
+                     ANOVA, and Tukey post-hoc tests, we surface potential environmental risk
+                     patterns from publicly available federal datasets.")
+                     ),
+                     tags$img(
+                       src = "about_image.jpg",
+                       class = "about-illustration",
+                       alt = "Medical research illustration"
                      )
                  ),
                  
+                 # Two-column row for Data Sources + Limitations
+                 div(style = "display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;",
+                     
+                     div(class = "home-plain-card", style = "margin-bottom: 0;",
+                         tags$h2("Data Sources"),
+                         tags$ul(
+                           tags$li(tags$strong("CDC"), " — Parkinson's disease mortality rates by state"),
+                           tags$li(tags$strong("USDA"), " — Pesticide usage and farm statistics by county and state"),
+                           tags$li(tags$strong("CDC WONDER"), " — Life expectancy data by state and county"),
+                           tags$li(tags$strong("U.S. Census"), " — County coordinate data (FIPS codes, lat/lon)")
+                         )
+                     ),
+                     
+                     div(class = "home-plain-card", style = "margin-bottom: 0;",
+                         tags$h2("Important Limitations"),
+                         tags$ul(
+                           tags$li("Correlation does not imply causation"),
+                           tags$li("Aggregated data may mask local variations"),
+                           tags$li("Multiple confounding variables exist (age, income, healthcare access)"),
+                           tags$li("Data represents averages across multi-year periods"),
+                           tags$li("County-level life expectancy and state pesticide data have different temporal coverage")
+                         )
+                     )
+                 ),
+                 
+                 # Maps card
                  div(class = "home-plain-card",
                      tags$h2("Maps"),
-                     tags$p("Three interactive maps visualize:"),
+                     tags$p("Three interactive maps allow geographic exploration of the data:"),
                      tags$ul(
                        tags$li(tags$strong("Map 1:"), " State-level Parkinson's death rates vs. pesticide use"),
                        tags$li(tags$strong("Map 2:"), " State-level Parkinson's death rates vs. farm density"),
@@ -1224,23 +1216,39 @@ fluidPage(
                      )
                  ),
                  
+                 # Methodology card
                  div(class = "home-plain-card",
-                     tags$h2("Important Limitations"),
-                     tags$ul(
-                       tags$li("Correlation does not imply causation"),
-                       tags$li("Aggregated data may mask local variations"),
-                       tags$li("Multiple confounding variables exist")
-                     )
+                     tags$h2("Methodology"),
+                     tags$p("Datasets were joined at the state and county level using FIPS codes and state
+                 names. Pesticide exposure was averaged across available survey years. For ANOVA
+                 analyses, counties and states were grouped into Low, Medium, and High exposure
+                 tertiles based on pesticide application estimates. All statistical tests were
+                 performed in R using base stats functions."),
+                     tags$p("Scatter plots display raw relationships with overlaid linear regression lines.
+                 Pearson correlation coefficients and full regression summaries are shown
+                 alongside each plot for transparency.")
+                 ),
+                 
+                 # Team card
+                 div(class = "home-plain-card",
+                     tags$h2("Team & Credits"),
+                     tags$p(tags$strong("Course:"), " BIOL-185 — Medical Trends Analysis, Winter 2026"),
+                     tags$p(tags$strong("Institution:"), " Washington & Lee University"),
+                     tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT.")
                  )
                  
              ) # End home-section
+             
     ) # End About tabPanel
-  )
-)
+    
+    
+  ) # End navbarPage
+  
+) # End fluidPage
+
 
 
 # SERVER COPY //////////////////////////////////////////////////
-
 library(shiny)
 library(ggplot2)
 library(plotly)
@@ -1362,12 +1370,71 @@ function(input, output, session) {
     out
   }
   
+  # =============================================================================
+  ## STAT CARD HELPER FUNCTION
+  ## Generates a styled dark green card for displaying statistical output
+  # =============================================================================
+  
+  make_stat_card <- function(test_name, metrics) {
+    rows <- paste0(
+      sapply(names(metrics), function(label) {
+        sprintf('
+        <div style="
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          padding: 8px 0;
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+        ">
+          <span style="
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #a7c957;
+            font-family: monospace;
+          ">%s</span>
+          <span style="
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            font-family: monospace;
+          ">%s</span>
+        </div>',
+                label, metrics[[label]]
+        )
+      }),
+      collapse = ""
+    )
+    
+    HTML(sprintf('
+    <div style="
+      background: linear-gradient(160deg, #1a3009 0%%, #2d5016 100%%);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin-top: 8px;
+      box-shadow: 0 2px 12px rgba(45,80,22,0.25);
+    ">
+      <div style="
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #a7c957;
+        font-family: monospace;
+        margin-bottom: 14px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(167,201,87,0.3);
+      ">%s</div>
+      %s
+    </div>
+  ', test_name, rows))
+  }
+  
   # ===========================================================================
   # PROCESS AND MERGE DATA
   # ===========================================================================
   
   # Aggregate pesticide data to state level
-  Pesticide_State_Data <- reactive({
+  Pesticide_State_Data_Agg <- reactive({
     req(Pesticide_County_Data())
     data <- Pesticide_County_Data()
     
@@ -1379,13 +1446,8 @@ function(input, output, session) {
       NULL
     }
     
-    if(is.null(state_col)) {
-      return(NULL)
-    }
-    
-    if(!all(c("LOW_ESTIMATE", "HIGH_ESTIMATE") %in% names(data))) {
-      return(NULL)
-    }
+    if(is.null(state_col)) return(NULL)
+    if(!all(c("LOW_ESTIMATE", "HIGH_ESTIMATE") %in% names(data))) return(NULL)
     
     state_pest <- data %>%
       mutate(State_Abbr = normalize_state_to_abbr(.data[[state_col]])) %>%
@@ -1433,9 +1495,9 @@ function(input, output, session) {
       summarise(value = mean(pest_value, na.rm = TRUE), .groups = "drop") %>%
       group_by(State_Abbr) %>%
       summarise(
-        `2,4-D` = ifelse(any(compound == "2,4-D"), value[compound == "2,4-D"][1], NA_real_),
-        Glyphosate = ifelse(any(compound == "Glyphosate"), value[compound == "Glyphosate"][1], NA_real_),
-        Paraquat = ifelse(any(compound == "Paraquat"), value[compound == "Paraquat"][1], NA_real_),
+        `2,4-D`      = ifelse(any(compound == "2,4-D"),      value[compound == "2,4-D"][1],      NA_real_),
+        Glyphosate   = ifelse(any(compound == "Glyphosate"), value[compound == "Glyphosate"][1], NA_real_),
+        Paraquat     = ifelse(any(compound == "Paraquat"),   value[compound == "Paraquat"][1],   NA_real_),
         Chlorpyrifos = ifelse(any(compound == "Chlorpyrifos"), value[compound == "Chlorpyrifos"][1], NA_real_),
         .groups = "drop"
       )
@@ -1446,8 +1508,8 @@ function(input, output, session) {
     req(Parkinson_Data())
     data <- Parkinson_Data() %>%
       mutate(State_Abbr = normalize_state_to_abbr(State))
-    if(!is.null(Pesticide_State_Data())) {
-      data <- data %>% left_join(Pesticide_State_Data(), by = "State_Abbr")
+    if (!is.null(Pesticide_State_Data_Agg())) {
+      data <- data %>% left_join(Pesticide_State_Data_Agg(), by = "State_Abbr")
     }
     data %>% filter(!is.na(Avg_Death_Rate))
   })
@@ -1463,33 +1525,28 @@ function(input, output, session) {
     req(Pesticide_County_Data(), Expectancy_Data(), County_Coords())
     
     pesticide <- Pesticide_County_Data()
-    life_exp <- Expectancy_Data()
-    coords <- County_Coords()
+    life_exp  <- Expectancy_Data()
+    coords    <- County_Coords()
     
-    # Prepare coords with state info
     coords <- coords %>%
       mutate(
-        county_fips = sprintf("%05d", as.integer(gsub("[^0-9]", "", as.character(cfips)))),
-        state_fips = substr(county_fips, 1, 2),
+        county_fips       = sprintf("%05d", as.integer(gsub("[^0-9]", "", as.character(cfips)))),
+        state_fips        = substr(county_fips, 1, 2),
         county_name_clean = trimws(tolower(gsub(" County$| Parish$", "", name)))
-      )
-    
-    # Add state codes to coords
-    coords <- coords %>%
+      ) %>%
       left_join(state_fips_mapping, by = "state_fips")
     
-    # Clean county names in pesticide data
     pesticide <- pesticide %>%
       mutate(
+        # FIXED
         state_abbr = normalize_state_to_abbr(if ("state_name" %in% names(pesticide)) state_name else state_code),
         county_name_clean = trimws(tolower(gsub(" County$| Parish$", "", county_name))),
-        Avg_Pesticide = (LOW_ESTIMATE + HIGH_ESTIMATE) / 2
+        Avg_Pesticide     = (LOW_ESTIMATE + HIGH_ESTIMATE) / 2
       )
     
-    # Clean county names in life expectancy data
     life_exp <- life_exp %>%
       mutate(
-        state_abbr = normalize_state_to_abbr(State),
+        state_abbr        = normalize_state_to_abbr(State),
         county_name_clean = trimws(tolower(gsub(" County$| Parish$", "", County)))
       )
     
@@ -1498,78 +1555,56 @@ function(input, output, session) {
       group_by(state_abbr, county_name_clean) %>%
       summarise(
         Avg_Pesticide = mean(Avg_Pesticide, na.rm = TRUE),
-        state_name = first(state_abbr),
-        county_name = first(county_name),
+        state_name    = first(state_abbr),
+        county_name   = first(county_name),
         .groups = "drop"
       )
     
     life_state_county <- life_exp %>%
       filter(!is.na(state_abbr), !is.na(county_name_clean)) %>%
       group_by(state_abbr, county_name_clean) %>%
-      summarise(
-        Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE),
-        .groups = "drop"
-      )
+      summarise(Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE), .groups = "drop")
     
     merged <- pesticide_state_county %>%
       left_join(life_state_county, by = c("state_abbr", "county_name_clean")) %>%
       left_join(
-        coords %>%
-          transmute(
-            state_abbr = State,
-            county_name_clean,
-            county_fips = as.character(county_fips),
-            lng,
-            lat
-          ),
+        coords %>% transmute(state_abbr = State, county_name_clean, county_fips = as.character(county_fips), lng, lat),
         by = c("state_abbr", "county_name_clean")
-      )
-    
-    # Keep only rows with coordinates
-    merged <- merged %>%
+      ) %>%
       filter(!is.na(lat), !is.na(lng), !is.na(county_fips))
     
     return(merged)
   })
   
-  # Build state centroids from county coordinates (no GeoJSON required)
   State_Centroids <- reactive({
     req(County_Coords())
-    coords <- County_Coords() %>%
+    County_Coords() %>%
       mutate(
         county_fips = sprintf("%05d", as.integer(gsub("[^0-9]", "", as.character(cfips)))),
-        state_fips = substr(county_fips, 1, 2)
+        state_fips  = substr(county_fips, 1, 2)
       ) %>%
       left_join(state_fips_mapping, by = "state_fips") %>%
-      filter(!is.na(State), !is.na(lat), !is.na(lng))
-    
-    coords %>%
+      filter(!is.na(State), !is.na(lat), !is.na(lng)) %>%
       group_by(State) %>%
-      summarise(
-        lat = mean(lat, na.rm = TRUE),
-        lng = mean(lng, na.rm = TRUE),
-        .groups = "drop"
-      )
+      summarise(lat = mean(lat, na.rm = TRUE), lng = mean(lng, na.rm = TRUE), .groups = "drop")
   })
   
-  # Polygon layers for choropleth rendering
   state_sf <- reactive({
-    states_map <- maps::map("state", fill = TRUE, plot = FALSE)
-    sf_obj <- sf::st_as_sf(states_map)
+    states_map   <- maps::map("state", fill = TRUE, plot = FALSE)
+    sf_obj       <- sf::st_as_sf(states_map)
     sf_obj$state_lower <- tolower(sf_obj$ID)
     sf_obj
   })
   
   county_sf <- reactive({
     counties_map <- maps::map("county", fill = TRUE, plot = FALSE)
-    sf_obj <- sf::st_as_sf(counties_map)
-    id_parts <- strsplit(sf_obj$ID, ",")
-    sf_obj$state_lower <- tolower(vapply(id_parts, `[`, character(1), 1))
+    sf_obj       <- sf::st_as_sf(counties_map)
+    id_parts     <- strsplit(sf_obj$ID, ",")
+    sf_obj$state_lower  <- tolower(vapply(id_parts, `[`, character(1), 1))
     sf_obj$county_lower <- trimws(tolower(vapply(id_parts, `[`, character(1), 2)))
     sf_obj
   })
   
-  # Update state selector for Map 3
   observe({
     req(County_Pesticide_Life())
     states <- County_Pesticide_Life() %>%
@@ -1577,9 +1612,8 @@ function(input, output, session) {
       distinct(state_name) %>%
       arrange(state_name) %>%
       pull(state_name)
-    
     updateSelectInput(session, "state_selector_map3",
-                      choices = c("All States" = "all", setNames(states, states)),
+                      choices  = c("All States" = "all", setNames(states, states)),
                       selected = "all")
   })
   
@@ -1589,45 +1623,37 @@ function(input, output, session) {
   
   output$stats_boxes <- renderUI({
     req(Parkinson_Data())
-    
     parkinson <- Parkinson_Data()
     
-    avg_death_rate <- if("Avg_Death_Rate" %in% names(parkinson)) {
-      round(mean(parkinson$Avg_Death_Rate, na.rm = TRUE), 2)
-    } else { "N/A" }
+    avg_death_rate <- if ("Avg_Death_Rate" %in% names(parkinson))
+      round(mean(parkinson$Avg_Death_Rate, na.rm = TRUE), 2) else "N/A"
     
-    total_farms <- if(!is.null(Farm_Data()) && "Number_Of_Farms" %in% names(Farm_Data())) {
-      format(sum(Farm_Data()$Number_Of_Farms, na.rm = TRUE), big.mark = ",")
-    } else { "N/A" }
+    total_farms <- if (!is.null(Farm_Data()) && "Number_Of_Farms" %in% names(Farm_Data()))
+      format(sum(Farm_Data()$Number_Of_Farms, na.rm = TRUE), big.mark = ",") else "N/A"
     
-    avg_life_exp <- if(!is.null(Expectancy_State_Data()) && "Avg_Life_Expectancy" %in% names(Expectancy_State_Data())) {
-      round(mean(Expectancy_State_Data()$Avg_Life_Expectancy, na.rm = TRUE), 1)
-    } else { "N/A" }
+    avg_life_exp <- if (!is.null(Expectancy_State_Data()) && "Avg_Life_Expectancy" %in% names(Expectancy_State_Data()))
+      round(mean(Expectancy_State_Data()$Avg_Life_Expectancy, na.rm = TRUE), 1) else "N/A"
     
     states_count <- nrow(parkinson)
     
     div(class = "stats-row",
         div(class = "stat-box",
             div(class = "stat-number", avg_death_rate),
-            div(class = "stat-label", "Avg Parkinson's Death Rate")
-        ),
+            div(class = "stat-label", "Avg Parkinson's Death Rate")),
         div(class = "stat-box",
             div(class = "stat-number", total_farms),
-            div(class = "stat-label", "Total U.S. Farms")
-        ),
+            div(class = "stat-label", "Total U.S. Farms")),
         div(class = "stat-box",
             div(class = "stat-number", avg_life_exp),
-            div(class = "stat-label", "Avg Life Expectancy (years)")
-        ),
+            div(class = "stat-label", "Avg Life Expectancy (years)")),
         div(class = "stat-box",
             div(class = "stat-number", states_count),
-            div(class = "stat-label", "States Analyzed")
-        )
+            div(class = "stat-label", "States Analyzed"))
     )
   })
   
   # ===========================================================================
-  # MAP SELECTOR OUTPUTS (for selected_map / main_map UI)
+  # MAP SELECTOR OUTPUTS
   # ===========================================================================
   
   output$map_title <- renderText({
@@ -1642,22 +1668,19 @@ function(input, output, session) {
     switch(input$selected_map,
            "map1" = div(p(style = "font-size: 0.9em; line-height: 1.6;",
                           "This choropleth map shows state-level Parkinson's death rates and key pesticide values.",
-                          br(), br(),
-                          strong("Color:"), " Parkinson's death rate")),
+                          br(), br(), strong("Color:"), " Parkinson's death rate")),
            "map2" = div(p(style = "font-size: 0.9em; line-height: 1.6;",
                           "This choropleth map shows state-level Parkinson's death rates overlaid with farm counts.",
-                          br(), br(),
-                          strong("Color:"), " Parkinson's death rate")),
+                          br(), br(), strong("Color:"), " Parkinson's death rate")),
            "map3" = div(p(style = "font-size: 0.9em; line-height: 1.6;",
                           "This county-level choropleth map shows life expectancy by county.",
-                          br(), br(),
-                          strong("Color:"), " Life expectancy")),
+                          br(), br(), strong("Color:"), " Life expectancy")),
            p("Select a map to view details.")
     )
   })
   
   # ===========================================================================
-  # MAIN MAP OUTPUT (choropleths rendered from maps/sf polygons)
+  # MAIN MAP OUTPUT
   # ===========================================================================
   
   output$main_map <- renderLeaflet({
@@ -1665,97 +1688,69 @@ function(input, output, session) {
     
     if (selected == "map1") {
       req(Parkinson_Pesticide_State(), state_sf())
-      data <- Parkinson_Pesticide_State()
+      data      <- Parkinson_Pesticide_State()
       compounds <- Pesticide_State_Compounds()
       
       state_lookup <- data.frame(
-        state_lower = tolower(state.name),
-        State_Abbr = state.abb,
-        stringsAsFactors = FALSE
+        state_lower = tolower(state.name), State_Abbr = state.abb, stringsAsFactors = FALSE
       )
-      
       states <- state_sf() %>%
         left_join(state_lookup, by = "state_lower") %>%
-        left_join(
-          data %>% select(State_Abbr, Avg_Death_Rate, Avg_Pesticide),
-          by = "State_Abbr"
-        )
+        left_join(data %>% select(State_Abbr, Avg_Death_Rate, Avg_Pesticide), by = "State_Abbr")
       
       if (!is.null(compounds)) {
         states <- states %>%
           left_join(compounds, by = "State_Abbr") %>%
-          rename(
-            pest_24d = `2,4-D`,
-            pest_glyphosate = Glyphosate,
-            pest_paraquat = Paraquat,
-            pest_chlorpyrifos = Chlorpyrifos
-          )
+          rename(pest_24d = `2,4-D`, pest_glyphosate = Glyphosate,
+                 pest_paraquat = Paraquat, pest_chlorpyrifos = Chlorpyrifos)
       } else {
-        states$pest_24d <- NA_real_
-        states$pest_glyphosate <- NA_real_
-        states$pest_paraquat <- NA_real_
-        states$pest_chlorpyrifos <- NA_real_
+        states$pest_24d <- states$pest_glyphosate <- states$pest_paraquat <- states$pest_chlorpyrifos <- NA_real_
       }
       
-      pal <- colorNumeric("YlOrRd", domain = states$Avg_Death_Rate, na.color = "#d0d0d0")
+      pal    <- colorNumeric("YlOrRd", domain = states$Avg_Death_Rate, na.color = "#d0d0d0")
       labels <- sprintf(
         "<strong>%s</strong><br/>Death Rate: %s<br/>2,4-D: %s lbs<br/>Glyphosate: %s lbs<br/>Paraquat: %s lbs<br/>Chlorpyrifos: %s lbs",
         tools::toTitleCase(states$state_lower),
-        ifelse(is.na(states$Avg_Death_Rate), "N/A", round(states$Avg_Death_Rate, 2)),
-        ifelse(is.na(states$pest_24d), "N/A", round(states$pest_24d, 1)),
-        ifelse(is.na(states$pest_glyphosate), "N/A", round(states$pest_glyphosate, 1)),
-        ifelse(is.na(states$pest_paraquat), "N/A", round(states$pest_paraquat, 1)),
-        ifelse(is.na(states$pest_chlorpyrifos), "N/A", round(states$pest_chlorpyrifos, 1))
+        ifelse(is.na(states$Avg_Death_Rate),     "N/A", round(states$Avg_Death_Rate, 2)),
+        ifelse(is.na(states$pest_24d),           "N/A", round(states$pest_24d, 1)),
+        ifelse(is.na(states$pest_glyphosate),    "N/A", round(states$pest_glyphosate, 1)),
+        ifelse(is.na(states$pest_paraquat),      "N/A", round(states$pest_paraquat, 1)),
+        ifelse(is.na(states$pest_chlorpyrifos),  "N/A", round(states$pest_chlorpyrifos, 1))
       ) %>% lapply(htmltools::HTML)
       
       leaflet(states) %>%
         addProviderTiles(providers$CartoDB.Positron) %>%
         setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-        addPolygons(
-          fillColor = ~pal(Avg_Death_Rate),
-          fillOpacity = 0.75,
-          color = "white",
-          weight = 1.5,
-          opacity = 1,
-          highlightOptions = highlightOptions(weight = 3, color = "#2d5016", fillOpacity = 0.9, bringToFront = TRUE),
-          label = labels
-        ) %>%
+        addPolygons(fillColor = ~pal(Avg_Death_Rate), fillOpacity = 0.75,
+                    color = "white", weight = 1.5, opacity = 1,
+                    highlightOptions = highlightOptions(weight = 3, color = "#2d5016", fillOpacity = 0.9, bringToFront = TRUE),
+                    label = labels) %>%
         addLegend(position = "bottomright", pal = pal, values = ~Avg_Death_Rate,
                   title = "Death Rate", opacity = 0.8, na.label = "No data")
       
     } else if (selected == "map2") {
       req(Parkinson_Farm_State(), state_sf())
-      data <- Parkinson_Farm_State()
-      state_lookup <- data.frame(
-        state_lower = tolower(state.name),
-        State_Abbr = state.abb,
-        stringsAsFactors = FALSE
-      )
+      data         <- Parkinson_Farm_State()
+      state_lookup <- data.frame(state_lower = tolower(state.name), State_Abbr = state.abb, stringsAsFactors = FALSE)
       states <- state_sf() %>%
         left_join(state_lookup, by = "state_lower") %>%
-        left_join(data %>% mutate(State_Abbr = normalize_state_to_abbr(State)),
-                  by = "State_Abbr")
+        left_join(data %>% mutate(State_Abbr = normalize_state_to_abbr(State)), by = "State_Abbr")
       
-      pal <- colorNumeric("RdPu", domain = states$Avg_Death_Rate, na.color = "#d0d0d0")
+      pal    <- colorNumeric("RdPu", domain = states$Avg_Death_Rate, na.color = "#d0d0d0")
       labels <- sprintf(
         "<strong>%s</strong><br/>Death Rate: %s<br/>Farms: %s",
         tools::toTitleCase(states$state_lower),
-        ifelse(is.na(states$Avg_Death_Rate), "N/A", round(states$Avg_Death_Rate, 2)),
+        ifelse(is.na(states$Avg_Death_Rate),  "N/A", round(states$Avg_Death_Rate, 2)),
         ifelse(is.na(states$Number_Of_Farms), "N/A", format(states$Number_Of_Farms, big.mark = ","))
       ) %>% lapply(htmltools::HTML)
       
       leaflet(states) %>%
         addProviderTiles(providers$CartoDB.Positron) %>%
         setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-        addPolygons(
-          fillColor = ~pal(Avg_Death_Rate),
-          fillOpacity = 0.75,
-          color = "white",
-          weight = 1.5,
-          opacity = 1,
-          highlightOptions = highlightOptions(weight = 3, color = "#2d5016", fillOpacity = 0.9, bringToFront = TRUE),
-          label = labels
-        ) %>%
+        addPolygons(fillColor = ~pal(Avg_Death_Rate), fillOpacity = 0.75,
+                    color = "white", weight = 1.5, opacity = 1,
+                    highlightOptions = highlightOptions(weight = 3, color = "#2d5016", fillOpacity = 0.9, bringToFront = TRUE),
+                    label = labels) %>%
         addLegend(position = "bottomright", pal = pal, values = ~Avg_Death_Rate,
                   title = "Death Rate", opacity = 0.8, na.label = "No data")
       
@@ -1764,72 +1759,54 @@ function(input, output, session) {
       if (is.null(data) || nrow(data) == 0 ||
           !"Avg_Life_Expectancy" %in% names(data) ||
           sum(!is.na(data$Avg_Life_Expectancy)) == 0) {
-        return(
-          leaflet() %>%
-            addProviderTiles(providers$CartoDB.Positron) %>%
-            setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-            addPopups(-98.5, 39.83, "No county life-expectancy data available")
-        )
+        return(leaflet() %>% addProviderTiles(providers$CartoDB.Positron) %>%
+                 setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+                 addPopups(-98.5, 39.83, "No county life-expectancy data available"))
       }
       
-      data_with_life <- data %>% filter(!is.na(Avg_Life_Expectancy), !is.na(lat), !is.na(lng))
-      abbr_to_full <- setNames(tolower(state.name), state.abb)
-      county_summary <- data_with_life %>%
+      abbr_to_full   <- setNames(tolower(state.name), state.abb)
+      county_summary <- data %>%
+        filter(!is.na(Avg_Life_Expectancy), !is.na(lat), !is.na(lng)) %>%
         mutate(
-          state_lower = ifelse(
-            nchar(trimws(state_name)) == 2,
-            unname(abbr_to_full[toupper(trimws(state_name))]),
-            tolower(state_name)
-          ),
+          state_lower  = ifelse(nchar(trimws(state_name)) == 2,
+                                unname(abbr_to_full[toupper(trimws(state_name))]),
+                                tolower(state_name)),
           county_lower = trimws(tolower(gsub(" County$| Parish$", "", county_name)))
         ) %>%
         filter(!is.na(state_lower), !is.na(county_lower)) %>%
         group_by(state_lower, county_lower) %>%
-        summarise(
-          Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE),
-          Avg_Pesticide = mean(Avg_Pesticide, na.rm = TRUE),
-          .groups = "drop"
-        )
+        summarise(Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE),
+                  Avg_Pesticide = mean(Avg_Pesticide, na.rm = TRUE), .groups = "drop")
       
       cp <- county_sf() %>%
         left_join(county_summary, by = c("state_lower", "county_lower"))
       
       if (sum(!is.na(cp$Avg_Life_Expectancy)) == 0) {
-        return(
-          leaflet() %>%
-            addProviderTiles(providers$CartoDB.Positron) %>%
-            setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-            addPopups(-98.5, 39.83, "No county life-expectancy data available after county match")
-        )
+        return(leaflet() %>% addProviderTiles(providers$CartoDB.Positron) %>%
+                 setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+                 addPopups(-98.5, 39.83, "No county life-expectancy data available after county match"))
       }
       
-      pal <- colorNumeric("YlGn", domain = cp$Avg_Life_Expectancy, na.color = "#d0d0d0")
+      pal    <- colorNumeric("YlGn", domain = cp$Avg_Life_Expectancy, na.color = "#d0d0d0")
       labels <- sprintf(
         "<strong>%s, %s</strong><br/>Life Expectancy: %s yrs<br/>Pesticide: %s lbs",
-        tools::toTitleCase(cp$county_lower),
-        tools::toTitleCase(cp$state_lower),
+        tools::toTitleCase(cp$county_lower), tools::toTitleCase(cp$state_lower),
         ifelse(is.na(cp$Avg_Life_Expectancy), "N/A", round(cp$Avg_Life_Expectancy, 1)),
-        ifelse(is.na(cp$Avg_Pesticide), "N/A", round(cp$Avg_Pesticide, 2))
+        ifelse(is.na(cp$Avg_Pesticide),       "N/A", round(cp$Avg_Pesticide, 2))
       ) %>% lapply(htmltools::HTML)
       
       leaflet(cp) %>%
         addProviderTiles(providers$CartoDB.Positron) %>%
         setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-        addPolygons(
-          fillColor = ~pal(Avg_Life_Expectancy),
-          fillOpacity = 0.75,
-          color = "white",
-          weight = 0.4,
-          opacity = 0.8,
-          highlightOptions = highlightOptions(weight = 2, color = "#2d5016", fillOpacity = 0.9, bringToFront = TRUE),
-          label = labels
-        ) %>%
+        addPolygons(fillColor = ~pal(Avg_Life_Expectancy), fillOpacity = 0.75,
+                    color = "white", weight = 0.4, opacity = 0.8,
+                    highlightOptions = highlightOptions(weight = 2, color = "#2d5016", fillOpacity = 0.9, bringToFront = TRUE),
+                    label = labels) %>%
         addLegend(position = "bottomright", pal = pal, values = ~Avg_Life_Expectancy,
                   title = "Life Expectancy (yrs)", opacity = 0.8, na.label = "No data")
       
     } else {
-      leaflet() %>%
-        addProviderTiles(providers$CartoDB.Positron) %>%
+      leaflet() %>% addProviderTiles(providers$CartoDB.Positron) %>%
         setView(lng = -98.5, lat = 39.5, zoom = 4)
     }
   })
@@ -1983,75 +1960,25 @@ function(input, output, session) {
       addLegend(pal = pal, values = ~Avg_Life_Expectancy, opacity = 1,
                 title = "Life Expectancy<br/>(years)", position = "bottomright")
   })
-  
   # ===========================================================================
+  
   # DATA TABLES
   # ===========================================================================
   
   output$data_table_parkinson <- renderDT({
     req(Parkinson_Data())
-    
-    datatable(
-      Parkinson_Data(),
-      options = list(pageLength = 15, scrollX = TRUE),
-      rownames = FALSE,
-      class = 'cell-border stripe hover'
-    ) %>%
-      formatRound(
-        columns = intersect(c("Avg_Death_Rate", "Avg_Deaths"), names(Parkinson_Data())),
-        digits = 2
-      )
+    datatable(Parkinson_Data(), options = list(pageLength = 15, scrollX = TRUE),
+              rownames = FALSE, class = 'cell-border stripe hover') %>%
+      formatRound(columns = intersect(c("Avg_Death_Rate", "Avg_Deaths"), names(Parkinson_Data())), digits = 2)
   })
   
   output$data_table_farms <- renderDT({
     req(Farm_Data())
-    
-    datatable(
-      Farm_Data(),
-      options = list(pageLength = 15, scrollX = TRUE),
-      rownames = FALSE,
-      class = 'cell-border stripe hover'
-    ) %>%
-      formatRound(
-        columns = intersect(c("Area_operated_Acres", "Acres_Operated_Millions"), names(Farm_Data())),
-        digits = 2
-      )
+    datatable(Farm_Data(), options = list(pageLength = 15, scrollX = TRUE),
+              rownames = FALSE, class = 'cell-border stripe hover') %>%
+      formatRound(columns = intersect(c("Area_operated_Acres", "Acres_Operated_Millions"), names(Farm_Data())), digits = 2)
   })
   
-  
-  output$data_table_life_expectancy <- renderDT({
-    req(Expectancy_State_Data())       # fixed: was Life_Expectancy_Data
-    datatable(
-      Expectancy_State_Data(),
-      options = list(pageLength = 15, scrollX = TRUE),
-      rownames = FALSE,
-      class = 'cell-border stripe hover'
-    ) %>%
-      formatRound(
-        columns = intersect(c("Avg_Life_Expectancy", "Avg_Range_Min"), names(Expectancy_State_Data())),
-        digits = 2
-      )
-  })
-  
-  output$data_table_county_pesticides <- renderDT({
-    req(Pesticide_County_Data())       # fixed: was County_Pesticide_Data
-    datatable(
-      Pesticide_County_Data(),
-      options = list(pageLength = 15, scrollX = TRUE),
-      rownames = FALSE,
-      class = 'cell-border stripe hover'
-    )
-  })
-  
-  output$data_table_state_pesticides <- renderDT({
-    req(State_Pesticide_Data())
-    datatable(
-      State_Pesticide_Data(),
-      options = list(pageLength = 15, scrollX = TRUE),
-      rownames = FALSE,
-      class = 'cell-border stripe hover'
-    )
-  })
   # =============================================================================
   ## STATE PESTICIDE VS PARKINSON'S MORTALITY RATE
   # =============================================================================
@@ -2083,66 +2010,66 @@ function(input, output, session) {
     r_squared  <- round(summary(model)$r.squared, 3)
     coef_table <- summary(model)$coefficients
     p_val      <- if (nrow(coef_table) >= 2) round(coef_table[2, 4], 4) else NA
-    
-    x_seq    <- seq(min(data$AVG_ESTIMATE), max(data$AVG_ESTIMATE), length.out = 100)
-    y_fitted <- coef(model)[1] + coef(model)[2] * x_seq
+    x_seq      <- seq(min(data$AVG_ESTIMATE), max(data$AVG_ESTIMATE), length.out = 100)
+    y_fitted   <- coef(model)[1] + coef(model)[2] * x_seq
     
     plot_ly() %>%
       add_trace(
-        data         = data,
-        x            = ~AVG_ESTIMATE,
-        y            = ~Avg_Death_Rate,
-        type         = "scatter",
-        mode         = "markers+text",
-        marker       = list(color = "#2d5016", size = 7, opacity = 0.7),
-        text         = ~state_name,
-        textposition = "top center",
-        textfont     = list(size = 9, color = "gray30"),
-        hovertext    = ~paste("State:", state_name,
-                              "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 4),
-                              "<br>Parkinson's Death Rate:", round(Avg_Death_Rate, 2)),
-        hoverinfo    = "text",
-        name         = "States"
+        data = data, x = ~AVG_ESTIMATE, y = ~Avg_Death_Rate,
+        type = "scatter", mode = "markers+text",
+        marker = list(color = "#2d5016", size = 7, opacity = 0.7),
+        text = ~state_name, textposition = "top center",
+        textfont = list(size = 9, color = "gray30"),
+        hovertext = ~paste("State:", state_name,
+                           "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 4),
+                           "<br>Parkinson's Death Rate:", round(Avg_Death_Rate, 2)),
+        hoverinfo = "text", name = "States"
       ) %>%
       add_trace(
-        x         = x_seq,
-        y         = y_fitted,
-        type      = "scatter",
-        mode      = "lines",
-        line      = list(color = "darkred", dash = "dash", width = 2),
-        hoverinfo = "skip",
-        name      = "Regression Line"
+        inherit = FALSE, x = x_seq, y = y_fitted,
+        type = "scatter", mode = "lines",
+        line = list(color = "darkred", dash = "dash", width = 2),
+        hoverinfo = "skip", name = "Regression Line"
       ) %>%
       layout(
-        title = list(
-          text = paste0(input$selected_state_pesticide, ": Pesticide Use vs. Parkinson's Death Rate by State"),
-          font = list(size = 15)
-        ),
-        xaxis     = list(title = paste0(input$selected_state_pesticide, " AVG_ESTIMATE")),
-        yaxis     = list(title = "Avg Parkinson's Death Rate"),
+        title = list(text = paste0(input$selected_state_pesticide, ": Pesticide Use vs. Parkinson's Death Rate by State"), font = list(size = 15)),
+        xaxis = list(title = paste0(input$selected_state_pesticide, " AVG_ESTIMATE")),
+        yaxis = list(title = "Avg Parkinson's Death Rate"),
         hovermode = "closest",
         annotations = list(list(
-          x           = max(data$AVG_ESTIMATE) * 0.85,
-          y           = min(data$Avg_Death_Rate) + 0.3,
-          text        = paste0("r = ", cor_val, "<br>R² = ", r_squared, "<br>p = ", p_val),
-          showarrow   = FALSE,
-          font        = list(color = "darkred", size = 13),
-          bgcolor     = "white",
-          bordercolor = "darkred",
-          borderwidth = 1
+          x = max(data$AVG_ESTIMATE) * 0.85, y = min(data$Avg_Death_Rate) + 0.3,
+          text = paste0("r = ", cor_val, "<br>R\u00b2 = ", r_squared, "<br>p = ", p_val),
+          showarrow = FALSE, font = list(color = "darkred", size = 13),
+          bgcolor = "white", bordercolor = "darkred", borderwidth = 1
         ))
       )
   })
   
-  output$cor_state_pesticide_parkinson <- renderPrint({
+  # Styled stat card: state pesticide vs Parkinson's
+  output$stats_state_pesticide_parkinson <- renderUI({
     req(state_pesticide_parkinson_merged())
-    cor.test(state_pesticide_parkinson_merged()$AVG_ESTIMATE,
-             state_pesticide_parkinson_merged()$Avg_Death_Rate)
-  })
-  
-  output$reg_state_pesticide_parkinson <- renderPrint({
-    req(state_pesticide_parkinson_merged())
-    summary(lm(Avg_Death_Rate ~ AVG_ESTIMATE, data = state_pesticide_parkinson_merged()))
+    data  <- state_pesticide_parkinson_merged()
+    model <- lm(Avg_Death_Rate ~ AVG_ESTIMATE, data = data)
+    ct    <- cor.test(data$AVG_ESTIMATE, data$Avg_Death_Rate)
+    sm    <- summary(model)
+    
+    tagList(
+      make_stat_card("Pearson Correlation", list(
+        "r"           = round(ct$estimate, 4),
+        "t statistic" = round(ct$statistic, 3),
+        "p-value"     = signif(ct$p.value, 3),
+        "95% CI"      = paste0("[", round(ct$conf.int[1], 3), ", ", round(ct$conf.int[2], 3), "]")
+      )),
+      br(),
+      make_stat_card("Linear Regression", list(
+        "R\u00b2"         = round(sm$r.squared, 4),
+        "Adj. R\u00b2"    = round(sm$adj.r.squared, 4),
+        "Slope"       = signif(coef(sm)[2, 1], 3),
+        "Slope SE"    = signif(coef(sm)[2, 2], 3),
+        "F-statistic" = round(sm$fstatistic[1], 3),
+        "p-value"     = signif(pf(sm$fstatistic[1], sm$fstatistic[2], sm$fstatistic[3], lower.tail = FALSE), 3)
+      ))
+    )
   })
   
   # =============================================================================
@@ -2175,66 +2102,70 @@ function(input, output, session) {
     r_squared  <- round(summary(model)$r.squared, 3)
     coef_table <- summary(model)$coefficients
     p_val      <- if (nrow(coef_table) >= 2) round(coef_table[2, 4], 4) else NA
-    
-    x_seq    <- seq(min(log10(data$AVG_ESTIMATE)), max(log10(data$AVG_ESTIMATE)), length.out = 100)
-    y_fitted <- coef(model)[1] + coef(model)[2] * x_seq
+    x_seq      <- seq(min(log10(data$AVG_ESTIMATE)), max(log10(data$AVG_ESTIMATE)), length.out = 100)
+    y_fitted   <- coef(model)[1] + coef(model)[2] * x_seq
     
     plot_ly() %>%
       add_trace(
-        data      = data,
-        x         = ~log10(AVG_ESTIMATE),
-        y         = ~Avg_Life_Expectancy,
-        type      = "scatter",
-        mode      = "markers",
-        marker    = list(color = "#2d5016", size = 5, opacity = 0.5),
-        text      = ~paste("County:", county_name,
-                           "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 2),
-                           "<br>Life Expectancy:", round(Avg_Life_Expectancy, 2)),
-        hoverinfo = "text",
-        name      = "Counties"
+        data = data, x = ~log10(AVG_ESTIMATE), y = ~Avg_Life_Expectancy,
+        type = "scatter", mode = "markers",
+        marker = list(color = "#2d5016", size = 5, opacity = 0.5),
+        text = ~paste("County:", county_name,
+                      "<br>AVG_ESTIMATE:", round(AVG_ESTIMATE, 2),
+                      "<br>Life Expectancy:", round(Avg_Life_Expectancy, 2)),
+        hoverinfo = "text", name = "Counties"
       ) %>%
       add_trace(
-        x         = x_seq,
-        y         = y_fitted,
-        type      = "scatter",
-        mode      = "lines",
-        line      = list(color = "darkred", dash = "dash", width = 2),
-        hoverinfo = "skip",
-        name      = "Regression Line"
+        inherit = FALSE, x = x_seq, y = y_fitted,
+        type = "scatter", mode = "lines",
+        line = list(color = "darkred", dash = "dash", width = 2),
+        hoverinfo = "skip", name = "Regression Line"
       ) %>%
       layout(
-        title = list(
-          text = paste0(input$selected_pesticide, ": Pesticide Use vs. Avg Life Expectancy by County"),
-          font = list(size = 15)
-        ),
-        xaxis     = list(title = paste0(input$selected_pesticide, " AVG_ESTIMATE (log scale)")),
-        yaxis     = list(title = "Avg Life Expectancy (years)"),
+        title = list(text = paste0(input$selected_pesticide, ": Pesticide Use vs. Avg Life Expectancy by County"), font = list(size = 15)),
+        xaxis = list(title = paste0(input$selected_pesticide, " AVG_ESTIMATE (log scale)")),
+        yaxis = list(title = "Avg Life Expectancy (years)"),
         hovermode = "closest",
         annotations = list(list(
-          x           = max(log10(data$AVG_ESTIMATE)) * 0.85,
-          y           = min(data$Avg_Life_Expectancy) + 1,
-          text        = paste0("r = ", cor_val, "<br>R² = ", r_squared, "<br>p = ", p_val),
-          showarrow   = FALSE,
-          font        = list(color = "darkred", size = 13),
-          bgcolor     = "white",
-          bordercolor = "darkred",
-          borderwidth = 1
+          x = max(log10(data$AVG_ESTIMATE)) * 0.85, y = min(data$Avg_Life_Expectancy) + 1,
+          text = paste0("r = ", cor_val, "<br>R\u00b2 = ", r_squared, "<br>p = ", p_val),
+          showarrow = FALSE, font = list(color = "darkred", size = 13),
+          bgcolor = "white", bordercolor = "darkred", borderwidth = 1
         ))
       )
   })
   
-  output$cor_county_pesticide_life <- renderPrint({
+  # Styled stat card: county pesticide vs life expectancy
+  output$stats_county_pesticide_life <- renderUI({
     req(county_pesticide_merged())
-    cor.test(county_pesticide_merged()$AVG_ESTIMATE,
-             county_pesticide_merged()$Avg_Life_Expectancy)
+    data  <- county_pesticide_merged()
+    model <- lm(Avg_Life_Expectancy ~ log10(AVG_ESTIMATE), data = data)
+    ct    <- cor.test(log10(data$AVG_ESTIMATE), data$Avg_Life_Expectancy)
+    sm    <- summary(model)
+    
+    tagList(
+      make_stat_card("Pearson Correlation", list(
+        "r"           = round(ct$estimate, 4),
+        "t statistic" = round(ct$statistic, 3),
+        "p-value"     = signif(ct$p.value, 3),
+        "95% CI"      = paste0("[", round(ct$conf.int[1], 3), ", ", round(ct$conf.int[2], 3), "]")
+      )),
+      br(),
+      make_stat_card("Linear Regression (log scale)", list(
+        "R\u00b2"         = round(sm$r.squared, 4),
+        "Adj. R\u00b2"    = round(sm$adj.r.squared, 4),
+        "Slope"       = signif(coef(sm)[2, 1], 3),
+        "Slope SE"    = signif(coef(sm)[2, 2], 3),
+        "F-statistic" = round(sm$fstatistic[1], 3),
+        "p-value"     = signif(pf(sm$fstatistic[1], sm$fstatistic[2], sm$fstatistic[3], lower.tail = FALSE), 3)
+      ))
+    )
   })
   
-  output$reg_county_pesticide_life <- renderPrint({
-    req(county_pesticide_merged())
-    summary(lm(Avg_Life_Expectancy ~ AVG_ESTIMATE, data = county_pesticide_merged()))
-  })
+  # =============================================================================
+  ## FARM COUNT VS PARKINSON'S
+  # =============================================================================
   
-  # Farm vs Parkinson's
   farm_parkinson_merged <- reactive({
     req(Farm_Data(), Parkinson_Data())
     farm <- as.data.frame(Farm_Data())
@@ -2255,63 +2186,66 @@ function(input, output, session) {
     r_squared  <- round(summary(model)$r.squared, 3)
     coef_table <- summary(model)$coefficients
     p_val      <- if (nrow(coef_table) >= 2) round(coef_table[2, 4], 4) else NA
-    
-    x_seq    <- seq(min(data$NumberOfFarms), max(data$NumberOfFarms), length.out = 100)
-    y_fitted <- coef(model)[1] + coef(model)[2] * x_seq
+    x_seq      <- seq(min(data$NumberOfFarms), max(data$NumberOfFarms), length.out = 100)
+    y_fitted   <- coef(model)[1] + coef(model)[2] * x_seq
     
     plot_ly() %>%
       add_trace(
-        data         = data,
-        x            = ~NumberOfFarms,
-        y            = ~DeathRate,
-        type         = "scatter",
-        mode         = "markers+text",
-        marker       = list(color = "#2d5016", size = 7, opacity = 0.7),
-        text         = ~State,
-        textposition = "top center",
-        textfont     = list(size = 9, color = "gray30"),
-        hovertext    = ~paste("State:", State,
-                              "<br>Number of Farms:", format(NumberOfFarms, big.mark = ","),
-                              "<br>Death Rate:", round(DeathRate, 2)),
-        hoverinfo    = "text",
-        name         = "States"
+        data = data, x = ~NumberOfFarms, y = ~DeathRate,
+        type = "scatter", mode = "markers+text",
+        marker = list(color = "#2d5016", size = 7, opacity = 0.7),
+        text = ~State, textposition = "top center",
+        textfont = list(size = 9, color = "gray30"),
+        hovertext = ~paste("State:", State,
+                           "<br>Number of Farms:", format(NumberOfFarms, big.mark = ","),
+                           "<br>Death Rate:", round(DeathRate, 2)),
+        hoverinfo = "text", name = "States"
       ) %>%
       add_trace(
-        x         = x_seq,
-        y         = y_fitted,
-        type      = "scatter",
-        mode      = "lines",
-        line      = list(color = "darkred", dash = "dash", width = 2),
-        hoverinfo = "skip",
-        name      = "Regression Line"
+        inherit = FALSE, x = x_seq, y = y_fitted,
+        type = "scatter", mode = "lines",
+        line = list(color = "darkred", dash = "dash", width = 2),
+        hoverinfo = "skip", name = "Regression Line"
       ) %>%
       layout(
-        title     = list(text = "Number of Farms vs. Parkinson's Avg Death Rate by State",
-                         font = list(size = 15)),
-        xaxis     = list(title = "Number of Farms"),
-        yaxis     = list(title = "Avg Death Rate (Parkinson's)"),
+        title = list(text = "Number of Farms vs. Parkinson's Avg Death Rate by State", font = list(size = 15)),
+        xaxis = list(title = "Number of Farms"),
+        yaxis = list(title = "Avg Death Rate (Parkinson's)"),
         hovermode = "closest",
         annotations = list(list(
-          x           = max(data$NumberOfFarms) * 0.85,
-          y           = min(data$DeathRate) + 0.5,
-          text        = paste0("r = ", cor_val, "<br>R² = ", r_squared, "<br>p = ", p_val),
-          showarrow   = FALSE,
-          font        = list(color = "darkred", size = 13),
-          bgcolor     = "white",
-          bordercolor = "darkred",
-          borderwidth = 1
+          x = max(data$NumberOfFarms) * 0.85, y = min(data$DeathRate) + 0.5,
+          text = paste0("r = ", cor_val, "<br>R\u00b2 = ", r_squared, "<br>p = ", p_val),
+          showarrow = FALSE, font = list(color = "darkred", size = 13),
+          bgcolor = "white", bordercolor = "darkred", borderwidth = 1
         ))
       )
   })
   
-  output$cor_farm_parkinson_detailed <- renderPrint({
+  # Styled stat card: farm count vs Parkinson's
+  output$stats_farm_parkinson <- renderUI({
     req(farm_parkinson_merged())
-    cor.test(farm_parkinson_merged()$NumberOfFarms, farm_parkinson_merged()$DeathRate)
-  })
-  
-  output$reg_farm_parkinson_detailed <- renderPrint({
-    req(farm_parkinson_merged())
-    summary(lm(DeathRate ~ NumberOfFarms, data = farm_parkinson_merged()))
+    data  <- farm_parkinson_merged()
+    model <- lm(DeathRate ~ NumberOfFarms, data = data)
+    ct    <- cor.test(data$NumberOfFarms, data$DeathRate)
+    sm    <- summary(model)
+    
+    tagList(
+      make_stat_card("Pearson Correlation", list(
+        "r"           = round(ct$estimate, 4),
+        "t statistic" = round(ct$statistic, 3),
+        "p-value"     = signif(ct$p.value, 3),
+        "95% CI"      = paste0("[", round(ct$conf.int[1], 3), ", ", round(ct$conf.int[2], 3), "]")
+      )),
+      br(),
+      make_stat_card("Linear Regression", list(
+        "R\u00b2"         = round(sm$r.squared, 4),
+        "Adj. R\u00b2"    = round(sm$adj.r.squared, 4),
+        "Slope"       = signif(coef(sm)[2, 1], 3),
+        "Slope SE"    = signif(coef(sm)[2, 2], 3),
+        "F-statistic" = round(sm$fstatistic[1], 3),
+        "p-value"     = signif(pf(sm$fstatistic[1], sm$fstatistic[2], sm$fstatistic[3], lower.tail = FALSE), 3)
+      ))
+    )
   })
   
   # =============================================================================
@@ -2351,35 +2285,35 @@ function(input, output, session) {
     p_val <- round(summary(aov(Avg_Life_Expectancy ~ exposure_group, data = data))[[1]][["Pr(>F)"]][1], 4)
     
     plot_ly(
-      data      = data,
-      x         = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
-      y         = ~Avg_Life_Expectancy,
-      type      = "box",
-      color     = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
-      colors    = c("#a7c957", "#f4a261", "#bc4749"),
-      boxpoints = "outliers",
-      hoverinfo = "y+name"
+      data = data,
+      x    = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+      y    = ~Avg_Life_Expectancy,
+      type = "box", color = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+      colors = c("#a7c957", "#f4a261", "#bc4749"),
+      boxpoints = "outliers", hoverinfo = "y+name"
     ) %>%
       layout(
-        title = list(
-          text = paste0(input$anova_county_compound,
-                        ": Exposure Level vs. Life Expectancy (ANOVA p = ", p_val, ")"),
-          font = list(size = 14)
-        ),
-        xaxis      = list(title = "Pesticide Exposure Group"),
-        yaxis      = list(title = "Avg Life Expectancy (years)"),
+        title = list(text = paste0(input$anova_county_compound, ": Exposure Level vs. Life Expectancy (ANOVA p = ", p_val, ")"), font = list(size = 14)),
+        xaxis = list(title = "Pesticide Exposure Group"),
+        yaxis = list(title = "Avg Life Expectancy (years)"),
         showlegend = FALSE
       )
   })
   
-  output$anova_exposure_life <- renderPrint({
+  # Styled stat card: ANOVA county life expectancy
+  output$stats_anova_exposure_life <- renderUI({
     req(anova_exposure_life_data())
-    summary(aov(Avg_Life_Expectancy ~ exposure_group, data = anova_exposure_life_data()))
-  })
-  
-  output$tukey_exposure_life_print <- renderPrint({
-    req(anova_exposure_life_data())
-    TukeyHSD(aov(Avg_Life_Expectancy ~ exposure_group, data = anova_exposure_life_data()))
+    data      <- anova_exposure_life_data()
+    aov_model <- aov(Avg_Life_Expectancy ~ exposure_group, data = data)
+    aov_sum   <- summary(aov_model)[[1]]
+    ss        <- aov_sum[["Sum Sq"]]
+    eta_sq    <- round(ss[1] / sum(ss), 4)
+    
+    make_stat_card("One-Way ANOVA", list(
+      "F-statistic" = round(aov_sum[["F value"]][1], 3),
+      "p-value"     = signif(aov_sum[["Pr(>F)"]][1], 3),
+      "Eta-squared" = eta_sq
+    ))
   })
   
   output$tukey_exposure_life_table <- renderDataTable({
@@ -2391,8 +2325,7 @@ function(input, output, session) {
     colnames(tukey_df) <- c("Comparison", "Difference", "Lower CI", "Upper CI", "Adjusted p-value")
     tukey_df <- tukey_df %>% mutate(across(where(is.numeric), ~ round(., 4)))
     DT::datatable(tukey_df, options = list(pageLength = 10, scrollX = TRUE)) %>%
-      DT::formatStyle("Adjusted p-value",
-                      backgroundColor = DT::styleInterval(0.05, c("#d4edda", "white")))
+      DT::formatStyle("Adjusted p-value", backgroundColor = DT::styleInterval(0.05, c("#d4edda", "white")))
   })
   
   # =============================================================================
@@ -2424,35 +2357,35 @@ function(input, output, session) {
     p_val <- round(summary(aov(Avg_Death_Rate ~ exposure_group, data = data))[[1]][["Pr(>F)"]][1], 4)
     
     plot_ly(
-      data      = data,
-      x         = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
-      y         = ~Avg_Death_Rate,
-      type      = "box",
-      color     = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
-      colors    = c("#a7c957", "#f4a261", "#bc4749"),
-      boxpoints = "outliers",
-      hoverinfo = "y+name"
+      data = data,
+      x    = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+      y    = ~Avg_Death_Rate,
+      type = "box", color = ~factor(exposure_group, levels = c("Low", "Medium", "High")),
+      colors = c("#a7c957", "#f4a261", "#bc4749"),
+      boxpoints = "outliers", hoverinfo = "y+name"
     ) %>%
       layout(
-        title = list(
-          text = paste0(input$anova_state_compound,
-                        ": Exposure Level vs. Parkinson's Death Rate (ANOVA p = ", p_val, ")"),
-          font = list(size = 14)
-        ),
-        xaxis      = list(title = "Pesticide Exposure Group"),
-        yaxis      = list(title = "Avg Parkinson's Death Rate"),
+        title = list(text = paste0(input$anova_state_compound, ": Exposure Level vs. Parkinson's Death Rate (ANOVA p = ", p_val, ")"), font = list(size = 14)),
+        xaxis = list(title = "Pesticide Exposure Group"),
+        yaxis = list(title = "Avg Parkinson's Death Rate"),
         showlegend = FALSE
       )
   })
   
-  output$anova_exposure_parkinson <- renderPrint({
+  # Styled stat card: ANOVA state Parkinson's
+  output$stats_anova_exposure_parkinson <- renderUI({
     req(anova_exposure_parkinson_data())
-    summary(aov(Avg_Death_Rate ~ exposure_group, data = anova_exposure_parkinson_data()))
-  })
-  
-  output$tukey_exposure_parkinson_print <- renderPrint({
-    req(anova_exposure_parkinson_data())
-    TukeyHSD(aov(Avg_Death_Rate ~ exposure_group, data = anova_exposure_parkinson_data()))
+    data      <- anova_exposure_parkinson_data()
+    aov_model <- aov(Avg_Death_Rate ~ exposure_group, data = data)
+    aov_sum   <- summary(aov_model)[[1]]
+    ss        <- aov_sum[["Sum Sq"]]
+    eta_sq    <- round(ss[1] / sum(ss), 4)
+    
+    make_stat_card("One-Way ANOVA", list(
+      "F-statistic" = round(aov_sum[["F value"]][1], 3),
+      "p-value"     = signif(aov_sum[["Pr(>F)"]][1], 3),
+      "Eta-squared" = eta_sq
+    ))
   })
   
   output$tukey_exposure_parkinson_table <- renderDataTable({
@@ -2464,16 +2397,15 @@ function(input, output, session) {
     colnames(tukey_df) <- c("Comparison", "Difference", "Lower CI", "Upper CI", "Adjusted p-value")
     tukey_df <- tukey_df %>% mutate(across(where(is.numeric), ~ round(., 4)))
     DT::datatable(tukey_df, options = list(pageLength = 10, scrollX = TRUE)) %>%
-      DT::formatStyle("Adjusted p-value",
-                      backgroundColor = DT::styleInterval(0.05, c("#d4edda", "white")))
+      DT::formatStyle("Adjusted p-value", backgroundColor = DT::styleInterval(0.05, c("#d4edda", "white")))
   })
-  
   
   # ===========================================================================
   # DOWNLOAD HANDLER
   # ===========================================================================
   
   output$download_combined <- downloadHandler(
+    # FIXED
     filename = function() paste0("medical_trends_data_", Sys.Date(), ".csv"),
     content  = function(file) {
       req(Parkinson_Pesticide_State())
