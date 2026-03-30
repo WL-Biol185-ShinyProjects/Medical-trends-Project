@@ -768,7 +768,7 @@ fluidPage(
     <div style="font-size: 11px; font-family: monospace; letter-spacing: 4px; text-transform: uppercase; color: #a7c957; margin-bottom: 8px;">Analysis Overview</div>
     <h2 style="margin: 0 0 10px 0; font-size: 26px; font-weight: normal; letter-spacing: 1px; color: white;">Understanding the Visualizations</h2>
     <p style="margin: 0 auto; max-width: 680px; font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.7; font-family: Arial, sans-serif;">
-      This dashboard investigates relationships between agricultural pesticide exposure and neurological health outcomes using county- and state-level data across the United States. Use the dropdown menus within each section to explore statistical results and data visualizations by pesticide compound.
+      This dashboard investigates relationships between agricultural pesticide exposure and health outcomes, including Parkinson\'s Death Rate, using county- and state-level data across the United States. Explore the dropdown menus within each section to explore statistical results and data visualizations by pesticide compound. Review information about the statistical values reported in the section using the glossary at the bottom of the page.
     </p>
   </div>
   <div style="border-top: 1px solid rgba(167,201,87,0.3); margin-bottom: 32px;"></div>
@@ -1135,7 +1135,7 @@ fluidPage(
                          div(class = "glossary-body",
                              "The regression coefficient for the predictor variable. It represents how much the 
              outcome variable is expected to change for each one-unit increase in the predictor. 
-             A positive slope indicates that higher pesticide exposure is associated with a higher 
+             For example, a positive slope indicates that higher pesticide exposure is associated with a higher 
              outcome value; a negative slope indicates the reverse.")
                      ),
                      div(class = "glossary-item",
