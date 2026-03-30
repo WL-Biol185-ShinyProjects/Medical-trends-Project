@@ -675,7 +675,22 @@ fluidPage(
                          div(class = "map-title-bar",
                              textOutput("map_title")
                          ),
-                         leafletOutput("main_map", height = "640px")
+                         leafletOutput("main_map", height = "640px"),
+                         
+                         conditionalPanel(
+                           condition = "input.selected_map == 'map3'",
+                           div(
+                             style = "padding: 12px 20px; background: #f8f9fa; border-top: 1px solid #e0e0e0;",
+                             selectInput(
+                               inputId = "map3_state_selector",
+                               label   = "Zoom to State:",
+                               choices = c("All States" = "all"),
+                               selected = "all",
+                               width   = "280px"
+                             )
+                           )
+                         ) 
+                  
                      )
                  )
              )
@@ -993,25 +1008,54 @@ fluidPage(
              
              div(class = "home-section",
                  
-                 div(class = "home-plain-card",
-                     tags$h2("Purpose"),
-                     tags$p("This dashboard explores relationships between environmental factors
-                  and health outcomes across the United States.")
-                 ),
-                 
-                 div(class = "home-plain-card",
-                     tags$h2("Data Sources"),
-                     tags$ul(
-                       tags$li("CDC - Parkinson's disease mortality"),
-                       tags$li("USDA - Pesticide usage and farm statistics"),
-                       tags$li("CDC WONDER - Life expectancy data"),
-                       tags$li("Census - County coordinate data (cfips_location.csv)")
+                 div(class = "about-card",
+                     div(class = "about-card-text",
+                         tags$h2("Purpose"),
+                         tags$p("Parkinson's disease affects millions of Americans, yet the environmental
+                     drivers behind its geographic distribution remain poorly understood. This
+                     dashboard explores whether pesticide use and agricultural intensity are
+                     associated with higher Parkinson's mortality rates and lower life expectancy
+                     across U.S. states and counties."),
+                         tags$p("Using statistical methods including Pearson correlation, linear regression,
+                     ANOVA, and Tukey post-hoc tests, we surface potential environmental risk
+                     patterns from publicly available federal datasets.")
+                     ),
+                     tags$img(
+                       src = "about_image.jpg",
+                       class = "about-illustration",
+                       alt = "Medical research illustration"
                      )
                  ),
                  
+                 # Two-column row for Data Sources + Limitations
+                 div(style = "display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;",
+                     
+                     div(class = "home-plain-card", style = "margin-bottom: 0;",
+                         tags$h2("Data Sources"),
+                         tags$ul(
+                           tags$li(tags$strong("CDC"), " — Parkinson's disease mortality rates by state"),
+                           tags$li(tags$strong("USDA"), " — Pesticide usage and farm statistics by county and state"),
+                           tags$li(tags$strong("CDC WONDER"), " — Life expectancy data by state and county"),
+                           tags$li(tags$strong("U.S. Census"), " — County coordinate data (FIPS codes, lat/lon)")
+                         )
+                     ),
+                     
+                     div(class = "home-plain-card", style = "margin-bottom: 0;",
+                         tags$h2("Important Limitations"),
+                         tags$ul(
+                           tags$li("Correlation does not imply causation"),
+                           tags$li("Aggregated data may mask local variations"),
+                           tags$li("Multiple confounding variables exist (age, income, healthcare access)"),
+                           tags$li("Data represents averages across multi-year periods"),
+                           tags$li("County-level life expectancy and state pesticide data have different temporal coverage")
+                         )
+                     )
+                 ),
+                 
+                 # Maps card
                  div(class = "home-plain-card",
                      tags$h2("Maps"),
-                     tags$p("Three interactive maps visualize:"),
+                     tags$p("Three interactive maps allow geographic exploration of the data:"),
                      tags$ul(
                        tags$li(tags$strong("Map 1:"), " State-level Parkinson's death rates vs. pesticide use"),
                        tags$li(tags$strong("Map 2:"), " State-level Parkinson's death rates vs. farm density"),
@@ -1019,16 +1063,36 @@ fluidPage(
                      )
                  ),
                  
+                 # Methodology card
                  div(class = "home-plain-card",
-                     tags$h2("Important Limitations"),
-                     tags$ul(
-                       tags$li("Correlation does not imply causation"),
-                       tags$li("Aggregated data may mask local variations"),
-                       tags$li("Multiple confounding variables exist")
-                     )
+                     tags$h2("Methodology"),
+                     tags$p("Datasets were joined at the state and county level using FIPS codes and state
+                 names. Pesticide exposure was averaged across available survey years. For ANOVA
+                 analyses, counties and states were grouped into Low, Medium, and High exposure
+                 tertiles based on pesticide application estimates. All statistical tests were
+                 performed in R using base stats functions."),
+                     tags$p("Scatter plots display raw relationships with overlaid linear regression lines.
+                 Pearson correlation coefficients and full regression summaries are shown
+                 alongside each plot for transparency.")
+                 ),
+                 
+                 # Team card
+                 div(class = "home-plain-card",
+                     tags$h2("Team & Credits"),
+                     tags$p(tags$strong("Course:"), " BIOL-185 — Medical Trends Analysis, Winter 2026"),
+                     tags$p(tags$strong("Institution:"), " Washington & Lee University"),
+                     tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT.")
                  )
                  
              ) # End home-section
+             
     ) # End About tabPanel
+<<<<<<< HEAD
+    
+  ) # End navbarPage
+  
+) # End fluidPage
+=======
   )
 )
+>>>>>>> 8d93c1089038ba0f5479aab5899e7b909a2d00df

@@ -560,6 +560,158 @@ function(input, output, session) {
   })
   
   # ===========================================================================
+<<<<<<< HEAD
+  # MAP 1: PARKINSON'S VS PESTICIDES (STATE LEVEL CHOROPLETH)
+  # ===========================================================================
+  
+  output$map1 <- renderLeaflet({
+    req(Parkinson_Pesticide_State(), State_Centroids())
+    data <- Parkinson_Pesticide_State()
+    compounds <- Pesticide_State_Compounds()
+    
+    states <- State_Centroids() %>%
+      left_join(
+        data %>% select(State_Abbr, Avg_Death_Rate, Avg_Pesticide),
+        by = c("State" = "State_Abbr")
+      )
+    
+    if (!is.null(compounds)) {
+      states <- states %>%
+        left_join(compounds, by = c("State" = "State_Abbr")) %>%
+        rename(
+          pest_24d = `2,4-D`,
+          pest_glyphosate = Glyphosate,
+          pest_paraquat = Paraquat,
+          pest_chlorpyrifos = Chlorpyrifos
+        )
+    } else {
+      states$pest_24d <- NA_real_
+      states$pest_glyphosate <- NA_real_
+      states$pest_paraquat <- NA_real_
+      states$pest_chlorpyrifos <- NA_real_
+    }
+    
+    pal <- colorNumeric("YlOrRd", domain = states$Avg_Death_Rate, na.color = "#cccccc")
+    
+    labels <- sprintf("<strong>%s</strong><br/>Death Rate: %s<br/>2,4-D: %s lbs<br/>Glyphosate: %s lbs<br/>Paraquat: %s lbs<br/>Chlorpyrifos: %s lbs",
+                      states$State,
+                      ifelse(is.na(states$Avg_Death_Rate), "N/A", round(states$Avg_Death_Rate, 2)),
+                      ifelse(is.na(states$pest_24d), "N/A", round(states$pest_24d, 1)),
+                      ifelse(is.na(states$pest_glyphosate), "N/A", round(states$pest_glyphosate, 1)),
+                      ifelse(is.na(states$pest_paraquat), "N/A", round(states$pest_paraquat, 1)),
+                      ifelse(is.na(states$pest_chlorpyrifos), "N/A", round(states$pest_chlorpyrifos, 1))) %>%
+      lapply(htmltools::HTML)
+    
+    leaflet(states) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+      addCircleMarkers(
+        lng = ~lng,
+        lat = ~lat,
+        radius = 8,
+        stroke = TRUE,
+        weight = 1,
+        color = "white",
+        fillColor = ~pal(Avg_Death_Rate),
+        fillOpacity = 0.85,
+        label = labels,
+        labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
+      ) %>%
+      addLegend(pal = pal, values = ~Avg_Death_Rate, opacity = 1,
+                title = "Parkinson's<br/>Death Rate", position = "bottomright")
+  })
+  
+  # ===========================================================================
+  # MAP 2: PARKINSON'S VS FARMS (STATE LEVEL CHOROPLETH)
+  # ===========================================================================
+  
+  output$map2 <- renderLeaflet({
+    req(Parkinson_Farm_State(), State_Centroids())
+    data <- Parkinson_Farm_State()
+    states <- State_Centroids() %>%
+      left_join(data %>% mutate(State_Abbr = normalize_state_to_abbr(State)),
+                by = c("State" = "State_Abbr"))
+    
+    pal <- colorNumeric("RdPu", domain = states$Avg_Death_Rate, na.color = "#cccccc")
+    
+    labels <- sprintf("<strong>%s</strong><br/>Death Rate: %s<br/>Farms: %s",
+                      states$State,
+                      ifelse(is.na(states$Avg_Death_Rate), "N/A", round(states$Avg_Death_Rate, 2)),
+                      ifelse(is.na(states$Number_Of_Farms), "N/A", format(round(states$Number_Of_Farms), big.mark = ","))) %>%
+      lapply(htmltools::HTML)
+    
+    leaflet(states) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+      addCircleMarkers(
+        lng = ~lng,
+        lat = ~lat,
+        radius = 8,
+        stroke = TRUE,
+        weight = 1,
+        color = "white",
+        fillColor = ~pal(Avg_Death_Rate),
+        fillOpacity = 0.85,
+        label = labels,
+        labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
+      ) %>%
+      addLegend(pal = pal, values = ~Avg_Death_Rate, opacity = 1,
+                title = "Parkinson's<br/>Death Rate", position = "bottomright")
+  })
+  
+  # ===========================================================================
+  # MAP 3: PESTICIDES VS LIFE EXPECTANCY (COUNTY LEVEL CHOROPLETH)
+  # ===========================================================================
+  
+  output$map3 <- renderLeaflet({
+    req(County_Pesticide_Life())
+    data <- County_Pesticide_Life()
+    
+    # Filter by selected state
+    if(!is.null(input$state_selector_map3) && input$state_selector_map3 != "all") {
+      data <- data %>% filter(state_name == input$state_selector_map3)
+    }
+    
+    data_with_life <- data %>% filter(!is.na(Avg_Life_Expectancy), !is.na(county_fips))
+    
+    if(nrow(data_with_life) == 0) {
+      return(leaflet() %>% 
+               addProviderTiles(providers$CartoDB.Positron) %>% 
+               setView(lng = -98.5, lat = 39.5, zoom = 4))
+    }
+    
+    pal <- colorNumeric("YlOrRd", domain = data_with_life$Avg_Life_Expectancy, reverse = TRUE, na.color = "#cccccc")
+    
+    labels <- sprintf("<strong>%s, %s</strong><br/>Life Expectancy: %s years<br/>Pesticide: %s lbs",
+                      data_with_life$county_name,
+                      data_with_life$state_name,
+                      round(data_with_life$Avg_Life_Expectancy, 1),
+                      round(data_with_life$Avg_Pesticide, 1)) %>%
+      lapply(htmltools::HTML)
+    
+    zoom_level <- if(input$state_selector_map3 == "all") 4 else 6
+    center_lng <- if(input$state_selector_map3 == "all") -98.5 else mean(data_with_life$lng, na.rm = TRUE)
+    center_lat <- if(input$state_selector_map3 == "all") 39.5 else mean(data_with_life$lat, na.rm = TRUE)
+    
+    leaflet(data_with_life) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      setView(lng = center_lng, lat = center_lat, zoom = zoom_level) %>%
+      addCircleMarkers(
+        lng = ~lng,
+        lat = ~lat,
+        radius = 4,
+        stroke = FALSE,
+        fillColor = ~pal(Avg_Life_Expectancy),
+        fillOpacity = 0.7,
+        label = labels,
+        labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
+      ) %>%
+      addLegend(pal = pal, values = ~Avg_Life_Expectancy, opacity = 1,
+                title = "Life Expectancy<br/>(years)", position = "bottomright")
+  })
+  # ===========================================================================
+=======
+>>>>>>> 8d93c1089038ba0f5479aab5899e7b909a2d00df
   # DATA TABLES
   # ===========================================================================
   
