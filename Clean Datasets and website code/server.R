@@ -831,17 +831,14 @@ function(input, output, session) {
   })
   
   output$data_table_state_pesticide <- renderDT({
-    req(Pesticide_State_Data())
+    data <- State_Pesticide_Data()
+    req(data)
     datatable(
-      Pesticide_State_Data(),
+      data,
       options = list(pageLength = 15, scrollX = TRUE),
       rownames = FALSE,
       class = 'cell-border stripe hover'
-    ) %>%
-      formatRound(
-        columns = intersect(c("Avg_Pesticide"), names(Pesticide_State_Data())),
-        digits = 2
-      )
+    )
   })
   
   output$download_parkinsons_data <- downloadHandler(
@@ -873,6 +870,27 @@ function(input, output, session) {
     content = function(file) {
       req(Pesticide_State_Data())
       write.csv(Pesticide_State_Data(), file, row.names = FALSE)
+    }
+  )
+  output$data_table_state_pesticide <- renderDT({
+    data <- Pesticide_State_Data()
+    req(data)
+    datatable(
+      data,
+      options = list(pageLength = 15, scrollX = TRUE),
+      rownames = FALSE,
+      class = 'cell-border stripe hover'
+    ) %>%
+      formatRound(
+        columns = intersect(c("Avg_Pesticide"), names(data)),
+        digits = 2
+      )
+  })
+  output$download_county_pesticide_data <- downloadHandler(
+    filename = function() paste("county_pesticide_data_", Sys.Date(), ".csv", sep = ""),
+    content = function(file) {
+      req(Pesticide_County_Data())
+      write.csv(Pesticide_County_Data(), file, row.names = FALSE)
     }
   )
   

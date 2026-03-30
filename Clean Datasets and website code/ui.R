@@ -1207,7 +1207,7 @@ fluidPage(
                  div(class = "home-plain-card",
                      tags$h2("County-Level Pesticide Data"),
                      p("County-level pesticide data."),
-                     DTOutput("data_table_state_pesticide"),
+                     DTOutput("data_table_county_pesticide"),
                      br(),
                      downloadButton("download_county_pesticide_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
