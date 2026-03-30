@@ -1088,12 +1088,7 @@ fluidPage(
              ) # End home-section
              
     ) # End About tabPanel
-<<<<<<< HEAD
     
   ) # End navbarPage
   
 ) # End fluidPage
-=======
-  )
-)
->>>>>>> 8d93c1089038ba0f5479aab5899e7b909a2d00df
