@@ -815,6 +815,68 @@ function(input, output, session) {
                                       names(Expectancy_State_Data())), digits = 2)
   })
   
+  output$data_table_state_pesticide <- renderDT({
+    data <- State_Pesticide_Data()
+    req(data)
+    datatable(
+      data,
+      options = list(pageLength = 15, scrollX = TRUE),
+      rownames = FALSE,
+      class = 'cell-border stripe hover'
+    )
+  })
+  
+  output$data_table_county_pesticide <- renderDT({
+    data <- Pesticide_County_Data()
+    req(data)
+    datatable(
+      data,
+      options = list(pageLength = 15, scrollX = TRUE),
+      rownames = FALSE,
+      class = 'cell-border stripe hover'
+    )
+  })
+  
+  output$download_parkinsons_data <- downloadHandler(
+    filename = function() paste("parkinsons_data_", Sys.Date(), ".csv", sep = ""),
+    content = function(file) {
+      req(Parkinson_Data())
+      write.csv(Parkinson_Data(), file, row.names = FALSE)
+    }
+  )
+  
+  output$download_farm_data <- downloadHandler(
+    filename = function() paste("farm_data_", Sys.Date(), ".csv", sep = ""),
+    content = function(file) {
+      req(Farm_Data())
+      write.csv(Farm_Data(), file, row.names = FALSE)
+    }
+  )
+  
+  output$download_life_expectancy_data <- downloadHandler(
+    filename = function() paste("life_expectancy_data_", Sys.Date(), ".csv", sep = ""),
+    content = function(file) {
+      req(Expectancy_State_Data())
+      write.csv(Expectancy_State_Data(), file, row.names = FALSE)
+    }
+  )
+  
+  output$download_state_pesticide_data <- downloadHandler(
+    filename = function() paste("state_pesticide_data_", Sys.Date(), ".csv", sep = ""),
+    content = function(file) {
+      req(Pesticide_State_Data())
+      write.csv(Pesticide_State_Data(), file, row.names = FALSE)
+    }
+  )
+  
+  output$download_county_pesticide_data <- downloadHandler(
+    filename = function() paste("county_pesticide_data_", Sys.Date(), ".csv", sep = ""),
+    content = function(file) {
+      req(Pesticide_County_Data())
+      write.csv(Pesticide_County_Data(), file, row.names = FALSE)
+    }
+  )
+  
   # =============================================================================
   # STATE PESTICIDE VS PARKINSON'S MORTALITY RATE
   # =============================================================================

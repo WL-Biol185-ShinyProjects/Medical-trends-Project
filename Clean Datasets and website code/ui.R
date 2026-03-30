@@ -154,23 +154,31 @@ fluidPage(
         font-weight: 500;
       }
       
-      .content-box {
-        background: white;
-        padding: 35px;
-        border-radius: 10px;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      }
-      
       .content-box h2 {
-        color: #2d5016;
-        font-size: 1.8em;
-        margin-bottom: 20px;
-        font-weight: 700;
-        border-bottom: 3px solid #4a7c2a;
-        padding-bottom: 12px;
+        font-family: 'Lora', serif !important;
+        font-size: 2.5rem !important;
+        font-weight: 700 !important;
+        color: #1a3d0a !important;
+        margin-bottom: 1.25rem !important;
+        border-bottom: 3px solid #4a7c2a !important;
+        padding-bottom: 0.6rem !important;
       }
       
+      .content-box p {
+        font-size: 1.5rem !important;
+        color: #4a4a4a;
+        line-height: 1.75;
+        margin-bottom: 1rem;
+      }
+      
+      .page-header {
+        font-family: 'Lora', serif !important;
+        color: #1a3d0a !important;
+        font-size: 2.5rem !important;
+        margin-bottom: 1.5rem !important;
+        font-weight: 700 !important;
+      }
+
       /* Map viewer layout */
       .map-viewer-container {
         display: flex;
@@ -1309,35 +1317,55 @@ fluidPage(
     # DATA TABLES TAB
     # =========================================================================
     tabPanel("Data Tables",
-             div(class = "main-container",
-                 h1(class = "page-header", "Data Tables"),
+             div(class = "home-section",
+                 h1(class = "page-header", 
+                    style = "padding-top: 2rem;",
+                    "Data Tables"),
                  
-                 div(class = "content-box",
-                     h2("Parkinson's Disease Data"),
+                 div(class = "home-plain-card",
+                     tags$h2("Parkinson's Disease Data"),
                      p("State-level Parkinson's mortality data."),
                      DTOutput("data_table_parkinson"),
                      br(),
-                     downloadButton("download_data", "Download Dataset",
+                     downloadButton("download_parkinsons_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "content-box",
-                     h2("Farm Data"),
+                 div(class = "home-plain-card",
+                     tags$h2("Farm Data"),
                      p("State-level agricultural data."),
                      DTOutput("data_table_farms"),
                      br(),
-                     downloadButton("download_data", "Download Dataset",
+                     downloadButton("download_farm_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "content-box",
-                     h2("Life Expectancy Data"),
+                 div(class = "home-plain-card",
+                     tags$h2("Life Expectancy Data"),
                      p("State-level life expectancy data."),
                      DTOutput("data_table_life_expectancy"),
                      br(),
-                     downloadButton("download_data", "Download Dataset",
+                     downloadButton("download_life_expectancy_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
-                 )
+                 ),
+                 
+                 div(class = "home-plain-card",
+                     tags$h2("State-Level Pesticide Data"),
+                     p("State-level pesticide data."),
+                     DTOutput("data_table_state_pesticide"),
+                     br(),
+                     downloadButton("download_state_pesticide_data", "Download Dataset",
+                                    class = "btn btn-success btn-lg")
+                 ),
+                 
+                 div(class = "home-plain-card",
+                     tags$h2("County-Level Pesticide Data"),
+                     p("County-level pesticide data."),
+                     DTOutput("data_table_county_pesticide"),
+                     br(),
+                     downloadButton("download_county_pesticide_data", "Download Dataset",
+                                    class = "btn btn-success btn-lg")
+                 ),
              )
     ),
     
