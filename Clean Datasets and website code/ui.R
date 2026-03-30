@@ -787,7 +787,7 @@ fluidPage(
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #a7c957; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-          View scatter plots comparing the following data: Pesticide Use vs. Parkinsons Death Rate, Number of Farms vs. Parkinsons Death rate, Pesticide Use vs. Life Expectancy
+          Scroll to view scatter plots comparing the following data: Pesticide Use vs. Parkinson\'s Death Rate, Number of Farms vs. Parkinson\'s Death rate, Pesticide Use vs. Life Expectancy
         </p>
         <div style="font-size: 11px; color: #a7c957; font-family: monospace; margin-bottom: 6px;">HOW TO INTERACT</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
@@ -825,17 +825,17 @@ fluidPage(
         margin-bottom: 10px;
       ">Regression</div>
       <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-        Linear regression models the direction and strength of the relationship, 
+        Linear regression models the direction and strength of the relationship between two variables, 
         shown as a dashed trend line overlaid on the scatter plot.
       </p>
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #f4a261; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-          Same pairings as scatter plots. Full regression summary (coefficients, standard error, p-value) shown in the side panel.
+          Same pairings as scatter plots. Full regression summary (coefficients, standard error, p-value) are shown in the side panel.
         </p>
         <div style="font-size: 11px; color: #f4a261; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
-          <strong style="color:white;">R²</strong> tells you how much variance is explained. <strong style="color:white;">p &lt; 0.05</strong> on the slope coefficient indicates a statistically significant trend.
+          The <strong style="color:white;">R²</strong> value reveals how well the trend line fits the data, with R² = 1 indicating a perfect fit. A value <strong style="color:white;">p &lt; 0.05</strong> on the slope coefficient indicates a statistically significant trend.
         </p>
       </div>
     </div>
@@ -872,11 +872,11 @@ fluidPage(
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #7ec8e3; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-          Pesticide AVG_ESTIMATE vs. life expectancy (county) &bull; Pesticide AVG_ESTIMATE vs. Parkinson\'s death rate (state)
+          Same as scatter plot.
         </p>
         <div style="font-size: 11px; color: #7ec8e3; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
-          The <strong style="color:white;">r value</strong> is shown on each scatter plot. The side panel gives the full test output including 95% confidence interval and p-value.
+          The <strong style="color:white;">r value</strong> is shown on each scatter plot. The side panel gives the full test output, including 95% confidence interval and p-value.
         </p>
       </div>
     </div>
@@ -917,14 +917,14 @@ fluidPage(
         margin-bottom: 10px;
       ">ANOVA & Tukey</div>
       <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-        ANOVA tests whether health outcomes differ significantly across pesticide 
-        exposure quartiles (Low &rarr; High). Tukey\'s post-hoc identifies which 
+        We ran ANOVA tests to detect whether health outcomes differ significantly across pesticide 
+        exposure levels, classified as Low &rarr; High based on tertiles. Tukey\'s post-hoc identifies which 
         specific pairs of groups drive that difference.
       </p>
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #e76f51; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-          County exposure quartiles vs. life expectancy &bull; State exposure quartiles vs. Parkinson\'s death rate
+          County Pesticide Exposure Level vs. Life Expectancy &bull; State Pesticide Exposure Level vs. Parkinson\'s Death Rate
         </p>
         <div style="font-size: 11px; color: #e76f51; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
@@ -1088,36 +1088,60 @@ fluidPage(
     # DATA TABLES TAB
     # =========================================================================
     tabPanel("Data Tables",
-             div(class = "main-container",
-                 h1(class = "page-header", "Data Tables"),
+             
+             div(class = "home-hero",
+                 h1("Data Tables"),
+                 p(class = "hero-subtitle", "Explore the raw datasets used in this analysis")
+             ),
+             
+             div(class = "home-section",
                  
-                 div(class = "content-box",
-                     h2("Parkinson's Disease Data"),
-                     p("State-level Parkinson's mortality data."),
+                 div(class = "home-plain-card",
+                     tags$h2("Parkinson's Disease Data"),
+                     tags$p("State-level Parkinson's mortality data."),
                      DTOutput("data_table_parkinson"),
                      br(),
-                     downloadButton("download_data", "Download Dataset", 
+                     downloadButton("download_parkinson", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "content-box",
-                     h2("Farm Data"),
-                     p("State-level agricultural data."),
+                 div(class = "home-plain-card",
+                     tags$h2("Farm Data"),
+                     tags$p("State-level agricultural data."),
                      DTOutput("data_table_farms"),
                      br(),
-                     downloadButton("download_data", "Download Dataset", 
+                     downloadButton("download_farms", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "content-box",
-                     h2("Life Expectancy Data"),
-                     p("State-level life expectancy data."),
+                 div(class = "home-plain-card",
+                     tags$h2("Life Expectancy Data"),
+                     tags$p("State-level life expectancy data."),
                      DTOutput("data_table_life_expectancy"),
                      br(),
-                     downloadButton("download_data", "Download Dataset", 
+                     downloadButton("download_life_expectancy", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
-             )
+                 
+                 div(class = "home-plain-card",
+                     tags$h2("County Pesticide Data"),
+                     tags$p("County-level pesticide data."),
+                     DTOutput("data_table_county_pesticides"),
+                     br(),
+                     downloadButton("download_county_pesticides", "Download Dataset",
+                                    class = "btn btn-success btn-lg")
+                 ),
+                 
+                 div(class = "home-plain-card",
+                     tags$h2("State Pesticide Data"),
+                     tags$p("State-level pesticide data."),
+                     DTOutput("data_table_state_pesticides"),
+                     br(),
+                     downloadButton("download_state_pesticides", "Download Dataset",
+                                    class = "btn btn-success btn-lg")
+                 )
+                 
+             ) # End home-section
     ),
     
     # =========================================================================

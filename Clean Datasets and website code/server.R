@@ -775,6 +775,39 @@ function(input, output, session) {
   })
   
   
+  output$data_table_life_expectancy <- renderDT({
+    req(Expectancy_State_Data())       # fixed: was Life_Expectancy_Data
+    datatable(
+      Expectancy_State_Data(),
+      options = list(pageLength = 15, scrollX = TRUE),
+      rownames = FALSE,
+      class = 'cell-border stripe hover'
+    ) %>%
+      formatRound(
+        columns = intersect(c("Avg_Life_Expectancy", "Avg_Range_Min"), names(Expectancy_State_Data())),
+        digits = 2
+      )
+  })
+  
+  output$data_table_county_pesticides <- renderDT({
+    req(Pesticide_County_Data())       # fixed: was County_Pesticide_Data
+    datatable(
+      Pesticide_County_Data(),
+      options = list(pageLength = 15, scrollX = TRUE),
+      rownames = FALSE,
+      class = 'cell-border stripe hover'
+    )
+  })
+  
+  output$data_table_state_pesticides <- renderDT({
+    req(State_Pesticide_Data())
+    datatable(
+      State_Pesticide_Data(),
+      options = list(pageLength = 15, scrollX = TRUE),
+      rownames = FALSE,
+      class = 'cell-border stripe hover'
+    )
+  })
   # =============================================================================
   ## STATE PESTICIDE VS PARKINSON'S MORTALITY RATE
   # =============================================================================
@@ -1191,6 +1224,7 @@ function(input, output, session) {
                       backgroundColor = DT::styleInterval(0.05, c("#d4edda", "white")))
   })
   
+
   # ===========================================================================
   # DOWNLOAD HANDLER
   # ===========================================================================
