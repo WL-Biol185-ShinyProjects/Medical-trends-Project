@@ -806,7 +806,6 @@ function(input, output, session) {
       make_stat_card("Pearson Correlation", list(
         "r"           = round(ct$estimate, 4),
         "t statistic" = round(ct$statistic, 3),
-        "df"          = ct$parameter,
         "p-value"     = signif(ct$p.value, 3),
         "95% CI"      = paste0("[", round(ct$conf.int[1], 3), ", ", round(ct$conf.int[2], 3), "]")
       )),
@@ -897,7 +896,6 @@ function(input, output, session) {
       make_stat_card("Pearson Correlation", list(
         "r"           = round(ct$estimate, 4),
         "t statistic" = round(ct$statistic, 3),
-        "df"          = ct$parameter,
         "p-value"     = signif(ct$p.value, 3),
         "95% CI"      = paste0("[", round(ct$conf.int[1], 3), ", ", round(ct$conf.int[2], 3), "]")
       )),
@@ -984,7 +982,6 @@ function(input, output, session) {
       make_stat_card("Pearson Correlation", list(
         "r"           = round(ct$estimate, 4),
         "t statistic" = round(ct$statistic, 3),
-        "df"          = ct$parameter,
         "p-value"     = signif(ct$p.value, 3),
         "95% CI"      = paste0("[", round(ct$conf.int[1], 3), ", ", round(ct$conf.int[2], 3), "]")
       )),
@@ -1063,8 +1060,6 @@ function(input, output, session) {
     
     make_stat_card("One-Way ANOVA", list(
       "F-statistic" = round(aov_sum[["F value"]][1], 3),
-      "df (group)"  = aov_sum[["Df"]][1],
-      "df (resid)"  = aov_sum[["Df"]][2],
       "p-value"     = signif(aov_sum[["Pr(>F)"]][1], 3),
       "Eta-squared" = eta_sq
     ))
@@ -1137,8 +1132,6 @@ function(input, output, session) {
     
     make_stat_card("One-Way ANOVA", list(
       "F-statistic" = round(aov_sum[["F value"]][1], 3),
-      "df (group)"  = aov_sum[["Df"]][1],
-      "df (resid)"  = aov_sum[["Df"]][2],
       "p-value"     = signif(aov_sum[["Pr(>F)"]][1], 3),
       "Eta-squared" = eta_sq
     ))

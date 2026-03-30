@@ -955,8 +955,160 @@ fluidPage(
                      br(),
                      h4("Tukey Post-Hoc Table"),
                      DTOutput("tukey_exposure_parkinson_table")
-                 )
-                 
+                 ),
+                 # =============================================================================
+                 # STATISTICS GLOSSARY ACCORDION
+                 # =============================================================================
+                 div(class = "plot-container",
+                     h2(style = "color: #2d5016; font-size: 1.6em; font-weight: 700;
+                border-bottom: 3px solid #4a7c2a; padding-bottom: 12px; margin-bottom: 20px;",
+                        "Statistics Glossary"),
+                     p(style = "color: #666; font-size: 14px; margin-bottom: 20px;",
+                       "Click any term to expand its definition."),
+                     
+                     tags$style(HTML("
+      .glossary-item {
+        border-bottom: 1px solid #e8e8e8;
+      }
+      .glossary-btn {
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: left;
+        padding: 14px 8px;
+        font-size: 14px;
+        font-family: monospace;
+        font-weight: 600;
+        color: #2d5016;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        letter-spacing: 0.5px;
+      }
+      .glossary-btn:hover {
+        background: #f5f9f0;
+      }
+      .glossary-btn .arrow {
+        font-size: 11px;
+        color: #a7c957;
+        transition: transform 0.2s;
+      }
+      .glossary-btn.open .arrow {
+        transform: rotate(180deg);
+      }
+      .glossary-body {
+        display: none;
+        padding: 4px 12px 16px 12px;
+        font-size: 13.5px;
+        color: #444;
+        line-height: 1.7;
+        background: #fafdf7;
+        border-left: 3px solid #a7c957;
+        margin: 0 4px 8px 4px;
+        border-radius: 0 0 4px 4px;
+      }
+    ")),
+                     
+                     tags$script(HTML("
+      function toggleGlossary(btn) {
+        var body = btn.nextElementSibling;
+        var isOpen = body.style.display === 'block';
+        body.style.display = isOpen ? 'none' : 'block';
+        btn.classList.toggle('open', !isOpen);
+      }
+    ")),
+                     
+                     # Glossary terms in alphabetical order
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "95% Confidence Interval (CI)", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The range of values within which the true population parameter (e.g. the true correlation) 
+             is estimated to fall with 95% probability. A narrow CI indicates a more precise estimate. 
+             If the CI does not include zero, the result is statistically significant at p < 0.05.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "Adjusted p-value (Tukey)", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "A p-value that has been corrected for the fact that multiple pairwise comparisons are 
+             being made simultaneously (in Tukey's post-hoc test). Without this correction, the 
+             probability of a false positive would increase with each additional comparison. 
+             Adjusted p < 0.05 indicates a significant difference between a specific pair of groups.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "Adjusted R\u00b2", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "A version of R\u00b2 that is penalized for the number of predictors in the model. 
+             Unlike standard R\u00b2, it will decrease if a predictor is added that does not 
+             genuinely improve the model. Useful for comparing models with different numbers 
+             of variables.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "F-statistic", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The ratio of variance explained by the model to the unexplained (residual) variance. 
+             Used in both linear regression and ANOVA. A larger F-statistic indicates a stronger 
+             overall model fit. The associated p-value tells you whether this F is larger than 
+             you would expect by chance.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "p-value", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The probability of observing a result at least as extreme as the one found, 
+             assuming the null hypothesis (no relationship) is true. A p-value below 0.05 
+             is the conventional threshold for statistical significance, meaning there is 
+             less than a 5% chance the result is due to random variation alone.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "r (Pearson Correlation Coefficient)", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "Measures the strength and direction of the linear relationship between two variables. 
+             Ranges from -1 (perfect negative relationship) to +1 (perfect positive relationship). 
+             A value near 0 indicates little to no linear relationship. Note that correlation 
+             does not imply causation.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "R\u00b2 (Coefficient of Determination)", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The proportion of variance in the outcome variable (e.g. life expectancy) that is 
+             explained by the predictor (e.g. pesticide use). An R\u00b2 of 0.25 means 25% of 
+             the variation in the outcome is accounted for by the model. R\u00b2 ranges from 
+             0 (no fit) to 1 (perfect fit).")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "Slope", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The regression coefficient for the predictor variable. It represents how much the 
+             outcome variable is expected to change for each one-unit increase in the predictor. 
+             A positive slope indicates that higher pesticide exposure is associated with a higher 
+             outcome value; a negative slope indicates the reverse.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "Slope SE (Standard Error)", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "The standard error of the slope estimate, measuring the precision of the regression 
+             coefficient. A smaller SE relative to the slope indicates a more reliable estimate. 
+             It is used to calculate the t-statistic and confidence interval for the slope.")
+                     ),
+                     div(class = "glossary-item",
+                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
+                                     "t-statistic", tags$span(class = "arrow", "▼")),
+                         div(class = "glossary-body",
+                             "Used in the Pearson correlation test to determine whether the observed correlation 
+             is significantly different from zero. It is calculated as the correlation coefficient 
+             divided by its standard error. A larger absolute t-value corresponds to a smaller 
+             p-value and stronger evidence against the null hypothesis.")
+                     )
+                 )    
              ) # end main-container
     ), # end Data Visualization tabPanel
     
