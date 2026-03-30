@@ -735,8 +735,13 @@ fluidPage(
     # =========================================================================
     tabPanel("Data Visualization",
              
-             div(class = "main-container",
-                 h1(class = "page-header", "Data Visualizations"),
+             div(class = "home-hero",
+                 h1("Data Visualizations"),
+                 p(class = "hero-subtitle",
+                   "Explore statistical relationships between pesticide exposure and neurological health outcomes across U.S. states and counties")
+             ),
+             
+             div(class = "home-section",
                  
                  # ==========================================================
                  # SUMMARY BANNER
