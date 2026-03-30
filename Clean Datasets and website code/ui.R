@@ -600,9 +600,9 @@ fluidPage(
                  div(class = "about-card",
                      div(class = "about-card-text",
                          h2("About This Project"),
-                         p("Parkinson's disease affects millions of Americans, yet the environmental
-           drivers behind its geographic distribution remain poorly understood. This
-           project investigates whether pesticide use and agricultural intensity are
+                         p("Parkinson's disease (PD) affects millions of Americans, but the environmental
+           risk factors associated with developing this disease remain poorly understood. Studies have suggested that certain pesticides can cause neurological harm resulting in increased risk of developing PD. This
+           project investigates whether the use of certain pesticides (Paraquat, Glyphosate, Chlorypifos, 2,4-D) and agricultural intensity are
            associated with higher Parkinson's mortality rates across U.S. states and counties."),
                          p("Our interactive dashboard integrates CDC mortality data, USDA pesticide
            and farm records, and CDC WONDER life-expectancy figures to visualize
@@ -621,10 +621,10 @@ fluidPage(
                      div(class = "feature-card",
                          tags$h3("Interactive Maps"),
                          tags$p("Explore Parkinson's mortality, pesticide use, and life expectancy
-                geographically across all U.S. states and counties.")
+                geographically across U.S. states and counties.")
                      ),
                      div(class = "feature-card",
-                         tags$h3("Correlation Analysis"),
+                         tags$h3("Data Analysis"),
                          tags$p("Compare pesticide exposure and farm density against disease rates
                 to surface potential environmental risk patterns.")
                      ),
@@ -1003,6 +1003,7 @@ fluidPage(
                      h4("Tukey Post-Hoc Table"),
                      DTOutput("tukey_exposure_parkinson_table")
                  ),
+
                  # =============================================================================
                  # STATISTICS GLOSSARY ACCORDION
                  # =============================================================================
@@ -1159,6 +1160,159 @@ fluidPage(
              ) # end main-container
     ), # end Data Visualization tabPanel
     
+   ### =========================================================================
+      # Discussion TAB
+      # =========================================================================
+    tabPanel("Discussion",
+             div(class = "main-container",
+                 h1(class = "page-header", "Discussion"),
+                 
+                 
+                 # =============================================================================
+                 # MAIN TAKEAWAYS
+                 # =============================================================================
+                 div(class = "plot-container",
+                     h2(style = "color: #2d5016; font-size: 1.6em; font-weight: 700;
+                border-bottom: 3px solid #4a7c2a; padding-bottom: 12px; margin-bottom: 24px;",
+                        "Main Takeaways"),
+                     
+                     # Intro
+                     p(style = "font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 28px;",
+                       "The analyses below examined associations between agricultural pesticide exposure,
+       farm density, and neurological health outcomes across U.S. counties and states.
+       Results were mixed across compounds and levels of analysis, and all findings
+       should be interpreted as observational associations rather than causal relationships."),
+                     
+                     # --- Section 1: Pesticide vs Parkinson's (State) ---
+                     div(style = "margin-bottom: 28px;",
+                         div(style = "display: flex; align-items: center; gap: 12px; margin-bottom: 12px;",
+                             div(style = "width: 4px; height: 28px; background: #a7c957; border-radius: 2px; flex-shrink: 0;"),
+                             h3(style = "margin: 0; font-size: 1.1em; font-weight: 700; color: #1a3009;",
+                                "Pesticide Use vs. Parkinson's Death Rate (State-Level Scatter Plot & Regression)")
+                         ),
+                         p(style = "font-size: 14px; color: #444; line-height: 1.8; margin: 0 0 10px 16px;",
+                           "Of the four compounds tested, only ", tags$strong("2,4-D"), " showed a statistically
+           significant positive correlation with state-level Parkinson's mortality
+           (r = 0.34, p = 0.019), with higher 2,4-D use associated with modestly higher
+           death rates. Glyphosate trended in the same direction (r = 0.26) but did not
+           reach significance (p = 0.075). Paraquat (r = 0.18, p = 0.223) and Chlorpyrifos
+           (r = 0.15, p = 0.317) showed weak, non-significant associations. Across all
+           compounds, R\u00b2 values were low (range: 0.02-0.12), indicating that pesticide
+           use alone explains only a small fraction of the variation in state-level
+           Parkinson's mortality."
+                         )
+                     ),
+                     
+                     # --- Section 2: Farm Count vs Parkinson's ---
+                     div(style = "margin-bottom: 28px;",
+                         div(style = "display: flex; align-items: center; gap: 12px; margin-bottom: 12px;",
+                             div(style = "width: 4px; height: 28px; background: #f4a261; border-radius: 2px; flex-shrink: 0;"),
+                             h3(style = "margin: 0; font-size: 1.1em; font-weight: 700; color: #1a3009;",
+                                "Farm Count vs. Parkinson's Death Rate (State-Level)")
+                         ),
+                         p(style = "font-size: 14px; color: #444; line-height: 1.8; margin: 0 0 10px 16px;",
+                           "The number of farms per state showed a statistically significant positive
+           association with Parkinson's mortality (r = 0.33, p = 0.021, R\u00b2 = 0.11).
+           States with more farms tended to have modestly higher Parkinson's death rates.
+           This finding is consistent with the hypothesis that agricultural intensity
+           is associated with increased neurological disease burden, though the effect
+           size remains small and confounding factors such as age distribution,
+           rural healthcare access, and overall population size cannot be ruled out."
+                         )
+                     ),
+                     
+                     # --- Section 3: Pesticide vs Life Expectancy (County) ---
+                     div(style = "margin-bottom: 28px;",
+                         div(style = "display: flex; align-items: center; gap: 12px; margin-bottom: 12px;",
+                             div(style = "width: 4px; height: 28px; background: #7ec8e3; border-radius: 2px; flex-shrink: 0;"),
+                             h3(style = "margin: 0; font-size: 1.1em; font-weight: 700; color: #1a3009;",
+                                "Pesticide Use vs. Life Expectancy (County-Level Scatter Plot & Regression)")
+                         ),
+                         p(style = "font-size: 14px; color: #444; line-height: 1.8; margin: 0 0 10px 16px;",
+                           "Results at the county level were statistically significant for all four
+           compounds but directionally inconsistent. ", tags$strong("2,4-D"),
+                           " (r = -0.13, p < 0.001) and ", tags$strong("Paraquat"), " (r = -0.09,
+           p < 0.001) showed negative associations with life expectancy, suggesting
+           that counties with higher use of these compounds tended to have lower
+           life expectancy. In contrast, ", tags$strong("Glyphosate"), " (r = 0.10)
+           and ", tags$strong("Chlorpyrifos"), " (r = 0.19) showed positive associations,
+           which is counterintuitive and likely reflects geographic confounding: these
+           compounds are heavily used in large, agriculturally productive states that
+           also tend to have higher median incomes and better healthcare infrastructure.
+           Across all compounds, R\u00b2 values were very low (0.008-0.036), indicating
+           minimal explanatory power at the county level."
+                         )
+                     ),
+                     
+                     # --- Section 4: ANOVA County ---
+                     div(style = "margin-bottom: 28px;",
+                         div(style = "display: flex; align-items: center; gap: 12px; margin-bottom: 12px;",
+                             div(style = "width: 4px; height: 28px; background: #e76f51; border-radius: 2px; flex-shrink: 0;"),
+                             h3(style = "margin: 0; font-size: 1.1em; font-weight: 700; color: #1a3009;",
+                                "Exposure Level vs. Life Expectancy (County ANOVA & Tukey)")
+                         ),
+                         p(style = "font-size: 14px; color: #444; line-height: 1.8; margin: 0 0 10px 16px;",
+                           "One-way ANOVA revealed significant differences in life expectancy across
+           Low, Medium, and High pesticide exposure groups for all four compounds
+           (all p < 0.001). However, the direction of these differences was inconsistent
+           across compounds. For ", tags$strong("2,4-D"), " and ", tags$strong("Paraquat"),
+                           ", Tukey post-hoc tests confirmed that high-exposure counties had significantly
+           lower life expectancy than low-exposure counties, consistent with a negative
+           health association. For ", tags$strong("Glyphosate"), " and ",
+                           tags$strong("Chlorpyrifos"), ", the pattern reversed: high-exposure counties
+           had significantly higher life expectancy, likely driven by the same geographic
+           confounding noted above. Effect sizes were small across all compounds
+           (eta-squared range: 0.014-0.034), meaning exposure group explains only
+           1-3% of the variance in county-level life expectancy."
+                         )
+                     ),
+                     
+                     # --- Section 5: ANOVA State ---
+                     div(style = "margin-bottom: 28px;",
+                         div(style = "display: flex; align-items: center; gap: 12px; margin-bottom: 12px;",
+                             div(style = "width: 4px; height: 28px; background: #bc4749; border-radius: 2px; flex-shrink: 0;"),
+                             h3(style = "margin: 0; font-size: 1.1em; font-weight: 700; color: #1a3009;",
+                                "Exposure Level vs. Parkinson's Death Rate (State ANOVA & Tukey)")
+                         ),
+                         p(style = "font-size: 14px; color: #444; line-height: 1.8; margin: 0 0 10px 16px;",
+                           "At the state level, no ANOVA reached statistical significance for any of
+           the four compounds (p range: 0.065-0.636). Glyphosate came closest
+           (F = 2.90, p = 0.066), with High-exposure states showing a trend toward
+           higher Parkinson's mortality, but this did not survive the 0.05 threshold.
+           No Tukey pairwise comparisons were significant for any compound. The
+           limited statistical power of this analysis (approximately 15-17 states
+           per exposure group) is a likely contributor to these null results, and
+           these findings should not be interpreted as evidence that no relationship exists."
+                         )
+                     ),
+                     
+                     # --- Overall Conclusion ---
+                     div(style = "background: linear-gradient(135deg, #1a3009 0%, #2d5016 100%);
+                 border-radius: 10px; padding: 24px 28px; margin-top: 8px;",
+                         div(style = "font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+                     color: #a7c957; font-family: monospace; margin-bottom: 14px;",
+                             "Overall Conclusion"),
+                         p(style = "font-size: 14px; color: rgba(255,255,255,0.9); line-height: 1.85; margin: 0;",
+                           "Taken together, the data provide weak to moderate evidence for a positive
+           association between agricultural pesticide exposure and Parkinson's disease
+           mortality at the state level, most consistently for 2,4-D and, to a lesser
+           extent, glyphosate. Farm density also showed a modest but significant positive
+           association with Parkinson's death rates. County-level analyses suggest that
+           2,4-D and paraquat may be negatively associated with life expectancy, though
+           these findings are complicated by geographic confounding from other compounds.
+           Critically, all effect sizes across every analysis were small, and none of
+           these findings establish causation. ", tags$strong("Our overall 
+           interpretation is that agricultural intensity — including pesticide use —
+           is a weak positive predictor of Parkinson's mortality at the state level,
+           consistent with the broader epidemiological literature, but that the strength
+           and direction of this relationship varies by compound and is likely moderated
+           by unmeasured geographic, demographic, and socioeconomic factors."), "We believe access to county-level data for all analyses would provide a more robust characterization of the relationship between pesticide use and Parkinson's disease prevalence, and would be a good direction for future projects to pursue.")
+                     )
+                 ),
+             )
+    ),
+    
+    
     # =========================================================================
     # DATA TABLES TAB
     # =========================================================================
@@ -1300,6 +1454,7 @@ fluidPage(
                      tags$h2("Team & Credits"),
                      tags$p(tags$strong("Course:"), " BIOL-185 — Medical Trends Analysis, Winter 2026"),
                      tags$p(tags$strong("Institution:"), " Washington & Lee University"),
+                     tags$p(tags$strong("Contributors:"), " Ashley Ellis ('26), Robert Bernot ('26), Georgia Busbee ('26)"),
                      tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT.")
                  )
                  
