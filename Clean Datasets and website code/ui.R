@@ -676,7 +676,22 @@ fluidPage(
                          div(class = "map-title-bar",
                              textOutput("map_title")
                          ),
-                         leafletOutput("main_map", height = "640px")
+                         leafletOutput("main_map", height = "640px"),
+                         
+                         conditionalPanel(
+                           condition = "input.selected_map == 'map3'",
+                           div(
+                             style = "padding: 12px 20px; background: #f8f9fa; border-top: 1px solid #e0e0e0;",
+                             selectInput(
+                               inputId = "map3_state_selector",
+                               label   = "Zoom to State:",
+                               choices = c("All States" = "all"),
+                               selected = "all",
+                               width   = "280px"
+                             )
+                           )
+                         ) 
+                  
                      )
                  )
              )
