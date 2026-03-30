@@ -287,7 +287,7 @@ function(input, output, session) {
     
     pesticide <- pesticide %>%
       mutate(
-        state_abbr        = normalize_state_to_abbr(if ("state_name" %in% names(pesticide)) state_name else state_code),
+        state_abbr        = normalize_state_to_abbr(if ("state_name" %in% names(pesticide)), state_name, else, state_code),
         county_name_clean = trimws(tolower(gsub(" County$| Parish$", "", county_name))),
         Avg_Pesticide     = (LOW_ESTIMATE + HIGH_ESTIMATE) / 2
       )
@@ -560,7 +560,6 @@ function(input, output, session) {
   })
   
   # ===========================================================================
-<<<<<<< HEAD
   # MAP 1: PARKINSON'S VS PESTICIDES (STATE LEVEL CHOROPLETH)
   # ===========================================================================
   
@@ -710,8 +709,6 @@ function(input, output, session) {
                 title = "Life Expectancy<br/>(years)", position = "bottomright")
   })
   # ===========================================================================
-=======
->>>>>>> 8d93c1089038ba0f5479aab5899e7b909a2d00df
   # DATA TABLES
   # ===========================================================================
   
@@ -1162,7 +1159,7 @@ function(input, output, session) {
   # ===========================================================================
   
   output$download_combined <- downloadHandler(
-    filename = function() paste0("medical_trends_data_", Sys.Date(), ".csv"),
+    filename = function(), paste0("medical_trends_data_", Sys.Date(), ".csv"),
     content  = function(file) {
       req(Parkinson_Pesticide_State())
       write.csv(Parkinson_Pesticide_State(), file, row.names = FALSE)
