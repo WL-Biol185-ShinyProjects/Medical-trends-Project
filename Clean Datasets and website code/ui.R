@@ -1,5 +1,3 @@
-# INTERMEDIATE COPY OF UI FOR SAVING 
-
 
 library(shiny)
 library(DT)
@@ -126,7 +124,7 @@ fluidPage(
         justify-content: center;
         width: 100%;
       }
-
+ 
       .stat-box {
         flex: 1;
         min-width: 0;
@@ -142,7 +140,7 @@ fluidPage(
         justify-content: center;
         align-items: center;
         box-sizing: border-box;
-}
+      }
       
       .stat-number {
         font-size: 2.5em;
@@ -272,7 +270,7 @@ fluidPage(
         font-size: 1.2em;
         color: #666;
       }
-
+ 
       
     
     /* ---- HOME PAGE TEMPLATE STYLES ---- */
@@ -333,12 +331,12 @@ fluidPage(
       padding-bottom: 0 !important;
     }
     .about-illustration {
-      flex: 0 0 35%;         /* Image takes up 35% */
-      max-width: 400px;      /* Prevents it from getting absurdly huge */
-      width: 100%;           /* Ensures it fills its 35% container */
+      flex: 0 0 35%;
+      max-width: 400px;
+      width: 100%;
       height: auto;
       border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Optional: makes the image pop */
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     
     .home-hero h1 {
@@ -499,47 +497,12 @@ fluidPage(
     }
     
     .plot-container {
-  background: white;
-  padding: 2.5rem 3rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-}
-
-.plot-container h2 {
-  font-family: 'Lora', serif !important;
-  font-size: 1.9rem !important;
-  font-weight: 700 !important;
-  color: #1a3d0a !important;
-  margin-bottom: 1.25rem !important;
-  border-bottom: 3px solid #4a7c2a !important;
-  padding-bottom: 0.6rem !important;
-}
-
-.plot-container > p {
-  font-size: 1.5rem !important;
-  color: #4a4a4a !important;
-  line-height: 1.8 !important;
-  margin-bottom: 1.25rem !important;
-}
-
-.plot-container h4 {
-  font-family: 'Lora', serif !important;
-  font-size: 1.35rem !important;
-  font-weight: 700 !important;
-  color: #2d5016 !important;
-  margin-bottom: 0.5rem !important;
-  border-bottom: 1px solid #e0e0e0 !important;
-  padding-bottom: 0.3rem !important;
-}
-
-.plot-container .selectize-input,
-.plot-container label {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1.3rem !important;
-  color: #333 !important;
-}
-
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
     .home-plain-card {
       display: flex;
       flex-direction: column;
@@ -550,21 +513,19 @@ fluidPage(
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
     
-    /* Centering the image wrapper */
     .card-image-wrapper {
       display: flex;
-      justify-content: center; /* Centers image horizontally */
-      margin-top: 25px;       /* Pushes image away from the list */
+      justify-content: center;
+      margin-top: 25px;
       width: 100%;
     }
     
-    /* Consistent styling for both bottom images */
     .bottom-stack-img {
       width: 100%;
-      max-width: 600px;      /* Matches the width of your farm photo */
+      max-width: 600px;
       height: auto;
       border-radius: 8px;
-      border: 1px solid #eee; /* Subtle border for a clean look */
+      border: 1px solid #eee;
     }
     
     "))
@@ -670,12 +631,12 @@ fluidPage(
                  div(class = "home-plain-card",
                      tags$h2("Datasets Used"),
                      tags$ul(
-                       tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " — Parkinson's death rates by state"),
-                       tags$li(tags$strong("pesticides_by_county.csv"), " — Pesticide usage by county"),
-                       tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " — Life expectancy by state"),
-                       tags$li(tags$strong("ExpectancyData_clean.csv"), " — Life expectancy by county"),
-                       tags$li(tags$strong("Farm_Data_2024.csv"), " — Number and size of farms by state"),
-                       tags$li(tags$strong("cfips_location.csv"), " — County coordinates (County Federal Processing Standard codes, county names, longitude, latitude)")
+                       tags$li(tags$strong("Parkinsons_mortality_rates_clean.csv"), " -- Parkinson's death rates by state"),
+                       tags$li(tags$strong("pesticides_by_county.csv"), " -- Pesticide usage by county"),
+                       tags$li(tags$strong("LifeExpectancyStateData_clean.csv"), " -- Life expectancy by state"),
+                       tags$li(tags$strong("ExpectancyData_clean.csv"), " -- Life expectancy by county"),
+                       tags$li(tags$strong("Farm_Data_2024.csv"), " -- Number and size of farms by state"),
+                       tags$li(tags$strong("cfips_location.csv"), " -- County coordinates (County Federal Processing Standard codes, county names, longitude, latitude)")
                      ),
                      div(class = "card-image-wrapper",
                          tags$img(src = "datasets_image.jpg", class = "bottom-stack-img")
@@ -686,14 +647,13 @@ fluidPage(
     
     
     # =========================================================================
-    # MAPS TAB - With Sidebar Selector
+    # MAPS TAB
     # =========================================================================
     tabPanel("Maps",
              div(class = "main-container",
                  h1(class = "page-header", "Geographic Analysis"),
                  
                  div(class = "map-viewer-container",
-                     # Sidebar with map selector
                      div(class = "map-sidebar",
                          h3("Select Map"),
                          div(class = "map-selector",
@@ -708,14 +668,10 @@ fluidPage(
                                selected = "map1"
                              )
                          ),
-                         
                          hr(),
-                         
                          h3("Map Info"),
                          uiOutput("map_description")
                      ),
-                     
-                     # Main map area
                      div(class = "map-content",
                          div(class = "map-title-bar",
                              textOutput("map_title")
@@ -727,22 +683,16 @@ fluidPage(
     ),
     
     # =========================================================================
-    # DATA VISUALIZATION TAB (EMPTY)
+    # DATA VISUALIZATION TAB
     # =========================================================================
     tabPanel("Data Visualization",
              
-              div(class = "home-hero",
-                 h1( "Data Visualizations"),
-                 p(class = "hero-subtitle",
-                   "Explore statistical relationships between pesticide exposure and neurological health outcomes across U.S. states and counties")
-              ),
-             
-             div(class = "home-section", 
+             div(class = "main-container",
+                 h1(class = "page-header", "Data Visualizations"),
                  
-                 # =============================================================================
-                 # DATA VISUALIZATION SUMMARY BANNER
-                 # =============================================================================
-                 
+                 # ==========================================================
+                 # SUMMARY BANNER
+                 # ==========================================================
                  HTML('
 <div style="
   background: linear-gradient(135deg, #1a3009 0%, #2d5016 60%, #3d6b1f 100%);
@@ -753,81 +703,34 @@ fluidPage(
   color: white;
   font-family: Georgia, serif;
 ">
-
-  <!-- Banner header -->
   <div style="text-align: center; margin-bottom: 32px;">
-    <div style="
-      font-size: 11px;
-      font-family: monospace;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #a7c957;
-      margin-bottom: 8px;
-    ">Analysis Overview</div>
-    <h2 style="
-      margin: 0 0 10px 0;
-      font-size: 26px;
-      font-weight: normal;
-      letter-spacing: 1px;
-      color: white;
-    ">Understanding the Visualizations</h2>
-    <p style="
-      margin: 0 auto;
-      max-width: 680px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.75);
-      line-height: 1.7;
-      font-family: Arial, sans-serif;
-    ">
-      This dashboard investigates relationships between agricultural pesticide exposure 
-      and neurological health outcomes using county- and state-level data across the 
-      United States. Use the dropdown menus within each section to explore statistical results and data visualizations by 
-      pesticide compound.
+    <div style="font-size: 11px; font-family: monospace; letter-spacing: 4px; text-transform: uppercase; color: #a7c957; margin-bottom: 8px;">Analysis Overview</div>
+    <h2 style="margin: 0 0 10px 0; font-size: 26px; font-weight: normal; letter-spacing: 1px; color: white;">Understanding the Visualizations</h2>
+    <p style="margin: 0 auto; max-width: 680px; font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.7; font-family: Arial, sans-serif;">
+      This dashboard investigates relationships between agricultural pesticide exposure and neurological health outcomes using county- and state-level data across the United States. Use the dropdown menus within each section to explore statistical results and data visualizations by pesticide compound.
     </p>
   </div>
-
-  <!-- Divider -->
   <div style="border-top: 1px solid rgba(167,201,87,0.3); margin-bottom: 32px;"></div>
-
-  <!-- Four columns -->
   <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 24px;">
-
-    <!-- Column 1: Scatter Plot -->
-    <div style="
-      background: rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 24px 20px;
-      border-top: 3px solid #a7c957;
-    ">
+ 
+    <div style="background: rgba(255,255,255,0.07); border-radius: 10px; padding: 24px 20px; border-top: 3px solid #a7c957;">
       <div style="text-align: center; margin-bottom: 16px;">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="8" cy="32" r="3" fill="#a7c957"/>
-          <circle cx="14" cy="24" r="3" fill="#a7c957"/>
-          <circle cx="20" cy="26" r="3" fill="#a7c957"/>
-          <circle cx="26" cy="16" r="3" fill="#a7c957"/>
-          <circle cx="32" cy="12" r="3" fill="#a7c957"/>
-          <circle cx="19" cy="20" r="3" fill="#a7c957" opacity="0.5"/>
+          <circle cx="8" cy="32" r="3" fill="#a7c957"/><circle cx="14" cy="24" r="3" fill="#a7c957"/>
+          <circle cx="20" cy="26" r="3" fill="#a7c957"/><circle cx="26" cy="16" r="3" fill="#a7c957"/>
+          <circle cx="32" cy="12" r="3" fill="#a7c957"/><circle cx="19" cy="20" r="3" fill="#a7c957" opacity="0.5"/>
           <line x1="5" y1="35" x2="35" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
           <line x1="5" y1="35" x2="5" y2="5" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
         </svg>
       </div>
-      <div style="
-        font-size: 10px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #a7c957;
-        font-family: monospace;
-        text-align: center;
-        margin-bottom: 10px;
-      ">Scatter Plot</div>
+      <div style="font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #a7c957; font-family: monospace; text-align: center; margin-bottom: 10px;">Scatter Plot</div>
       <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-        The scatter plots below visualize the raw relationship between pesticide exposure and health outcomes, 
-        with each point representing a county or state.
+        The scatter plots below visualize the raw relationship between pesticide exposure and health outcomes, with each point representing a county or state.
       </p>
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #a7c957; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-          Scroll to view scatter plots comparing the following data: Pesticide Use vs. Parkinson\'s Death Rate, Number of Farms vs. Parkinson\'s Death rate, Pesticide Use vs. Life Expectancy
+          Pesticide Use vs. Parkinson\'s Death Rate | Number of Farms vs. Parkinson\'s Death Rate | Pesticide Use vs. Life Expectancy
         </p>
         <div style="font-size: 11px; color: #a7c957; font-family: monospace; margin-bottom: 6px;">HOW TO INTERACT</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
@@ -835,58 +738,35 @@ fluidPage(
         </p>
       </div>
     </div>
-
-    <!-- Column 2: Regression -->
-    <div style="
-      background: rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 24px 20px;
-      border-top: 3px solid #f4a261;
-    ">
+ 
+    <div style="background: rgba(255,255,255,0.07); border-radius: 10px; padding: 24px 20px; border-top: 3px solid #f4a261;">
       <div style="text-align: center; margin-bottom: 16px;">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="8" cy="30" r="2.5" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="14" cy="26" r="2.5" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="20" cy="22" r="2.5" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="26" cy="17" r="2.5" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="8" cy="30" r="2.5" fill="rgba(255,255,255,0.5)"/><circle cx="14" cy="26" r="2.5" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="20" cy="22" r="2.5" fill="rgba(255,255,255,0.5)"/><circle cx="26" cy="17" r="2.5" fill="rgba(255,255,255,0.5)"/>
           <circle cx="32" cy="13" r="2.5" fill="rgba(255,255,255,0.5)"/>
           <line x1="5" y1="32" x2="35" y2="10" stroke="#f4a261" stroke-width="2" stroke-dasharray="4 2"/>
           <line x1="5" y1="35" x2="35" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
           <line x1="5" y1="35" x2="5" y2="5" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
         </svg>
       </div>
-      <div style="
-        font-size: 10px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #f4a261;
-        font-family: monospace;
-        text-align: center;
-        margin-bottom: 10px;
-      ">Regression</div>
+      <div style="font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #f4a261; font-family: monospace; text-align: center; margin-bottom: 10px;">Regression</div>
       <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-        Linear regression models the direction and strength of the relationship between two variables, 
-        shown as a dashed trend line overlaid on the scatter plot.
+        Linear regression models the direction and strength of the relationship between two variables, shown as a dashed trend line overlaid on the scatter plot.
       </p>
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #f4a261; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-          Same pairings as scatter plots. Full regression summary (coefficients, standard error, p-value) are shown in the side panel.
+          Same pairings as scatter plots. Full regression summary is shown in the side panel.
         </p>
         <div style="font-size: 11px; color: #f4a261; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
-          The <strong style="color:white;">R²</strong> value reveals how well the trend line fits the data, with R² = 1 indicating a perfect fit. A value <strong style="color:white;">p &lt; 0.05</strong> on the slope coefficient indicates a statistically significant trend.
+          <strong style="color:white;">R²</strong> measures how well the trend line fits the data -- an R² of 0.40 means 40% of the variation in health outcomes is explained by pesticide exposure. <strong style="color:white;">p &lt; 0.05</strong> on the slope confirms the trend is unlikely to be due to chance.
         </p>
       </div>
     </div>
-
-    <!-- Column 3: Correlation -->
-    <div style="
-      background: rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 24px 20px;
-      border-top: 3px solid #7ec8e3;
-    ">
+ 
+    <div style="background: rgba(255,255,255,0.07); border-radius: 10px; padding: 24px 20px; border-top: 3px solid #7ec8e3;">
       <div style="text-align: center; margin-bottom: 16px;">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="20" cy="20" r="13" stroke="#7ec8e3" stroke-width="1.5" fill="none"/>
@@ -896,18 +776,9 @@ fluidPage(
           <text x="14" y="24" font-size="10" fill="#7ec8e3" font-family="monospace">r</text>
         </svg>
       </div>
-      <div style="
-        font-size: 10px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #7ec8e3;
-        font-family: monospace;
-        text-align: center;
-        margin-bottom: 10px;
-      ">Correlation</div>
+      <div style="font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #7ec8e3; font-family: monospace; text-align: center; margin-bottom: 10px;">Correlation</div>
       <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-        Pearson\'s correlation coefficient (r) quantifies how strongly two variables 
-        move together, from &minus;1 (perfect negative) to +1 (perfect positive).
+        Pearson\'s correlation coefficient (r) quantifies how strongly two variables move together, from -1 (perfect negative) to +1 (perfect positive).
       </p>
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #7ec8e3; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
@@ -916,173 +787,130 @@ fluidPage(
         </p>
         <div style="font-size: 11px; color: #7ec8e3; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
-          The <strong style="color:white;">r value</strong> is shown on each scatter plot. The side panel gives the full test output, including 95% confidence interval and p-value.
+          The <strong style="color:white;">r value</strong> is shown on each scatter plot. The side panel gives the full test output including 95% confidence interval and p-value.
         </p>
       </div>
     </div>
-
-    <!-- Column 4: ANOVA / Tukey -->
-    <div style="
-      background: rgba(255,255,255,0.07);
-      border-radius: 10px;
-      padding: 24px 20px;
-      border-top: 3px solid #e76f51;
-    ">
+ 
+    <div style="background: rgba(255,255,255,0.07); border-radius: 10px; padding: 24px 20px; border-top: 3px solid #e76f51;">
       <div style="text-align: center; margin-bottom: 16px;">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Three box plots schematic -->
           <rect x="4" y="18" width="8" height="10" rx="1" stroke="#e76f51" stroke-width="1.5" fill="rgba(231,111,81,0.2)"/>
           <line x1="8" y1="18" x2="8" y2="13" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="8" y1="28" x2="8" y2="33" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="5" y1="22" x2="11" y2="22" stroke="#e76f51" stroke-width="1.5"/>
-
           <rect x="16" y="14" width="8" height="12" rx="1" stroke="#e76f51" stroke-width="1.5" fill="rgba(231,111,81,0.2)"/>
           <line x1="20" y1="14" x2="20" y2="9" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="20" y1="26" x2="20" y2="31" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="17" y1="19" x2="23" y2="19" stroke="#e76f51" stroke-width="1.5"/>
-
           <rect x="28" y="10" width="8" height="14" rx="1" stroke="#e76f51" stroke-width="1.5" fill="rgba(231,111,81,0.2)"/>
           <line x1="32" y1="10" x2="32" y2="5" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="32" y1="24" x2="32" y2="29" stroke="#e76f51" stroke-width="1.5"/>
           <line x1="29" y1="16" x2="35" y2="16" stroke="#e76f51" stroke-width="1.5"/>
         </svg>
       </div>
-      <div style="
-        font-size: 10px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #e76f51;
-        font-family: monospace;
-        text-align: center;
-        margin-bottom: 10px;
-      ">ANOVA & Tukey</div>
+      <div style="font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #e76f51; font-family: monospace; text-align: center; margin-bottom: 10px;">ANOVA & Tukey</div>
       <p style="font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.65; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-        We ran ANOVA tests to detect whether health outcomes differ significantly across pesticide 
-        exposure levels, classified as Low &rarr; High based on tertiles. Tukey\'s post-hoc identifies which 
-        specific pairs of groups drive that difference.
+        ANOVA tests whether health outcomes differ significantly across pesticide exposure levels (Low to High). Tukey\'s post-hoc identifies which specific pairs of groups drive that difference.
       </p>
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 4px;">
         <div style="font-size: 11px; color: #e76f51; font-family: monospace; margin-bottom: 6px;">DATA USED</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0 0 12px 0;">
-          County Pesticide Exposure Level vs. Life Expectancy &bull; State Pesticide Exposure Level vs. Parkinson\'s Death Rate
+          County Pesticide Exposure Level vs. Life Expectancy | State Pesticide Exposure Level vs. Parkinson\'s Death Rate
         </p>
         <div style="font-size: 11px; color: #e76f51; font-family: monospace; margin-bottom: 6px;">HOW TO INTERPRET</div>
         <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; font-family: Arial, sans-serif; margin: 0;">
-          ANOVA p &lt; 0.05 means at least one group differs. Check the <strong style="color:white;">Tukey table</strong> — pairs highlighted in green have adjusted p &lt; 0.05 and are significantly different from each other.
+          ANOVA p &lt; 0.05 means at least one group differs. Check the <strong style="color:white;">Tukey table</strong> -- pairs highlighted in green have adjusted p &lt; 0.05 and are significantly different.
         </p>
       </div>
     </div>
-
-  </div><!-- end grid -->
-</div><!-- end banner -->
+ 
+  </div>
+</div>
 '),
                  
-                 
-                 
-                 
-                 
-                 
+                 # -----------------------------------------------------------------------
                  # State-level pesticide vs Parkinson's mortality
+                 # -----------------------------------------------------------------------
                  div(class = "plot-container",
                      h2("Pesticide Use vs. Parkinson's Mortality Rate by State"),
                      p("Select a pesticide to view its relationship with average Parkinson's death rate at the state level. States with missing pesticide data are excluded."),
-                     
                      selectInput(
                        inputId  = "selected_state_pesticide",
                        label    = "Select Pesticide:",
                        choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
                        selected = "Glyphosate"
                      ),
-                     
                      fluidRow(
                        column(8,
                               plotlyOutput("plot_state_pesticide_parkinson", height = "500px")
                        ),
                        column(4,
-                              h4("Correlation Result"),
-                              verbatimTextOutput("cor_state_pesticide_parkinson"),
-                              br(),
-                              h4("Regression Summary"),
-                              verbatimTextOutput("reg_state_pesticide_parkinson")
+                              uiOutput("stats_state_pesticide_parkinson")
                        )
                      )
                  ),
                  
-                 
-                
+                 # -----------------------------------------------------------------------
                  # State level Farm Count VS Parkinsons data
+                 # -----------------------------------------------------------------------
                  div(class = "plot-container",
                      h2("Number of Farms vs. Parkinson's Death Rate by State"),
                      p("State-level scatter plot showing the relationship between number of farms and Parkinson's average death rate."),
-                     
                      fluidRow(
                        column(8,
                               plotlyOutput("plot_farm_parkinson_detailed", height = "500px")
                        ),
                        column(4,
-                              h4("Correlation Result"),
-                              verbatimTextOutput("cor_farm_parkinson_detailed"),
-                              br(),
-                              h4("Regression Summary"),
-                              verbatimTextOutput("reg_farm_parkinson_detailed")
+                              uiOutput("stats_farm_parkinson")
                        )
                      )
                  ),
                  
+                 # -----------------------------------------------------------------------
                  # County-level pesticide vs life expectancy
+                 # -----------------------------------------------------------------------
                  div(class = "plot-container",
                      h2("Pesticide Use vs. Life Expectancy by County"),
                      p("Select a pesticide to view its relationship with average life expectancy at the county level."),
-                     
                      selectInput(
                        inputId  = "selected_pesticide",
                        label    = "Select Pesticide:",
                        choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
                        selected = "Glyphosate"
                      ),
-                     
                      fluidRow(
                        column(8,
                               plotlyOutput("plot_county_pesticide_life", height = "500px")
                        ),
                        column(4,
-                              h4("Correlation Result"),
-                              verbatimTextOutput("cor_county_pesticide_life"),
-                              br(),
-                              h4("Regression Summary"),
-                              verbatimTextOutput("reg_county_pesticide_life")
+                              uiOutput("stats_county_pesticide_life")
                        )
                      )
                  ),
                  
                  # =============================================================================
-                 # ANOVA SECTION: EXPOSURE LEVEL VS HEALTH OUTCOMES
+                 # ANOVA SECTION
                  # =============================================================================
                  
                  # --- ANOVA 1: County Pesticide Exposure vs Life Expectancy ---
                  div(class = "plot-container",
                      h2("ANOVA: Pesticide Exposure Level vs. Life Expectancy (County-Level)"),
-                     p("Counties are grouped into Low, Medium, and High exposure tertiles for each 
-       pesticide. One-way ANOVA tests whether life expectancy differs significantly 
+                     p("Counties are grouped into Low, Medium, and High exposure tertiles for each
+       pesticide. One-way ANOVA tests whether life expectancy differs significantly
        across exposure levels. Select a pesticide to view its results."),
-                     
                      selectInput(
                        inputId  = "anova_county_compound",
                        label    = "Select Pesticide:",
                        choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
                        selected = "Glyphosate"
                      ),
-                     
                      fluidRow(
                        column(8,
                               plotlyOutput("plot_anova_exposure_life", height = "500px")
                        ),
                        column(4,
-                              h4("ANOVA Summary"),
-                              verbatimTextOutput("anova_exposure_life"),
-                              br(),
-                              h4("Tukey Post-Hoc Summary"),
-                              verbatimTextOutput("tukey_exposure_life_print")
+                              uiOutput("stats_anova_exposure_life")
                        )
                      ),
                      br(),
@@ -1093,95 +921,65 @@ fluidPage(
                  # --- ANOVA 2: State Pesticide Exposure vs Parkinson's Mortality ---
                  div(class = "plot-container",
                      h2("ANOVA: Pesticide Exposure Level vs. Parkinson's Death Rate (State-Level)"),
-                     p("States are grouped into Low, Medium, and High exposure tertiles for each 
-       pesticide. One-way ANOVA tests whether Parkinson's death rate differs 
+                     p("States are grouped into Low, Medium, and High exposure tertiles for each
+       pesticide. One-way ANOVA tests whether Parkinson's death rate differs
        significantly across exposure levels. Select a pesticide to view its results."),
-                     
                      selectInput(
                        inputId  = "anova_state_compound",
                        label    = "Select Pesticide:",
                        choices  = c("2,4-D", "Glyphosate", "Paraquat", "Chlorpyrifos"),
                        selected = "Glyphosate"
                      ),
-                     
                      fluidRow(
                        column(8,
                               plotlyOutput("plot_anova_exposure_parkinson", height = "500px")
                        ),
                        column(4,
-                              h4("ANOVA Summary"),
-                              verbatimTextOutput("anova_exposure_parkinson"),
-                              br(),
-                              h4("Tukey Post-Hoc Summary"),
-                              verbatimTextOutput("tukey_exposure_parkinson_print")
+                              uiOutput("stats_anova_exposure_parkinson")
                        )
                      ),
                      br(),
                      h4("Tukey Post-Hoc Table"),
                      DTOutput("tukey_exposure_parkinson_table")
-                 ),
+                 )
                  
-             )
-    ),
+             ) # end main-container
+    ), # end Data Visualization tabPanel
     
     # =========================================================================
     # DATA TABLES TAB
     # =========================================================================
     tabPanel("Data Tables",
-             
-             div(class = "home-hero",
-                 h1("Data Tables"),
-                 p(class = "hero-subtitle", "Explore the raw datasets used in this analysis")
-             ),
-             
-             div(class = "home-section",
+             div(class = "main-container",
+                 h1(class = "page-header", "Data Tables"),
                  
-                 div(class = "home-plain-card",
-                     tags$h2("Parkinson's Disease Data"),
-                     tags$p("State-level Parkinson's mortality data."),
+                 div(class = "content-box",
+                     h2("Parkinson's Disease Data"),
+                     p("State-level Parkinson's mortality data."),
                      DTOutput("data_table_parkinson"),
                      br(),
-                     downloadButton("download_parkinson", "Download Dataset",
+                     downloadButton("download_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "home-plain-card",
-                     tags$h2("Farm Data"),
-                     tags$p("State-level agricultural data."),
+                 div(class = "content-box",
+                     h2("Farm Data"),
+                     p("State-level agricultural data."),
                      DTOutput("data_table_farms"),
                      br(),
-                     downloadButton("download_farms", "Download Dataset",
+                     downloadButton("download_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  ),
                  
-                 div(class = "home-plain-card",
-                     tags$h2("Life Expectancy Data"),
-                     tags$p("State-level life expectancy data."),
+                 div(class = "content-box",
+                     h2("Life Expectancy Data"),
+                     p("State-level life expectancy data."),
                      DTOutput("data_table_life_expectancy"),
                      br(),
-                     downloadButton("download_life_expectancy", "Download Dataset",
-                                    class = "btn btn-success btn-lg")
-                 ),
-                 
-                 div(class = "home-plain-card",
-                     tags$h2("County Pesticide Data"),
-                     tags$p("County-level pesticide data."),
-                     DTOutput("data_table_county_pesticides"),
-                     br(),
-                     downloadButton("download_county_pesticides", "Download Dataset",
-                                    class = "btn btn-success btn-lg")
-                 ),
-                 
-                 div(class = "home-plain-card",
-                     tags$h2("State Pesticide Data"),
-                     tags$p("State-level pesticide data."),
-                     DTOutput("data_table_state_pesticides"),
-                     br(),
-                     downloadButton("download_state_pesticides", "Download Dataset",
+                     downloadButton("download_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
                  )
-                 
-             ) # End home-section
+             )
     ),
     
     # =========================================================================
@@ -1233,8 +1031,5 @@ fluidPage(
                  
              ) # End home-section
     ) # End About tabPanel
-    )
   )
-
-
-
+)
