@@ -815,23 +815,19 @@ function(input, output, session) {
                                       names(Expectancy_State_Data())), digits = 2)
   })
   
-  
-  output$data_table_life_expectancy <- renderDT({
-    req(Expectancy_State_Data())
+  output$data_table_state_pesticide <- renderDT({
+    data <- State_Pesticide_Data()
+    req(data)
     datatable(
-      Expectancy_State_Data(),
+      data,
       options = list(pageLength = 15, scrollX = TRUE),
       rownames = FALSE,
       class = 'cell-border stripe hover'
-    ) %>%
-      formatRound(
-        columns = intersect(c("Avg_Life_Expectancy"), names(Expectancy_State_Data())),
-        digits = 2
-      )
+    )
   })
   
-  output$data_table_state_pesticide <- renderDT({
-    data <- State_Pesticide_Data()
+  output$data_table_county_pesticide <- renderDT({
+    data <- Pesticide_County_Data()
     req(data)
     datatable(
       data,
@@ -872,20 +868,7 @@ function(input, output, session) {
       write.csv(Pesticide_State_Data(), file, row.names = FALSE)
     }
   )
-  output$data_table_state_pesticide <- renderDT({
-    data <- Pesticide_State_Data()
-    req(data)
-    datatable(
-      data,
-      options = list(pageLength = 15, scrollX = TRUE),
-      rownames = FALSE,
-      class = 'cell-border stripe hover'
-    ) %>%
-      formatRound(
-        columns = intersect(c("Avg_Pesticide"), names(data)),
-        digits = 2
-      )
-  })
+  
   output$download_county_pesticide_data <- downloadHandler(
     filename = function() paste("county_pesticide_data_", Sys.Date(), ".csv", sep = ""),
     content = function(file) {
