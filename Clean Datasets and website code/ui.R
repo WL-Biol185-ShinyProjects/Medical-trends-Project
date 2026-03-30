@@ -499,12 +499,47 @@ fluidPage(
     }
     
     .plot-container {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 25px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
+  background: white;
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.plot-container h2 {
+  font-family: 'Lora', serif !important;
+  font-size: 1.9rem !important;
+  font-weight: 700 !important;
+  color: #1a3d0a !important;
+  margin-bottom: 1.25rem !important;
+  border-bottom: 3px solid #4a7c2a !important;
+  padding-bottom: 0.6rem !important;
+}
+
+.plot-container > p {
+  font-size: 1.5rem !important;
+  color: #4a4a4a !important;
+  line-height: 1.8 !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.plot-container h4 {
+  font-family: 'Lora', serif !important;
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  color: #2d5016 !important;
+  margin-bottom: 0.5rem !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  padding-bottom: 0.3rem !important;
+}
+
+.plot-container .selectize-input,
+.plot-container label {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.3rem !important;
+  color: #333 !important;
+}
+
     .home-plain-card {
       display: flex;
       flex-direction: column;
@@ -696,8 +731,13 @@ fluidPage(
     # =========================================================================
     tabPanel("Data Visualization",
              
-              div(class = "main-container",
-                 h1(class = "page-header", "Data Visualizations"),
+              div(class = "home-hero",
+                 h1( "Data Visualizations"),
+                 p(class = "hero-subtitle",
+                   "Explore statistical relationships between pesticide exposure and neurological health outcomes across U.S. states and counties")
+              ),
+             
+             div(class = "home-section", 
                  
                  # =============================================================================
                  # DATA VISUALIZATION SUMMARY BANNER
