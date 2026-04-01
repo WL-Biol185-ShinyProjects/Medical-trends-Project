@@ -178,7 +178,7 @@ fluidPage(
         margin-bottom: 1.5rem !important;
         font-weight: 700 !important;
       }
-
+ 
       /* Map viewer layout */
       .map-viewer-container {
         display: flex;
@@ -210,8 +210,9 @@ fluidPage(
       .map-selector {
         margin-bottom: 25px;
       }
-      
-      .map-selector label {
+ 
+      /* FIX: scope label styles to .radio children only, not the outer group label */
+      .map-selector .radio label {
         display: block;
         padding: 12px 15px;
         margin-bottom: 8px;
@@ -223,17 +224,17 @@ fluidPage(
         font-weight: 500;
       }
       
-      .map-selector input[type='radio'] {
+      .map-selector .radio input[type='radio'] {
         margin-right: 10px;
       }
       
-      .map-selector label:hover {
+      .map-selector .radio label:hover {
         border-color: #4a7c2a;
         background: #f0f7f0;
       }
       
-      .map-selector input[type='radio']:checked + label,
-      .map-selector label:has(input:checked) {
+      .map-selector .radio input[type='radio']:checked + label,
+      .map-selector .radio label:has(input:checked) {
         background: #4a7c2a;
         color: white;
         border-color: #4a7c2a;
@@ -295,14 +296,14 @@ fluidPage(
       .map-section-header:first-child {
         margin-top: 0;
       }
-
+ 
       /* State selector in sidebar */
       .sidebar-state-selector {
         margin-top: 16px;
         padding-top: 14px;
         border-top: 1px solid #e0e0e0;
       }
-
+ 
       .sidebar-state-selector label {
         font-size: 0.85em;
         font-weight: 600;
@@ -312,7 +313,7 @@ fluidPage(
         margin-bottom: 6px;
         display: block;
       }
-
+ 
       .sidebar-state-selector .selectize-input {
         font-size: 13px;
       }
@@ -543,46 +544,46 @@ fluidPage(
     }
     
     .plot-container {
-  background: white;
-  padding: 2.5rem 3rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-}
-
-.plot-container h2 {
-  font-family: 'Lora', serif !important;
-  font-size: 1.9rem !important;
-  font-weight: 700 !important;
-  color: #1a3d0a !important;
-  margin-bottom: 1.25rem !important;
-  border-bottom: 3px solid #4a7c2a !important;
-  padding-bottom: 0.6rem !important;
-}
-
-.plot-container > p {
-  font-size: 1.5rem !important;
-  color: #4a4a4a !important;
-  line-height: 1.8 !important;
-  margin-bottom: 1.25rem !important;
-}
-
-.plot-container h4 {
-  font-family: 'Lora', serif !important;
-  font-size: 1.35rem !important;
-  font-weight: 700 !important;
-  color: #2d5016 !important;
-  margin-bottom: 0.5rem !important;
-  border-bottom: 1px solid #e0e0e0 !important;
-  padding-bottom: 0.3rem !important;
-}
-
-.plot-container .selectize-input,
-.plot-container label {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1.3rem !important;
-  color: #333 !important;
-}
+      background: white;
+      padding: 2.5rem 3rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    
+    .plot-container h2 {
+      font-family: 'Lora', serif !important;
+      font-size: 1.9rem !important;
+      font-weight: 700 !important;
+      color: #1a3d0a !important;
+      margin-bottom: 1.25rem !important;
+      border-bottom: 3px solid #4a7c2a !important;
+      padding-bottom: 0.6rem !important;
+    }
+    
+    .plot-container > p {
+      font-size: 1.5rem !important;
+      color: #4a4a4a !important;
+      line-height: 1.8 !important;
+      margin-bottom: 1.25rem !important;
+    }
+    
+    .plot-container h4 {
+      font-family: 'Lora', serif !important;
+      font-size: 1.35rem !important;
+      font-weight: 700 !important;
+      color: #2d5016 !important;
+      margin-bottom: 0.5rem !important;
+      border-bottom: 1px solid #e0e0e0 !important;
+      padding-bottom: 0.3rem !important;
+    }
+ 
+    .plot-container .selectize-input,
+      .plot-container label {
+      font-family: 'Inter', sans-serif !important;
+      font-size: 1.3rem !important;
+      color: #333 !important;
+    }
     .home-plain-card {
       display: flex;
       flex-direction: column;
@@ -607,8 +608,7 @@ fluidPage(
       border-radius: 8px;
       border: 1px solid #eee;
     }
-    
-    "))
+  "))
   ),
   
   # Top branding bar
@@ -1233,7 +1233,7 @@ fluidPage(
              ) # end home-section
     ), # end Data Visualization tabPanel
     
-    ### =========================================================================
+    # =========================================================================
     # Discussion TAB
     # =========================================================================
     tabPanel("Discussion",
