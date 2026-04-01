@@ -1367,7 +1367,7 @@ fluidPage(
            is a weak positive predictor of Parkinson's mortality at the state level,
            consistent with the broader epidemiological literature, but that the strength
            and direction of this relationship varies by compound and is likely moderated
-           by unmeasured geographic, demographic, and socioeconomic factors."), "We believe access to county-level data for all analyses would provide a more robust characterization of the relationship between pesticide use and Parkinson's disease prevalence, and would be a good direction for future projects to pursue.")
+           by unmeasured geographic, demographic, and socioeconomic factors."), "We believe access to county-level data for all analyses would provide a more robust characterization of the relationship between pesticide use and Parkinson's disease prevalence, and would be an insightful direction for future projects to pursue.")
                      )
                  )
              )
