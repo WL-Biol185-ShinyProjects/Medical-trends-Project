@@ -1394,7 +1394,7 @@ fluidPage(
                      patterns from publicly available federal datasets.")
                      ),
                      tags$img(
-                       src = "about_image.jpg",
+                       src = "green_neuron.jpg",
                        class = "about-illustration",
                        alt = "Medical research illustration"
                      )
