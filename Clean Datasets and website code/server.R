@@ -503,7 +503,7 @@ function(input, output, session) {
         sp$pest_24d <- sp$pest_glyphosate <- sp$pest_paraquat <- sp$pest_chlorpyrifos <- NA_real_
       }
       
-      pal    <- colorNumeric("YlOrRd", domain = sp$Avg_Death_Rate, na.color = "#d0d0d0")
+      pal    <- colorNumeric("YlOrRd", domain = sp$Avg_Death_Rate, na.color = NA)
       labels <- sprintf(
         "<strong>%s</strong><br/>Death Rate: %s<br/>2,4-D: %s lbs<br/>Glyphosate: %s lbs<br/>Paraquat: %s lbs<br/>Chlorpyrifos: %s lbs",
         tools::toTitleCase(sp$state_lower),
@@ -523,7 +523,7 @@ function(input, output, session) {
                                                         fillOpacity = 0.9, bringToFront = TRUE),
                     label = labels) %>%
         addLegend(position = "bottomright", pal = pal, values = ~Avg_Death_Rate,
-                  title = "Death Rate", opacity = 0.8, na.label = "No data")
+                  title = "Death Rate", opacity = 0.8)
       
       # ── MAP 2: Parkinson's death rate + farm count (single variable, RdPu) ──
     } else if (selected == "map2") {
@@ -537,7 +537,7 @@ function(input, output, session) {
           by = "State_Abbr"
         )
       
-      pal    <- colorNumeric("RdPu", domain = sp$Avg_Death_Rate, na.color = "#d0d0d0")
+      pal    <- colorNumeric("RdPu", domain = sp$Avg_Death_Rate, na.color = NA)
       labels <- sprintf(
         "<strong>%s</strong><br/>Death Rate: %s<br/>Farms: %s",
         tools::toTitleCase(sp$state_lower),
@@ -554,7 +554,7 @@ function(input, output, session) {
                                                         fillOpacity = 0.9, bringToFront = TRUE),
                     label = labels) %>%
         addLegend(position = "bottomright", pal = pal, values = ~Avg_Death_Rate,
-                  title = "Death Rate", opacity = 0.8, na.label = "No data")
+                  title = "Death Rate", opacity = 0.8)
       
       # ── MAP 3: County life expectancy choropleth (single variable, YlGn) ────
     } else if (selected == "map3") {
@@ -600,7 +600,7 @@ function(input, output, session) {
                  addPopups(-98.5, 39.83, "No county life-expectancy data available after county match"))
       }
       
-      pal    <- colorNumeric("YlGn", domain = cp$Avg_Life_Expectancy, na.color = "#d0d0d0")
+      pal    <- colorNumeric("YlGn", domain = cp$Avg_Life_Expectancy, na.color = NA)
       labels <- sprintf(
         "<strong>%s, %s</strong><br/>Life Expectancy: %s yrs<br/>Pesticide: %s lbs",
         tools::toTitleCase(cp$county_lower), tools::toTitleCase(cp$state_lower),
@@ -626,7 +626,7 @@ function(input, output, session) {
                                                         fillOpacity = 0.9, bringToFront = TRUE),
                     label = labels) %>%
         addLegend(position = "bottomright", pal = pal, values = ~Avg_Life_Expectancy,
-                  title = "Life Expectancy (yrs)", opacity = 0.8, na.label = "No data")
+                  title = "Life Expectancy (yrs)", opacity = 0.8)
       
       # ── MAP 4: Bivariate — Death Rate × Pesticide ────────────────────────────
     } else if (selected == "map4") {

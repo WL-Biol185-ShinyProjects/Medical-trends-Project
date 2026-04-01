@@ -1,7 +1,7 @@
 library(shiny)
 library(DT)
 library(leaflet)
-library (plotly)
+library(plotly)
 
 # =============================================================================
 # UI DEFINITION
@@ -294,6 +294,27 @@ fluidPage(
       
       .map-section-header:first-child {
         margin-top: 0;
+      }
+
+      /* State selector in sidebar */
+      .sidebar-state-selector {
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      .sidebar-state-selector label {
+        font-size: 0.85em;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+        display: block;
+      }
+
+      .sidebar-state-selector .selectize-input {
+        font-size: 13px;
       }
  
       
@@ -747,6 +768,20 @@ fluidPage(
                              )
                          ),
                          
+                         # --- State zoom selector (shown for Map 3 or Map 6) ---
+                         conditionalPanel(
+                           condition = "input.selected_map == 'map3' || input.selected_map_biv == 'map6'",
+                           div(class = "sidebar-state-selector",
+                               selectInput(
+                                 inputId  = "map3_state_selector",
+                                 label    = "Zoom to State:",
+                                 choices  = c("All States" = "all"),
+                                 selected = "all",
+                                 width    = "100%"
+                               )
+                           )
+                         ),
+                         
                          hr(),
                          h3("Map Info"),
                          uiOutput("map_description")
@@ -757,22 +792,7 @@ fluidPage(
                          div(class = "map-title-bar",
                              textOutput("map_title")
                          ),
-                         leafletOutput("main_map", height = "590px"),
-                         
-                         # State selector shown for Map 3 (single) or Map 6 (bivariate)
-                         conditionalPanel(
-                           condition = "input.selected_map == 'map3' || input.selected_map_biv == 'map6'",
-                           div(
-                             style = "padding: 12px 20px; background: #f8f9fa; border-top: 1px solid #e0e0e0;",
-                             selectInput(
-                               inputId = "map3_state_selector",
-                               label   = "Zoom to State:",
-                               choices = c("All States" = "all"),
-                               selected = "all",
-                               width   = "280px"
-                             )
-                           )
-                         )
+                         leafletOutput("main_map", height = "640px")
                      )
                  )
              )
@@ -1107,7 +1127,6 @@ fluidPage(
       }
     ")),
                      
-                     # Glossary terms in alphabetical order
                      div(class = "glossary-item",
                          tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
                                      "95% Confidence Interval (CI)", tags$span(class = "arrow", "▼")),
@@ -1207,23 +1226,17 @@ fluidPage(
              div(class = "main-container",
                  h1(class = "page-header", "Discussion"),
                  
-                 
-                 # =============================================================================
-                 # MAIN TAKEAWAYS
-                 # =============================================================================
                  div(class = "plot-container",
                      h2(style = "color: #2d5016; font-size: 1.6em; font-weight: 700;
                 border-bottom: 3px solid #4a7c2a; padding-bottom: 12px; margin-bottom: 24px;",
                         "Main Takeaways"),
                      
-                     # Intro
                      p(style = "font-size: 14px; color: #444; line-height: 1.8; margin-bottom: 28px;",
                        "The analyses below examined associations between agricultural pesticide exposure,
        farm density, and neurological health outcomes across U.S. counties and states.
        Results were mixed across compounds and levels of analysis, and all findings
        should be interpreted as observational associations rather than causal relationships."),
                      
-                     # --- Section 1: Pesticide vs Parkinson's (State) ---
                      div(style = "margin-bottom: 28px;",
                          div(style = "display: flex; align-items: center; gap: 12px; margin-bottom: 12px;",
                              div(style = "width: 4px; height: 28px; background: #a7c957; border-radius: 2px; flex-shrink: 0;"),
@@ -1243,7 +1256,6 @@ fluidPage(
                          )
                      ),
                      
-                     # --- Section 2: Farm Count vs Parkinson's ---
                      div(style = "margin-bottom: 28px;",
                          div(style = "display: flex; align-items: center; gap: 12px; margin-bottom: 12px;",
                              div(style = "width: 4px; height: 28px; background: #f4a261; border-radius: 2px; flex-shrink: 0;"),
@@ -1261,7 +1273,6 @@ fluidPage(
                          )
                      ),
                      
-                     # --- Section 3: Pesticide vs Life Expectancy (County) ---
                      div(style = "margin-bottom: 28px;",
                          div(style = "display: flex; align-items: center; gap: 12px; margin-bottom: 12px;",
                              div(style = "width: 4px; height: 28px; background: #7ec8e3; border-radius: 2px; flex-shrink: 0;"),
@@ -1284,7 +1295,6 @@ fluidPage(
                          )
                      ),
                      
-                     # --- Section 4: ANOVA County ---
                      div(style = "margin-bottom: 28px;",
                          div(style = "display: flex; align-items: center; gap: 12px; margin-bottom: 12px;",
                              div(style = "width: 4px; height: 28px; background: #e76f51; border-radius: 2px; flex-shrink: 0;"),
@@ -1307,7 +1317,6 @@ fluidPage(
                          )
                      ),
                      
-                     # --- Section 5: ANOVA State ---
                      div(style = "margin-bottom: 28px;",
                          div(style = "display: flex; align-items: center; gap: 12px; margin-bottom: 12px;",
                              div(style = "width: 4px; height: 28px; background: #bc4749; border-radius: 2px; flex-shrink: 0;"),
@@ -1326,7 +1335,6 @@ fluidPage(
                          )
                      ),
                      
-                     # --- Overall Conclusion ---
                      div(style = "background: linear-gradient(135deg, #1a3009 0%, #2d5016 100%);
                  border-radius: 10px; padding: 24px 28px; margin-top: 8px;",
                          div(style = "font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
@@ -1348,7 +1356,7 @@ fluidPage(
            and direction of this relationship varies by compound and is likely moderated
            by unmeasured geographic, demographic, and socioeconomic factors."), "We believe access to county-level data for all analyses would provide a more robust characterization of the relationship between pesticide use and Parkinson's disease prevalence, and would be a good direction for future projects to pursue.")
                      )
-                 ),
+                 )
              )
     ),
     
@@ -1405,7 +1413,7 @@ fluidPage(
                      br(),
                      downloadButton("download_county_pesticide_data", "Download Dataset",
                                     class = "btn btn-success btn-lg")
-                 ),
+                 )
              )
     ),
     
@@ -1434,13 +1442,12 @@ fluidPage(
                      patterns from publicly available federal datasets.")
                      ),
                      tags$img(
-                       src = "green_neuron.jpg",
+                       src = "about_image.jpg",
                        class = "about-illustration",
                        alt = "Medical research illustration"
                      )
                  ),
                  
-                 # Two-column row for Data Sources + Limitations
                  div(style = "display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;",
                      
                      div(class = "home-plain-card", style = "margin-bottom: 0;",
@@ -1465,7 +1472,6 @@ fluidPage(
                      )
                  ),
                  
-                 # Maps card
                  div(class = "home-plain-card",
                      tags$h2("Maps"),
                      tags$p("Six interactive maps allow geographic exploration of the data:"),
@@ -1479,7 +1485,6 @@ fluidPage(
                      )
                  ),
                  
-                 # Methodology card
                  div(class = "home-plain-card",
                      tags$h2("Methodology"),
                      tags$p("Datasets were joined at the state and county level using FIPS codes and state
@@ -1492,19 +1497,17 @@ fluidPage(
                  alongside each plot for transparency.")
                  ),
                  
-                 # Team card
                  div(class = "home-plain-card",
                      tags$h2("Team & Credits"),
                      tags$p(tags$strong("Course:"), " BIOL-185 — Medical Trends Analysis, Winter 2026"),
                      tags$p(tags$strong("Institution:"), " Washington & Lee University"),
                      tags$p(tags$strong("Contributors:"), " Ashley Ellis ('26), Robert Bernot ('26), Georgia Busbee ('26)"),
-                     tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT. Claude was also used in the creation of this dashboard."),
+                     tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT.")
                  )
                  
-             ) # End home-section
+             )
              
-    ) # End About tabPanel
-    
+    )
     
   ) # End navbarPage
   
