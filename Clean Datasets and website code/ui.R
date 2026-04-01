@@ -178,7 +178,7 @@ fluidPage(
         margin-bottom: 1.5rem !important;
         font-weight: 700 !important;
       }
-
+ 
       /* Map viewer layout */
       .map-viewer-container {
         display: flex;
@@ -210,8 +210,9 @@ fluidPage(
       .map-selector {
         margin-bottom: 25px;
       }
-      
-      .map-selector label {
+ 
+      /* FIX: scope label styles to .radio children only, not the outer group label */
+      .map-selector .radio label {
         display: block;
         padding: 12px 15px;
         margin-bottom: 8px;
@@ -223,17 +224,17 @@ fluidPage(
         font-weight: 500;
       }
       
-      .map-selector input[type='radio'] {
+      .map-selector .radio input[type='radio'] {
         margin-right: 10px;
       }
       
-      .map-selector label:hover {
+      .map-selector .radio label:hover {
         border-color: #4a7c2a;
         background: #f0f7f0;
       }
       
-      .map-selector input[type='radio']:checked + label,
-      .map-selector label:has(input:checked) {
+      .map-selector .radio input[type='radio']:checked + label,
+      .map-selector .radio label:has(input:checked) {
         background: #4a7c2a;
         color: white;
         border-color: #4a7c2a;
@@ -295,14 +296,14 @@ fluidPage(
       .map-section-header:first-child {
         margin-top: 0;
       }
-
+ 
       /* State selector in sidebar */
       .sidebar-state-selector {
         margin-top: 16px;
         padding-top: 14px;
         border-top: 1px solid #e0e0e0;
       }
-
+ 
       .sidebar-state-selector label {
         font-size: 0.85em;
         font-weight: 600;
@@ -312,7 +313,7 @@ fluidPage(
         margin-bottom: 6px;
         display: block;
       }
-
+ 
       .sidebar-state-selector .selectize-input {
         font-size: 13px;
       }
@@ -543,46 +544,46 @@ fluidPage(
     }
     
     .plot-container {
-  background: white;
-  padding: 2.5rem 3rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-}
-
-.plot-container h2 {
-  font-family: 'Lora', serif !important;
-  font-size: 1.9rem !important;
-  font-weight: 700 !important;
-  color: #1a3d0a !important;
-  margin-bottom: 1.25rem !important;
-  border-bottom: 3px solid #4a7c2a !important;
-  padding-bottom: 0.6rem !important;
-}
-
-.plot-container > p {
-  font-size: 1.5rem !important;
-  color: #4a4a4a !important;
-  line-height: 1.8 !important;
-  margin-bottom: 1.25rem !important;
-}
-
-.plot-container h4 {
-  font-family: 'Lora', serif !important;
-  font-size: 1.35rem !important;
-  font-weight: 700 !important;
-  color: #2d5016 !important;
-  margin-bottom: 0.5rem !important;
-  border-bottom: 1px solid #e0e0e0 !important;
-  padding-bottom: 0.3rem !important;
-}
-
-.plot-container .selectize-input,
-.plot-container label {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1.3rem !important;
-  color: #333 !important;
-}
+      background: white;
+      padding: 2.5rem 3rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    
+    .plot-container h2 {
+      font-family: 'Lora', serif !important;
+      font-size: 1.9rem !important;
+      font-weight: 700 !important;
+      color: #1a3d0a !important;
+      margin-bottom: 1.25rem !important;
+      border-bottom: 3px solid #4a7c2a !important;
+      padding-bottom: 0.6rem !important;
+    }
+    
+    .plot-container > p {
+      font-size: 1.5rem !important;
+      color: #4a4a4a !important;
+      line-height: 1.8 !important;
+      margin-bottom: 1.25rem !important;
+    }
+    
+    .plot-container h4 {
+      font-family: 'Lora', serif !important;
+      font-size: 1.35rem !important;
+      font-weight: 700 !important;
+      color: #2d5016 !important;
+      margin-bottom: 0.5rem !important;
+      border-bottom: 1px solid #e0e0e0 !important;
+      padding-bottom: 0.3rem !important;
+    }
+ 
+    .plot-container .selectize-input,
+      .plot-container label {
+      font-family: 'Inter', sans-serif !important;
+      font-size: 1.3rem !important;
+      color: #333 !important;
+    }
     .home-plain-card {
       display: flex;
       flex-direction: column;
@@ -607,8 +608,7 @@ fluidPage(
       border-radius: 8px;
       border: 1px solid #eee;
     }
-    
-    "))
+  "))
   ),
   
   # Top branding bar
@@ -1155,20 +1155,6 @@ fluidPage(
                      ),
                      div(class = "glossary-item",
                          tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
-                                     "Eta-squared (\u03b7\u00b2)", tags$span(class = "arrow", "\u25bc")),
-                         div(class = "glossary-body",
-                             "A measure of effect size for ANOVA, representing the proportion of total variance 
-         in the outcome variable that is explained by group membership (i.e. exposure level). 
-         An eta-squared of 0.03 means that 3% of the variance in life expectancy or 
-         Parkinson's death rate is attributable to whether a county or state falls in the 
-         Low, Medium, or High exposure group. Values below 0.06 are generally considered 
-         small effects, 0.06-0.14 medium, and above 0.14 large. In this dashboard, 
-         eta-squared values were consistently small (0.01-0.12), indicating that while 
-         some group differences were statistically significant, exposure group alone 
-         explains only a modest share of the variation in health outcomes.")
-                     ),
-                     div(class = "glossary-item",
-                         tags$button(class = "glossary-btn", onclick = "toggleGlossary(this)",
                                      "F-statistic", tags$span(class = "arrow", "▼")),
                          div(class = "glossary-body",
                              "The ratio of variance explained by the model to the unexplained (residual) variance. 
@@ -1233,7 +1219,7 @@ fluidPage(
              ) # end home-section
     ), # end Data Visualization tabPanel
     
-    ### =========================================================================
+    # =========================================================================
     # Discussion TAB
     # =========================================================================
     tabPanel("Discussion",
@@ -1327,7 +1313,7 @@ fluidPage(
            had significantly higher life expectancy, likely driven by the same geographic
            confounding noted above. Effect sizes were small across all compounds
            (eta-squared range: 0.014-0.034), meaning exposure group explains only
-           1-3% of the variance in county-level life expectancy. Because so many factors influence life expectancy, this minimal, inconsistent correlation is in line with our expectactions"
+           1-3% of the variance in county-level life expectancy."
                          )
                      ),
                      
@@ -1355,14 +1341,15 @@ fluidPage(
                      color: #a7c957; font-family: monospace; margin-bottom: 14px;",
                              "Overall Conclusion"),
                          p(style = "font-size: 14px; color: rgba(255,255,255,0.9); line-height: 1.85; margin: 0;",
-                           "Taken together, the data provide moderate evidence for a positive
+                           "Taken together, the data provide weak to moderate evidence for a positive
            association between agricultural pesticide exposure and Parkinson's disease
            mortality at the state level, most consistently for 2,4-D and, to a lesser
            extent, glyphosate. Farm density also showed a modest but significant positive
            association with Parkinson's death rates. County-level analyses suggest that
            2,4-D and paraquat may be negatively associated with life expectancy, though
            these findings are complicated by geographic confounding from other compounds.
-          ", tags$strong("Our overall 
+           Critically, all effect sizes across every analysis were small, and none of
+           these findings establish causation. ", tags$strong("Our overall 
            interpretation is that agricultural intensity — including pesticide use —
            is a weak positive predictor of Parkinson's mortality at the state level,
            consistent with the broader epidemiological literature, but that the strength
