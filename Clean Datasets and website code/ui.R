@@ -277,6 +277,24 @@ fluidPage(
         font-size: 1.2em;
         color: #666;
       }
+      
+      /* Map section headers */
+      .map-section-header {
+        font-family: 'Lora', serif;
+        font-size: 1.15em;
+        font-weight: 700;
+        color: #1a3d0a;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 8px 0 6px 0;
+        margin-top: 14px;
+        margin-bottom: 6px;
+        border-bottom: 2px solid #4a7c2a;
+      }
+      
+      .map-section-header:first-child {
+        margin-top: 0;
+      }
  
       
     
@@ -695,32 +713,55 @@ fluidPage(
                  h1(class = "page-header", "Geographic Analysis"),
                  
                  div(class = "map-viewer-container",
+                     
+                     # ---- SIDEBAR ----
                      div(class = "map-sidebar",
-                         h3("Select Map"),
+                         
+                         # --- Single Variable Maps header ---
+                         div(class = "map-section-header", "Single Variable Maps"),
                          div(class = "map-selector",
                              radioButtons(
                                "selected_map",
                                label = NULL,
                                choices = list(
-                                 "Parkinson's vs Pesticides" = "map1",
-                                 "Parkinson's vs Farms" = "map2",
-                                 "Pesticides vs Life Expectancy" = "map3"
+                                 "Map 1: Parkinson's vs Pesticides" = "map1",
+                                 "Map 2: Parkinson's vs Farms"      = "map2",
+                                 "Map 3: Pesticides vs Life Exp."   = "map3"
                                ),
                                selected = "map1"
                              )
                          ),
+                         
+                         # --- Bivariate Maps header ---
+                         div(class = "map-section-header", "Bivariate Maps"),
+                         div(class = "map-selector",
+                             radioButtons(
+                               "selected_map_biv",
+                               label = NULL,
+                               choices = list(
+                                 "Map 4: Parkinson's \u00d7 Pesticides" = "map4",
+                                 "Map 5: Parkinson's \u00d7 Farms"      = "map5",
+                                 "Map 6: Pesticides \u00d7 Life Exp."   = "map6"
+                               ),
+                               selected = character(0)
+                             )
+                         ),
+                         
                          hr(),
                          h3("Map Info"),
                          uiOutput("map_description")
                      ),
+                     
+                     # ---- MAP CONTENT ----
                      div(class = "map-content",
                          div(class = "map-title-bar",
                              textOutput("map_title")
                          ),
-                         leafletOutput("main_map", height = "640px"),
+                         leafletOutput("main_map", height = "590px"),
                          
+                         # State selector shown for Map 3 (single) or Map 6 (bivariate)
                          conditionalPanel(
-                           condition = "input.selected_map == 'map3'",
+                           condition = "input.selected_map == 'map3' || input.selected_map_biv == 'map6'",
                            div(
                              style = "padding: 12px 20px; background: #f8f9fa; border-top: 1px solid #e0e0e0;",
                              selectInput(
@@ -731,8 +772,7 @@ fluidPage(
                                width   = "280px"
                              )
                            )
-                         ) 
-                  
+                         )
                      )
                  )
              )
@@ -1003,7 +1043,7 @@ fluidPage(
                      h4("Tukey Post-Hoc Table"),
                      DTOutput("tukey_exposure_parkinson_table")
                  ),
-
+                 
                  # =============================================================================
                  # STATISTICS GLOSSARY ACCORDION
                  # =============================================================================
@@ -1171,12 +1211,12 @@ fluidPage(
              p-value and stronger evidence against the null hypothesis.")
                      )
                  )    
-             ) # end main-container
+             ) # end home-section
     ), # end Data Visualization tabPanel
     
-   ### =========================================================================
-      # Discussion TAB
-      # =========================================================================
+    ### =========================================================================
+    # Discussion TAB
+    # =========================================================================
     tabPanel("Discussion",
              div(class = "main-container",
                  h1(class = "page-header", "Discussion"),
@@ -1407,7 +1447,7 @@ fluidPage(
                      patterns from publicly available federal datasets.")
                      ),
                      tags$img(
-                       src = "about_image.jpg",
+                       src = "green_neuron.jpg",
                        class = "about-illustration",
                        alt = "Medical research illustration"
                      )
@@ -1441,11 +1481,14 @@ fluidPage(
                  # Maps card
                  div(class = "home-plain-card",
                      tags$h2("Maps"),
-                     tags$p("Three interactive maps allow geographic exploration of the data:"),
+                     tags$p("Six interactive maps allow geographic exploration of the data:"),
                      tags$ul(
-                       tags$li(tags$strong("Map 1:"), " State-level Parkinson's death rates vs. pesticide use"),
-                       tags$li(tags$strong("Map 2:"), " State-level Parkinson's death rates vs. farm density"),
-                       tags$li(tags$strong("Map 3:"), " County-level pesticide exposure vs. life expectancy")
+                       tags$li(tags$strong("Map 1:"), " State-level Parkinson's death rates colored by death rate"),
+                       tags$li(tags$strong("Map 2:"), " State-level Parkinson's death rates colored by death rate (farm overlay)"),
+                       tags$li(tags$strong("Map 3:"), " County-level life expectancy colored by life expectancy"),
+                       tags$li(tags$strong("Map 4:"), " Bivariate — state Parkinson's death rates vs. pesticide use"),
+                       tags$li(tags$strong("Map 5:"), " Bivariate — state Parkinson's death rates vs. farm density"),
+                       tags$li(tags$strong("Map 6:"), " Bivariate — county pesticide exposure vs. life expectancy")
                      )
                  ),
                  
@@ -1468,15 +1511,14 @@ fluidPage(
                      tags$p(tags$strong("Course:"), " BIOL-185 — Medical Trends Analysis, Winter 2026"),
                      tags$p(tags$strong("Institution:"), " Washington & Lee University"),
                      tags$p(tags$strong("Contributors:"), " Ashley Ellis ('26), Robert Bernot ('26), Georgia Busbee ('26)"),
-                     tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT.")
+                     tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT. Claude was also used in the creation of this dashboard."),
                  )
                  
              ) # End home-section
              
     ) # End About tabPanel
-
-
+    
+    
   ) # End navbarPage
   
 ) # End fluidPage
-
