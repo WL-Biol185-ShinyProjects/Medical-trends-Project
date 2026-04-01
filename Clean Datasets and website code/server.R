@@ -10,15 +10,12 @@ library(sf)
 # BIVARIATE COLOR HELPERS  (outside server function — built once at startup)
 # =============================================================================
 
-# Classic Scherer 3×3 bivariate palette
-# Index = (var2_tertile - 1) * 3 + var1_tertile   (both 1/2/3)
 .BIV_PALETTE <- c(
-  "#e8e8e8", "#ace4e4", "#5ac8c8",   # var2 = Low  , var1 = Lo/Mid/Hi
-  "#dfb0d6", "#a5add3", "#5698b9",   # var2 = Mid
-  "#be64ac", "#8c62aa", "#3b4994"    # var2 = High
+  "#e8e8e8", "#ace4e4", "#5ac8c8",
+  "#dfb0d6", "#a5add3", "#5698b9",
+  "#be64ac", "#8c62aa", "#3b4994"
 )
 
-# Return a hex-colour vector the same length as var1/var2
 bivariate_colors <- function(var1, var2, palette = .BIV_PALETTE) {
   rank3 <- function(x) {
     cuts <- quantile(x, probs = c(1/3, 2/3), na.rm = TRUE)
@@ -30,13 +27,12 @@ bivariate_colors <- function(var1, var2, palette = .BIV_PALETTE) {
   }
   r1  <- rank3(var1)
   r2  <- rank3(var2)
-  idx <- (r2 - 1L) * 3L + r1          # 1..9; NA when either is NA
+  idx <- (r2 - 1L) * 3L + r1
   out <- palette[idx]
   out[is.na(out)] <- "#d0d0d0"
   out
 }
 
-# Tiny HTML 3×3 legend injected via addControl()
 bivariate_legend_html <- function(label_x, label_y, palette = .BIV_PALETTE) {
   cell <- function(r, c)
     sprintf('<td style="width:18px;height:18px;background:%s;"></td>',
@@ -177,6 +173,38 @@ function(input, output, session) {
     }
     out
   }
+  
+  # ===========================================================================
+  # MUTUAL EXCLUSION: clicking a single-variable map clears bivariate, and vice versa
+  # ===========================================================================
+  
+  # Track which group was last used
+  last_map_group <- reactiveVal("single")  # "single" or "biv"
+  
+  observeEvent(input$selected_map, {
+    last_map_group("single")
+    updateRadioButtons(session, "selected_map_biv", selected = character(0))
+  }, ignoreInit = TRUE)
+  
+  observeEvent(input$selected_map_biv, {
+    if (!is.null(input$selected_map_biv) && nchar(input$selected_map_biv) > 0) {
+      last_map_group("biv")
+      updateRadioButtons(session, "selected_map", selected = character(0))
+    }
+  }, ignoreInit = TRUE)
+  
+  # Unified reactive giving the active map ID
+  active_map <- reactive({
+    if (last_map_group() == "biv" &&
+        !is.null(input$selected_map_biv) &&
+        nchar(input$selected_map_biv) > 0) {
+      input$selected_map_biv
+    } else if (!is.null(input$selected_map) && nchar(input$selected_map) > 0) {
+      input$selected_map
+    } else {
+      "map1"
+    }
+  })
   
   # ===========================================================================
   # STAT CARD HELPER
@@ -339,12 +367,10 @@ function(input, output, session) {
                 .groups = "drop")
   })
   
-  # SF polygon layers
   state_sf <- reactive({
     sm     <- maps::map("state", fill = TRUE, plot = FALSE)
     sf_obj <- sf::st_as_sf(sm)
     sf_obj$state_lower <- tolower(sf_obj$ID)
-    # Add abbreviation for joining
     abbr_lookup <- setNames(state.abb, tolower(state.name))
     sf_obj$State_Abbr <- unname(abbr_lookup[sf_obj$state_lower])
     sf_obj
@@ -360,7 +386,7 @@ function(input, output, session) {
   })
   
   # ===========================================================================
-  # POPULATE MAP3 STATE SELECTOR
+  # POPULATE MAP3/MAP6 STATE SELECTOR (shared dropdown)
   # ===========================================================================
   
   observe({
@@ -371,7 +397,7 @@ function(input, output, session) {
       distinct(state_abbr) %>%
       arrange(state_abbr) %>%
       pull(state_abbr)
-    labels <- ifelse(!is.na(abbr_to_full[abbrs]), abbr_to_full[abbrs], abbrs)
+    labels  <- ifelse(!is.na(abbr_to_full[abbrs]), abbr_to_full[abbrs], abbrs)
     choices <- c("All States" = "all", setNames(abbrs, labels))
     updateSelectInput(session, "map3_state_selector",
                       choices = choices, selected = "all")
@@ -404,50 +430,206 @@ function(input, output, session) {
   })
   
   # ===========================================================================
-  # MAP SELECTOR OUTPUTS
+  # MAP TITLE & DESCRIPTION (driven by active_map())
   # ===========================================================================
   
   output$map_title <- renderText({
-    switch(input$selected_map,
-           "map1" = "Parkinson's Death Rate \u00d7 Pesticide Use — Bivariate Choropleth (State Level)",
-           "map2" = "Parkinson's Death Rate \u00d7 Farm Count — Bivariate Choropleth (State Level)",
-           "map3" = "Pesticide Use \u00d7 Life Expectancy — Bivariate Choropleth (County Level)",
+    switch(active_map(),
+           "map1" = "Map 1: Parkinson's Death Rate (State Level — Single Variable)",
+           "map2" = "Map 2: Parkinson's Death Rate vs. Farm Count (State Level — Single Variable)",
+           "map3" = "Map 3: Pesticides vs. Life Expectancy (County Level — Single Variable)",
+           "map4" = "Map 4: Parkinson's Death Rate \u00d7 Pesticide Use — Bivariate (State Level)",
+           "map5" = "Map 5: Parkinson's Death Rate \u00d7 Farm Count — Bivariate (State Level)",
+           "map6" = "Map 6: Pesticide Use \u00d7 Life Expectancy — Bivariate (County Level)",
            "Select a map")
   })
   
   output$map_description <- renderUI({
-    switch(input$selected_map,
+    switch(active_map(),
            "map1" = div(p(style = "font-size:0.9em;line-height:1.6;",
+                          "Choropleth map colored by state-level Parkinson's death rate.",
+                          br(), br(), strong("Color:"), " Parkinson's death rate (YlOrRd scale).",
+                          br(), "Hover a state for pesticide compound breakdowns.")),
+           "map2" = div(p(style = "font-size:0.9em;line-height:1.6;",
+                          "Choropleth map colored by state-level Parkinson's death rate with farm count in hover.",
+                          br(), br(), strong("Color:"), " Parkinson's death rate (RdPu scale).",
+                          br(), "Hover a state for farm count and acreage details.")),
+           "map3" = div(p(style = "font-size:0.9em;line-height:1.6;",
+                          "County-level choropleth colored by average life expectancy.",
+                          br(), br(), strong("Color:"), " Life expectancy (YlGn scale).",
+                          br(), "Use the state selector below to zoom to a specific state.")),
+           "map4" = div(p(style = "font-size:0.9em;line-height:1.6;",
                           "Bivariate choropleth — each state is colored by the combination of its",
                           strong(" Parkinson's death rate"), " (X axis) and",
                           strong(" avg pesticide use"), " (Y axis).",
-                          br(), br(),
-                          "Hover a state for individual pesticide breakdowns.")),
-           "map2" = div(p(style = "font-size:0.9em;line-height:1.6;",
+                          br(), br(), "Hover a state for individual pesticide breakdowns.")),
+           "map5" = div(p(style = "font-size:0.9em;line-height:1.6;",
                           "Bivariate choropleth — each state is colored by the combination of its",
                           strong(" Parkinson's death rate"), " (X axis) and",
                           strong(" number of farms"), " (Y axis).",
-                          br(), br(),
-                          "Hover a state for farm acreage details.")),
-           "map3" = div(p(style = "font-size:0.9em;line-height:1.6;",
+                          br(), br(), "Hover a state for farm acreage details.")),
+           "map6" = div(p(style = "font-size:0.9em;line-height:1.6;",
                           "Bivariate county choropleth — each county is colored by the combination of",
                           strong(" pesticide use"), " (X axis) and",
                           strong(" life expectancy"), " (Y axis).",
-                          br(), br(),
-                          "Use the selector below the map to zoom to a single state.")),
+                          br(), br(), "Use the selector below to zoom to a single state.")),
            p("Select a map to view details.")
     )
   })
   
   # ===========================================================================
-  # MAIN MAP — bivariate choropleths
+  # MAIN MAP OUTPUT — renders all 6 maps
   # ===========================================================================
   
   output$main_map <- renderLeaflet({
-    selected <- input$selected_map
+    selected <- active_map()
     
-    # ── MAP 1: Death Rate × Pesticide ────────────────────────────────────────
+    # ── MAP 1: Parkinson's death rate choropleth (single variable, YlOrRd) ──
     if (selected == "map1") {
+      req(Parkinson_Pesticide_State(), state_sf())
+      data      <- Parkinson_Pesticide_State()
+      compounds <- Pesticide_State_Compounds()
+      
+      # FIX: state_sf() already has State_Abbr — join directly, no redundant lookup
+      sp <- state_sf() %>%
+        left_join(data %>% select(State_Abbr, Avg_Death_Rate, Avg_Pesticide), by = "State_Abbr")
+      
+      if (!is.null(compounds)) {
+        sp <- sp %>%
+          left_join(compounds, by = "State_Abbr") %>%
+          rename(pest_24d = `2,4-D`, pest_glyphosate = Glyphosate,
+                 pest_paraquat = Paraquat, pest_chlorpyrifos = Chlorpyrifos)
+      } else {
+        sp$pest_24d <- sp$pest_glyphosate <- sp$pest_paraquat <- sp$pest_chlorpyrifos <- NA_real_
+      }
+      
+      pal    <- colorNumeric("YlOrRd", domain = sp$Avg_Death_Rate, na.color = "#d0d0d0")
+      labels <- sprintf(
+        "<strong>%s</strong><br/>Death Rate: %s<br/>2,4-D: %s lbs<br/>Glyphosate: %s lbs<br/>Paraquat: %s lbs<br/>Chlorpyrifos: %s lbs",
+        tools::toTitleCase(sp$state_lower),
+        ifelse(is.na(sp$Avg_Death_Rate),     "N/A", round(sp$Avg_Death_Rate, 2)),
+        ifelse(is.na(sp$pest_24d),           "N/A", round(sp$pest_24d, 1)),
+        ifelse(is.na(sp$pest_glyphosate),    "N/A", round(sp$pest_glyphosate, 1)),
+        ifelse(is.na(sp$pest_paraquat),      "N/A", round(sp$pest_paraquat, 1)),
+        ifelse(is.na(sp$pest_chlorpyrifos),  "N/A", round(sp$pest_chlorpyrifos, 1))
+      ) %>% lapply(htmltools::HTML)
+      
+      leaflet(sp) %>%
+        addProviderTiles(providers$CartoDB.Positron) %>%
+        setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+        addPolygons(fillColor = ~pal(Avg_Death_Rate), fillOpacity = 0.75,
+                    color = "white", weight = 1.5, opacity = 1,
+                    highlightOptions = highlightOptions(weight = 3, color = "#2d5016",
+                                                        fillOpacity = 0.9, bringToFront = TRUE),
+                    label = labels) %>%
+        addLegend(position = "bottomright", pal = pal, values = ~Avg_Death_Rate,
+                  title = "Death Rate", opacity = 0.8, na.label = "No data")
+      
+      # ── MAP 2: Parkinson's death rate + farm count (single variable, RdPu) ──
+    } else if (selected == "map2") {
+      req(Parkinson_Farm_State(), state_sf())
+      data <- Parkinson_Farm_State()
+      
+      # FIX: state_sf() already has State_Abbr — join directly, no redundant lookup
+      sp <- state_sf() %>%
+        left_join(
+          data %>% mutate(State_Abbr = normalize_state_to_abbr(State)),
+          by = "State_Abbr"
+        )
+      
+      pal    <- colorNumeric("RdPu", domain = sp$Avg_Death_Rate, na.color = "#d0d0d0")
+      labels <- sprintf(
+        "<strong>%s</strong><br/>Death Rate: %s<br/>Farms: %s",
+        tools::toTitleCase(sp$state_lower),
+        ifelse(is.na(sp$Avg_Death_Rate),  "N/A", round(sp$Avg_Death_Rate, 2)),
+        ifelse(is.na(sp$Number_Of_Farms), "N/A", format(sp$Number_Of_Farms, big.mark = ","))
+      ) %>% lapply(htmltools::HTML)
+      
+      leaflet(sp) %>%
+        addProviderTiles(providers$CartoDB.Positron) %>%
+        setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+        addPolygons(fillColor = ~pal(Avg_Death_Rate), fillOpacity = 0.75,
+                    color = "white", weight = 1.5, opacity = 1,
+                    highlightOptions = highlightOptions(weight = 3, color = "#2d5016",
+                                                        fillOpacity = 0.9, bringToFront = TRUE),
+                    label = labels) %>%
+        addLegend(position = "bottomright", pal = pal, values = ~Avg_Death_Rate,
+                  title = "Death Rate", opacity = 0.8, na.label = "No data")
+      
+      # ── MAP 3: County life expectancy choropleth (single variable, YlGn) ────
+    } else if (selected == "map3") {
+      data <- County_Pesticide_Life()
+      if (is.null(data) || nrow(data) == 0 ||
+          !"Avg_Life_Expectancy" %in% names(data) ||
+          sum(!is.na(data$Avg_Life_Expectancy)) == 0) {
+        return(leaflet() %>% addProviderTiles(providers$CartoDB.Positron) %>%
+                 setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+                 addPopups(-98.5, 39.83, "No county life-expectancy data available"))
+      }
+      
+      # Apply state filter
+      sel_state <- if (!is.null(input$map3_state_selector)) input$map3_state_selector else "all"
+      if (!is.null(sel_state) && sel_state != "all") {
+        data <- data %>% filter(state_abbr == sel_state)
+      }
+      
+      abbr_to_full <- setNames(tolower(state.name), state.abb)
+      county_summary <- data %>%
+        filter(!is.na(Avg_Life_Expectancy)) %>%
+        mutate(
+          state_lower  = ifelse(nchar(trimws(state_abbr)) == 2,
+                                unname(abbr_to_full[toupper(trimws(state_abbr))]),
+                                tolower(state_abbr)),
+          county_lower = trimws(tolower(gsub(" County$| Parish$", "", county_name)))
+        ) %>%
+        filter(!is.na(state_lower), !is.na(county_lower)) %>%
+        group_by(state_lower, county_lower) %>%
+        summarise(Avg_Life_Expectancy = mean(Avg_Life_Expectancy, na.rm = TRUE),
+                  Avg_Pesticide = mean(Avg_Pesticide, na.rm = TRUE), .groups = "drop")
+      
+      cp <- county_sf()
+      if (!is.null(sel_state) && sel_state != "all") {
+        full_name <- tolower(state.name[state.abb == sel_state])
+        if (length(full_name) == 1) cp <- cp %>% filter(state_lower == full_name)
+      }
+      cp <- cp %>% left_join(county_summary, by = c("state_lower", "county_lower"))
+      
+      if (sum(!is.na(cp$Avg_Life_Expectancy)) == 0) {
+        return(leaflet() %>% addProviderTiles(providers$CartoDB.Positron) %>%
+                 setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
+                 addPopups(-98.5, 39.83, "No county life-expectancy data available after county match"))
+      }
+      
+      pal    <- colorNumeric("YlGn", domain = cp$Avg_Life_Expectancy, na.color = "#d0d0d0")
+      labels <- sprintf(
+        "<strong>%s, %s</strong><br/>Life Expectancy: %s yrs<br/>Pesticide: %s lbs",
+        tools::toTitleCase(cp$county_lower), tools::toTitleCase(cp$state_lower),
+        ifelse(is.na(cp$Avg_Life_Expectancy), "N/A", round(cp$Avg_Life_Expectancy, 1)),
+        ifelse(is.na(cp$Avg_Pesticide),       "N/A", round(cp$Avg_Pesticide, 2))
+      ) %>% lapply(htmltools::HTML)
+      
+      if (!is.null(sel_state) && sel_state != "all") {
+        bbox  <- sf::st_bbox(cp)
+        c_lng <- mean(c(bbox["xmin"], bbox["xmax"]))
+        c_lat <- mean(c(bbox["ymin"], bbox["ymax"]))
+        zoom  <- 6
+      } else {
+        c_lng <- -98.5; c_lat <- 39.5; zoom <- 4
+      }
+      
+      leaflet(cp) %>%
+        addProviderTiles(providers$CartoDB.Positron) %>%
+        setView(lng = c_lng, lat = c_lat, zoom = zoom) %>%
+        addPolygons(fillColor = ~pal(Avg_Life_Expectancy), fillOpacity = 0.75,
+                    color = "white", weight = 0.4, opacity = 0.8,
+                    highlightOptions = highlightOptions(weight = 2, color = "#2d5016",
+                                                        fillOpacity = 0.9, bringToFront = TRUE),
+                    label = labels) %>%
+        addLegend(position = "bottomright", pal = pal, values = ~Avg_Life_Expectancy,
+                  title = "Life Expectancy (yrs)", opacity = 0.8, na.label = "No data")
+      
+      # ── MAP 4: Bivariate — Death Rate × Pesticide ────────────────────────────
+    } else if (selected == "map4") {
       req(Parkinson_Pesticide_State(), state_sf())
       data      <- Parkinson_Pesticide_State()
       compounds <- Pesticide_State_Compounds()
@@ -468,41 +650,32 @@ function(input, output, session) {
       sp$biv_color <- bivariate_colors(sp$Avg_Death_Rate, sp$Avg_Pesticide)
       
       labels <- sprintf(
-        "<strong>%s</strong><br/>
-         Death Rate: %s<br/>
-         Avg Pesticide: %s lbs<br/>
-         2,4-D: %s | Glyphosate: %s<br/>
-         Paraquat: %s | Chlorpyrifos: %s",
+        "<strong>%s</strong><br/>Death Rate: %s<br/>Avg Pesticide: %s lbs<br/>2,4-D: %s | Glyphosate: %s<br/>Paraquat: %s | Chlorpyrifos: %s",
         tools::toTitleCase(sp$state_lower),
-        ifelse(is.na(sp$Avg_Death_Rate),      "N/A", round(sp$Avg_Death_Rate, 2)),
-        ifelse(is.na(sp$Avg_Pesticide),        "N/A", round(sp$Avg_Pesticide, 1)),
-        ifelse(is.na(sp$pest_24d),             "N/A", round(sp$pest_24d, 1)),
-        ifelse(is.na(sp$pest_glyphosate),      "N/A", round(sp$pest_glyphosate, 1)),
-        ifelse(is.na(sp$pest_paraquat),        "N/A", round(sp$pest_paraquat, 1)),
-        ifelse(is.na(sp$pest_chlorpyrifos),    "N/A", round(sp$pest_chlorpyrifos, 1))
+        ifelse(is.na(sp$Avg_Death_Rate),     "N/A", round(sp$Avg_Death_Rate, 2)),
+        ifelse(is.na(sp$Avg_Pesticide),      "N/A", round(sp$Avg_Pesticide, 1)),
+        ifelse(is.na(sp$pest_24d),           "N/A", round(sp$pest_24d, 1)),
+        ifelse(is.na(sp$pest_glyphosate),    "N/A", round(sp$pest_glyphosate, 1)),
+        ifelse(is.na(sp$pest_paraquat),      "N/A", round(sp$pest_paraquat, 1)),
+        ifelse(is.na(sp$pest_chlorpyrifos),  "N/A", round(sp$pest_chlorpyrifos, 1))
       ) %>% lapply(htmltools::HTML)
       
       leaflet(sp) %>%
         addProviderTiles(providers$CartoDB.Positron) %>%
         setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-        addPolygons(
-          fillColor        = ~biv_color,
-          fillOpacity      = 0.80,
-          color            = "white",
-          weight           = 1.5,
-          opacity          = 1,
-          highlightOptions = highlightOptions(weight = 3, color = "#333",
-                                              fillOpacity = 0.95, bringToFront = TRUE),
-          label            = labels,
-          labelOptions     = labelOptions(
-            style     = list("font-weight" = "normal", padding = "4px 8px"),
-            textsize  = "12px", direction = "auto")
-        ) %>%
+        addPolygons(fillColor = ~biv_color, fillOpacity = 0.80,
+                    color = "white", weight = 1.5, opacity = 1,
+                    highlightOptions = highlightOptions(weight = 3, color = "#333",
+                                                        fillOpacity = 0.95, bringToFront = TRUE),
+                    label = labels,
+                    labelOptions = labelOptions(
+                      style = list("font-weight" = "normal", padding = "4px 8px"),
+                      textsize = "12px", direction = "auto")) %>%
         addControl(html = bivariate_legend_html("Death Rate", "Pesticide Use"),
                    position = "bottomright")
       
-      # ── MAP 2: Death Rate × Farm Count ───────────────────────────────────────
-    } else if (selected == "map2") {
+      # ── MAP 5: Bivariate — Death Rate × Farm Count ───────────────────────────
+    } else if (selected == "map5") {
       req(Parkinson_Farm_State(), state_sf())
       data <- Parkinson_Farm_State() %>%
         mutate(State_Abbr = normalize_state_to_abbr(State))
@@ -525,24 +698,19 @@ function(input, output, session) {
       leaflet(sp) %>%
         addProviderTiles(providers$CartoDB.Positron) %>%
         setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-        addPolygons(
-          fillColor        = ~biv_color,
-          fillOpacity      = 0.80,
-          color            = "white",
-          weight           = 1.5,
-          opacity          = 1,
-          highlightOptions = highlightOptions(weight = 3, color = "#333",
-                                              fillOpacity = 0.95, bringToFront = TRUE),
-          label            = labels,
-          labelOptions     = labelOptions(
-            style     = list("font-weight" = "normal", padding = "4px 8px"),
-            textsize  = "12px", direction = "auto")
-        ) %>%
+        addPolygons(fillColor = ~biv_color, fillOpacity = 0.80,
+                    color = "white", weight = 1.5, opacity = 1,
+                    highlightOptions = highlightOptions(weight = 3, color = "#333",
+                                                        fillOpacity = 0.95, bringToFront = TRUE),
+                    label = labels,
+                    labelOptions = labelOptions(
+                      style = list("font-weight" = "normal", padding = "4px 8px"),
+                      textsize = "12px", direction = "auto")) %>%
         addControl(html = bivariate_legend_html("Death Rate", "Farm Count"),
                    position = "bottomright")
       
-      # ── MAP 3: Pesticide × Life Expectancy (county, with state zoom) ─────────
-    } else if (selected == "map3") {
+      # ── MAP 6: Bivariate — Pesticide × Life Expectancy (county, state zoom) ──
+    } else if (selected == "map6") {
       data <- County_Pesticide_Life()
       
       if (is.null(data) || nrow(data) == 0 ||
@@ -553,14 +721,13 @@ function(input, output, session) {
                  addPopups(-98.5, 39.83, "No county life-expectancy data available"))
       }
       
-      # Apply state filter
+      # Apply state filter (shared dropdown)
       sel_state <- if (!is.null(input$map3_state_selector)) input$map3_state_selector else "all"
       if (!is.null(sel_state) && sel_state != "all") {
         data <- data %>% filter(state_abbr == sel_state)
       }
       
       abbr_to_full <- setNames(tolower(state.name), state.abb)
-      
       county_summary <- data %>%
         filter(!is.na(Avg_Life_Expectancy)) %>%
         mutate(
@@ -576,15 +743,11 @@ function(input, output, session) {
                   .groups = "drop")
       
       cp <- county_sf()
-      
-      # Subset polygons when zooming to a state
       if (!is.null(sel_state) && sel_state != "all") {
         full_name <- tolower(state.name[state.abb == sel_state])
         if (length(full_name) == 1) cp <- cp %>% filter(state_lower == full_name)
       }
-      
-      cp <- cp %>%
-        left_join(county_summary, by = c("state_lower", "county_lower"))
+      cp <- cp %>% left_join(county_summary, by = c("state_lower", "county_lower"))
       
       if (sum(!is.na(cp$Avg_Life_Expectancy)) == 0) {
         return(leaflet() %>% addProviderTiles(providers$CartoDB.Positron) %>%
@@ -596,13 +759,11 @@ function(input, output, session) {
       
       labels <- sprintf(
         "<strong>%s, %s</strong><br/>Life Expectancy: %s yrs<br/>Avg Pesticide: %s lbs",
-        tools::toTitleCase(cp$county_lower),
-        tools::toTitleCase(cp$state_lower),
+        tools::toTitleCase(cp$county_lower), tools::toTitleCase(cp$state_lower),
         ifelse(is.na(cp$Avg_Life_Expectancy), "N/A", round(cp$Avg_Life_Expectancy, 1)),
         ifelse(is.na(cp$Avg_Pesticide),        "N/A", round(cp$Avg_Pesticide, 2))
       ) %>% lapply(htmltools::HTML)
       
-      # Compute view from filtered polygon bbox
       if (!is.null(sel_state) && sel_state != "all") {
         bbox  <- sf::st_bbox(cp)
         c_lng <- mean(c(bbox["xmin"], bbox["xmax"]))
@@ -615,19 +776,14 @@ function(input, output, session) {
       leaflet(cp) %>%
         addProviderTiles(providers$CartoDB.Positron) %>%
         setView(lng = c_lng, lat = c_lat, zoom = zoom) %>%
-        addPolygons(
-          fillColor        = ~biv_color,
-          fillOpacity      = 0.80,
-          color            = "white",
-          weight           = 0.5,
-          opacity          = 0.9,
-          highlightOptions = highlightOptions(weight = 2, color = "#333",
-                                              fillOpacity = 0.95, bringToFront = TRUE),
-          label            = labels,
-          labelOptions     = labelOptions(
-            style     = list("font-weight" = "normal", padding = "4px 8px"),
-            textsize  = "12px", direction = "auto")
-        ) %>%
+        addPolygons(fillColor = ~biv_color, fillOpacity = 0.80,
+                    color = "white", weight = 0.5, opacity = 0.9,
+                    highlightOptions = highlightOptions(weight = 2, color = "#333",
+                                                        fillOpacity = 0.95, bringToFront = TRUE),
+                    label = labels,
+                    labelOptions = labelOptions(
+                      style = list("font-weight" = "normal", padding = "4px 8px"),
+                      textsize = "12px", direction = "auto")) %>%
         addControl(html = bivariate_legend_html("Pesticide Use", "Life Expectancy"),
                    position = "bottomright")
       
@@ -637,156 +793,6 @@ function(input, output, session) {
     }
   })
   
-  # ===========================================================================
-
-  # MAP 1: PARKINSON'S VS PESTICIDES (STATE LEVEL CHOROPLETH)
-  # ===========================================================================
-  
-  output$map1 <- renderLeaflet({
-    req(Parkinson_Pesticide_State(), State_Centroids())
-    data <- Parkinson_Pesticide_State()
-    compounds <- Pesticide_State_Compounds()
-    
-    states <- State_Centroids() %>%
-      left_join(
-        data %>% select(State_Abbr, Avg_Death_Rate, Avg_Pesticide),
-        by = c("State" = "State_Abbr")
-      )
-    
-    if (!is.null(compounds)) {
-      states <- states %>%
-        left_join(compounds, by = c("State" = "State_Abbr")) %>%
-        rename(
-          pest_24d = `2,4-D`,
-          pest_glyphosate = Glyphosate,
-          pest_paraquat = Paraquat,
-          pest_chlorpyrifos = Chlorpyrifos
-        )
-    } else {
-      states$pest_24d <- NA_real_
-      states$pest_glyphosate <- NA_real_
-      states$pest_paraquat <- NA_real_
-      states$pest_chlorpyrifos <- NA_real_
-    }
-    
-    pal <- colorNumeric("YlOrRd", domain = states$Avg_Death_Rate, na.color = "#cccccc")
-    
-    labels <- sprintf("<strong>%s</strong><br/>Death Rate: %s<br/>2,4-D: %s lbs<br/>Glyphosate: %s lbs<br/>Paraquat: %s lbs<br/>Chlorpyrifos: %s lbs",
-                      states$State,
-                      ifelse(is.na(states$Avg_Death_Rate), "N/A", round(states$Avg_Death_Rate, 2)),
-                      ifelse(is.na(states$pest_24d), "N/A", round(states$pest_24d, 1)),
-                      ifelse(is.na(states$pest_glyphosate), "N/A", round(states$pest_glyphosate, 1)),
-                      ifelse(is.na(states$pest_paraquat), "N/A", round(states$pest_paraquat, 1)),
-                      ifelse(is.na(states$pest_chlorpyrifos), "N/A", round(states$pest_chlorpyrifos, 1))) %>%
-      lapply(htmltools::HTML)
-    
-    leaflet(states) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-      addCircleMarkers(
-        lng = ~lng,
-        lat = ~lat,
-        radius = 8,
-        stroke = TRUE,
-        weight = 1,
-        color = "white",
-        fillColor = ~pal(Avg_Death_Rate),
-        fillOpacity = 0.85,
-        label = labels,
-        labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
-      ) %>%
-      addLegend(pal = pal, values = ~Avg_Death_Rate, opacity = 1,
-                title = "Parkinson's<br/>Death Rate", position = "bottomright")
-  })
-  
-  # ===========================================================================
-  # MAP 2: PARKINSON'S VS FARMS (STATE LEVEL CHOROPLETH)
-  # ===========================================================================
-  
-  output$map2 <- renderLeaflet({
-    req(Parkinson_Farm_State(), State_Centroids())
-    data <- Parkinson_Farm_State()
-    states <- State_Centroids() %>%
-      left_join(data %>% mutate(State_Abbr = normalize_state_to_abbr(State)),
-                by = c("State" = "State_Abbr"))
-    
-    pal <- colorNumeric("RdPu", domain = states$Avg_Death_Rate, na.color = "#cccccc")
-    
-    labels <- sprintf("<strong>%s</strong><br/>Death Rate: %s<br/>Farms: %s",
-                      states$State,
-                      ifelse(is.na(states$Avg_Death_Rate), "N/A", round(states$Avg_Death_Rate, 2)),
-                      ifelse(is.na(states$Number_Of_Farms), "N/A", format(round(states$Number_Of_Farms), big.mark = ","))) %>%
-      lapply(htmltools::HTML)
-    
-    leaflet(states) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      setView(lng = -98.5, lat = 39.5, zoom = 4) %>%
-      addCircleMarkers(
-        lng = ~lng,
-        lat = ~lat,
-        radius = 8,
-        stroke = TRUE,
-        weight = 1,
-        color = "white",
-        fillColor = ~pal(Avg_Death_Rate),
-        fillOpacity = 0.85,
-        label = labels,
-        labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
-      ) %>%
-      addLegend(pal = pal, values = ~Avg_Death_Rate, opacity = 1,
-                title = "Parkinson's<br/>Death Rate", position = "bottomright")
-  })
-  
-  # ===========================================================================
-  # MAP 3: PESTICIDES VS LIFE EXPECTANCY (COUNTY LEVEL CHOROPLETH)
-  # ===========================================================================
-  
-  output$map3 <- renderLeaflet({
-    req(County_Pesticide_Life())
-    data <- County_Pesticide_Life()
-    
-    # Filter by selected state
-    if(!is.null(input$state_selector_map3) && input$state_selector_map3 != "all") {
-      data <- data %>% filter(state_name == input$state_selector_map3)
-    }
-    
-    data_with_life <- data %>% filter(!is.na(Avg_Life_Expectancy), !is.na(county_fips))
-    
-    if(nrow(data_with_life) == 0) {
-      return(leaflet() %>% 
-               addProviderTiles(providers$CartoDB.Positron) %>% 
-               setView(lng = -98.5, lat = 39.5, zoom = 4))
-    }
-    
-    pal <- colorNumeric("YlOrRd", domain = data_with_life$Avg_Life_Expectancy, reverse = TRUE, na.color = "#cccccc")
-    
-    labels <- sprintf("<strong>%s, %s</strong><br/>Life Expectancy: %s years<br/>Pesticide: %s lbs",
-                      data_with_life$county_name,
-                      data_with_life$state_name,
-                      round(data_with_life$Avg_Life_Expectancy, 1),
-                      round(data_with_life$Avg_Pesticide, 1)) %>%
-      lapply(htmltools::HTML)
-    
-    zoom_level <- if(input$state_selector_map3 == "all") 4 else 6
-    center_lng <- if(input$state_selector_map3 == "all") -98.5 else mean(data_with_life$lng, na.rm = TRUE)
-    center_lat <- if(input$state_selector_map3 == "all") 39.5 else mean(data_with_life$lat, na.rm = TRUE)
-    
-    leaflet(data_with_life) %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      setView(lng = center_lng, lat = center_lat, zoom = zoom_level) %>%
-      addCircleMarkers(
-        lng = ~lng,
-        lat = ~lat,
-        radius = 4,
-        stroke = FALSE,
-        fillColor = ~pal(Avg_Life_Expectancy),
-        fillOpacity = 0.7,
-        label = labels,
-        labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"))
-      ) %>%
-      addLegend(pal = pal, values = ~Avg_Life_Expectancy, opacity = 1,
-                title = "Life Expectancy<br/>(years)", position = "bottomright")
-  })
   # ===========================================================================
   # DATA TABLES
   # ===========================================================================
@@ -818,63 +824,36 @@ function(input, output, session) {
   output$data_table_state_pesticide <- renderDT({
     data <- State_Pesticide_Data()
     req(data)
-    datatable(
-      data,
-      options = list(pageLength = 15, scrollX = TRUE),
-      rownames = FALSE,
-      class = 'cell-border stripe hover'
-    )
+    datatable(data, options = list(pageLength = 15, scrollX = TRUE),
+              rownames = FALSE, class = 'cell-border stripe hover')
   })
   
   output$data_table_county_pesticide <- renderDT({
     data <- Pesticide_County_Data()
     req(data)
-    datatable(
-      data,
-      options = list(pageLength = 15, scrollX = TRUE),
-      rownames = FALSE,
-      class = 'cell-border stripe hover'
-    )
+    datatable(data, options = list(pageLength = 15, scrollX = TRUE),
+              rownames = FALSE, class = 'cell-border stripe hover')
   })
   
   output$download_parkinsons_data <- downloadHandler(
     filename = function() paste("parkinsons_data_", Sys.Date(), ".csv", sep = ""),
-    content = function(file) {
-      req(Parkinson_Data())
-      write.csv(Parkinson_Data(), file, row.names = FALSE)
-    }
+    content = function(file) { req(Parkinson_Data()); write.csv(Parkinson_Data(), file, row.names = FALSE) }
   )
-  
   output$download_farm_data <- downloadHandler(
     filename = function() paste("farm_data_", Sys.Date(), ".csv", sep = ""),
-    content = function(file) {
-      req(Farm_Data())
-      write.csv(Farm_Data(), file, row.names = FALSE)
-    }
+    content = function(file) { req(Farm_Data()); write.csv(Farm_Data(), file, row.names = FALSE) }
   )
-  
   output$download_life_expectancy_data <- downloadHandler(
     filename = function() paste("life_expectancy_data_", Sys.Date(), ".csv", sep = ""),
-    content = function(file) {
-      req(Expectancy_State_Data())
-      write.csv(Expectancy_State_Data(), file, row.names = FALSE)
-    }
+    content = function(file) { req(Expectancy_State_Data()); write.csv(Expectancy_State_Data(), file, row.names = FALSE) }
   )
-  
   output$download_state_pesticide_data <- downloadHandler(
     filename = function() paste("state_pesticide_data_", Sys.Date(), ".csv", sep = ""),
-    content = function(file) {
-      req(Pesticide_State_Data())
-      write.csv(Pesticide_State_Data(), file, row.names = FALSE)
-    }
+    content = function(file) { req(State_Pesticide_Data()); write.csv(State_Pesticide_Data(), file, row.names = FALSE) }
   )
-  
   output$download_county_pesticide_data <- downloadHandler(
     filename = function() paste("county_pesticide_data_", Sys.Date(), ".csv", sep = ""),
-    content = function(file) {
-      req(Pesticide_County_Data())
-      write.csv(Pesticide_County_Data(), file, row.names = FALSE)
-    }
+    content = function(file) { req(Pesticide_County_Data()); write.csv(Pesticide_County_Data(), file, row.names = FALSE) }
   )
   
   # =============================================================================
