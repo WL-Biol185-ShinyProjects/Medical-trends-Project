@@ -457,7 +457,7 @@ function(input, output, session) {
            "map3" = div(p(style = "font-size:0.9em;line-height:1.6;",
                           "County-level choropleth colored by average life expectancy.",
                           br(), br(), strong("Color:"), " Life expectancy (YlGn scale).",
-                          br(), "Use the state selector below to zoom to a specific state.")),
+                          br(), "Use the state selector to zoom to a specific state.")),
            "map4" = div(p(style = "font-size:0.9em;line-height:1.6;",
                           "Bivariate choropleth — each state is colored by the combination of its",
                           strong(" Parkinson's death rate"), " (X axis) and",
@@ -472,7 +472,7 @@ function(input, output, session) {
                           "Bivariate county choropleth — each county is colored by the combination of",
                           strong(" pesticide use"), " (X axis) and",
                           strong(" life expectancy"), " (Y axis).",
-                          br(), br(), "Use the selector below to zoom to a single state.")),
+                          br(), br(), "Use the selector to zoom to a single state.")),
            p("Select a map to view details.")
     )
   })
