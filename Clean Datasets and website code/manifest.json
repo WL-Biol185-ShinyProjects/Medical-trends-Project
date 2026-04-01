@@ -3,8 +3,8 @@
   "locale": "en_US",
   "platform": "4.4.2",
   "metadata": {
-    "appmode": "rmd-static",
-    "primary_rmd": "Location-Azhiemers.Rmd",
+    "appmode": "shiny",
+    "primary_rmd": null,
     "primary_html": null,
     "content_category": null,
     "has_parameters": false
@@ -2529,116 +2529,44 @@
     }
   },
   "files": {
-    "2_4-D_scatter.png": {
-      "checksum": "51d0b4e48e6259d20af3bcb1f1ffdcb8"
-    },
-    "Chlorpyrifos_scatter.png": {
-      "checksum": "6dd311d8632eedff01cbaa18c01cf84a"
-    },
-    "Clean Datasets and website code/cfips_location.csv": {
+    "cfips_location.csv": {
       "checksum": "0372b690a131b7c93e2ec14795e4461d"
     },
-    "Clean Datasets and website code/county_pesticides_data_clean.csv": {
+    "county_pesticides_data_clean.csv": {
       "checksum": "264ab00aaa589cc51ce3bc03481962fe"
     },
-    "Clean Datasets and website code/ExpectancyData_clean.csv": {
+    "ExpectancyData_clean.csv": {
       "checksum": "a7fa22dbbf589b6fbc2375d66bb6f5e8"
     },
-    "Clean Datasets and website code/Farm_Data_2024.csv": {
+    "Farm_Data_2024.csv": {
       "checksum": "19ebaee6ab662f419e2abce21b2c8fab"
     },
-    "Clean Datasets and website code/LifeExpectancyStateData_clean.csv": {
+    "LifeExpectancyStateData_clean.csv": {
       "checksum": "2d6456bc078ca7fd3b9e0b2eb8404d66"
     },
-    "Clean Datasets and website code/Parkinsons_mortality_rates_clean.csv": {
+    "Parkinsons_mortality_rates_clean.csv": {
       "checksum": "188cfa4375af6719b4dd23873c0d8f31"
     },
-    "Clean Datasets and website code/server.R": {
+    "server.R": {
       "checksum": "89cabc83b92211067c13cc00070d1f84"
     },
-    "Clean Datasets and website code/state_pesticide_data_clean.csv": {
+    "state_pesticide_data_clean.csv": {
       "checksum": "d0d5af01105dfa2bcf5ed558f2355197"
     },
-    "Clean Datasets and website code/ui.R": {
+    "ui.R": {
       "checksum": "e6a41a1db449a3289dd784175471020e"
     },
-    "Clean Datasets and website code/www/about_image.jpg": {
+    "www/about_image.jpg": {
       "checksum": "d441500899ca149a669f336ffe90ac71"
     },
-    "Clean Datasets and website code/www/datasets_image.jpg": {
+    "www/datasets_image.jpg": {
       "checksum": "789f921b15fa07d068bf2e1443da7a02"
     },
-    "Clean Datasets and website code/www/green_neuron.jpg": {
+    "www/green_neuron.jpg": {
       "checksum": "1d67dd8b9c9a8b9f463de48e3d9bec9d"
     },
-    "Clean Datasets and website code/www/questions_image.webp": {
+    "www/questions_image.webp": {
       "checksum": "a368169a199cd88728b268f3dfb8d5e1"
-    },
-    "Datasets/Life Expectancy Data 2010-2015.csv": {
-      "checksum": "3e6c5d1581013e890674c4322abd48b6"
-    },
-    "Datasets/Parkinsons_mortality_rates.csv": {
-      "checksum": "7ec9c5428b554c2559954b6bc058b7da"
-    },
-    "Glyphosate_scatter.png": {
-      "checksum": "9c802a4e3377db7fbb2e45ae0fd1397c"
-    },
-    "LICENSE": {
-      "checksum": "1ebbd3e34237af26da5dc08a4e440464"
-    },
-    "Location-Azhiemers.Rmd": {
-      "checksum": "a59dc71f7736bd4ed21b64db48d50ef5"
-    },
-    "Paraquat_scatter.png": {
-      "checksum": "214c9e6bdbd77f6b5974a7c12ccf245f"
-    },
-    "Possible_Data_Sets/Air_Qualiy_Data.csv": {
-      "checksum": "deea908622478b761bcbf94bf19c914a"
-    },
-    "Possible_Data_Sets/Alzheimers_Data.csv": {
-      "checksum": "9a965d38802d61e5986548c04e2a3a80"
-    },
-    "Possible_Data_Sets/dictionary.csv": {
-      "checksum": "181f15167379034b993d0df82047782a"
-    },
-    "Possible_Data_Sets/Pesticide_Data_2014.csv": {
-      "checksum": "4f3c423631057ab6ec57a68c0bc36040"
-    },
-    "Possible_Data_Sets/Pesticide_Data_2015.csv": {
-      "checksum": "bbde00f27540374efeed06841479cf94"
-    },
-    "Possible_Data_Sets/pesticides_2014_filtered.csv": {
-      "checksum": "8f09822544e8cb986b584d4d41478a6f"
-    },
-    "Possible_Data_Sets/pesticides_2015_filtered.csv": {
-      "checksum": "83168fc4be582ea7cc7a1d0cb88a0dc9"
-    },
-    "Possible_Data_Sets/pesticides_by_county.csv": {
-      "checksum": "04d45908e2884ebca9a3b4c49c7848c1"
-    },
-    "Project-copy.R": {
-      "checksum": "105a67adafd191d1fb7326ebadddebe0"
-    },
-    "README.md": {
-      "checksum": "7a4c9093d8150d1252fe6b0ec3e59b8a"
-    },
-    "Scripts/Data Analysis Script.R": {
-      "checksum": "ff6fd67dc7ed9e863917282d9e616949"
-    },
-    "Scripts/Data_Cleanup_Script.R": {
-      "checksum": "cdc41f2c50da84dec55e45ac96765c2d"
-    },
-    "Scripts/pesticide_county_data.R": {
-      "checksum": "15c0883dc06ce97e5158bf49ac30b7f6"
-    },
-    "Scripts/pesticide_data_state.R": {
-      "checksum": "f5c837ed518022eec3f89c5e0a8413b3"
-    },
-    "Scripts/Script Saving.R": {
-      "checksum": "2b727bbaeed478f35ceb0c82254c5daf"
-    },
-    "ui_2.R": {
-      "checksum": "271088cdfff70152f67c1f37313b1fd4"
     }
   },
   "users": null
