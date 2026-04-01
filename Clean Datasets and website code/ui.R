@@ -1455,7 +1455,7 @@ fluidPage(
                      patterns from publicly available federal datasets.")
                      ),
                      tags$img(
-                       src = "about_image.jpg",
+                       src = "green_neuron.jpg",
                        class = "about-illustration",
                        alt = "Medical research illustration"
                      )
@@ -1515,7 +1515,7 @@ fluidPage(
                      tags$p(tags$strong("Course:"), " BIOL-185 — Medical Trends Analysis, Winter 2026"),
                      tags$p(tags$strong("Institution:"), " Washington & Lee University"),
                      tags$p(tags$strong("Contributors:"), " Ashley Ellis ('26), Robert Bernot ('26), Georgia Busbee ('26)"),
-                     tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT.")
+                     tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT. Claude was also used to create this dashboard.")
                  )
                  
              )
