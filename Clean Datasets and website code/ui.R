@@ -602,7 +602,7 @@ fluidPage(
                          h2("About This Project"),
                          p("Parkinson's disease (PD) affects millions of Americans, but the environmental
            risk factors associated with developing this disease remain poorly understood. Studies have suggested that certain pesticides can cause neurological harm resulting in increased risk of developing PD. This
-           project investigates whether the use of certain pesticides (Paraquat, Glyphosate, Chlorypifos, 2,4-D) and agricultural intensity are
+           project investigates whether the use of certain pesticides (Paraquat, Glyphosate, Chlorpyrifos, 2,4-D) and agricultural intensity are
            associated with higher Parkinson's mortality rates across U.S. states and counties."),
                          p("Our interactive dashboard integrates CDC mortality data, USDA pesticide
            and farm records, and CDC WONDER life-expectancy figures to visualize
