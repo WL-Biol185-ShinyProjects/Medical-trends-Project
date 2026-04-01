@@ -3,12 +3,3 @@ Project Group consisting of Robert, Ashley, and Georgia focusing on medical tren
 
 
 
-
-#Ashley's edit 
-
-
-#Ashley's edit 
-
-
-## Georgia edit ##
-
