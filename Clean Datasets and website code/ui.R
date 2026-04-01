@@ -1455,7 +1455,7 @@ fluidPage(
                      tags$p(tags$strong("Course:"), " BIOL-185 — Medical Trends Analysis, Winter 2026"),
                      tags$p(tags$strong("Institution:"), " Washington & Lee University"),
                      tags$p(tags$strong("Contributors:"), " Ashley Ellis ('26), Robert Bernot ('26), Georgia Busbee ('26)"),
-                     tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT.")
+                     tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT. Claude was also used in the creation of this dashboard."),
                  )
                  
              ) # End home-section
