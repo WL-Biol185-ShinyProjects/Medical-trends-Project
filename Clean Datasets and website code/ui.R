@@ -1354,7 +1354,7 @@ fluidPage(
            is a weak positive predictor of Parkinson's mortality at the state level,
            consistent with the broader epidemiological literature, but that the strength
            and direction of this relationship varies by compound and is likely moderated
-           by unmeasured geographic, demographic, and socioeconomic factors."), "We believe access to county-level data for all analyses would provide a more robust characterization of the relationship between pesticide use and Parkinson's disease prevalence, and would be a good direction for future projects to pursue.")
+           by unmeasured geographic, demographic, and socioeconomic factors."), "We believe access to county-level data for all analyses would provide a more robust characterization of the relationship between pesticide use and Parkinson's disease prevalence, and would be an insightful direction for future projects to pursue.")
                      )
                  )
              )
@@ -1503,8 +1503,11 @@ fluidPage(
                      tags$p(tags$strong("Institution:"), " Washington & Lee University"),
                      tags$p(tags$strong("Contributors:"), " Ashley Ellis ('26), Robert Bernot ('26), Georgia Busbee ('26)"),
                      tags$p("Dashboard built in R using Shiny, Leaflet, Plotly, and DT. Claude was also used to create this dashboard.")
-                 )
-                 
+                 ),
+                 div(class = "home-plain-card",
+                     tags$h2("Acknowledgements"),
+                     tags$p("We would like to thank our BIOL 185 professor, Dr. Whitworth, for his guidance in creating and refining our dashboard. We would also like to acknowledge the use of generative AI, including Claude and ChatGPT, in helping this project come to life."),
+                 ),
              )
              
     )
