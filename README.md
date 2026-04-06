@@ -26,8 +26,12 @@ I am a current student at Washington & Lee University. This project gave me the 
 I am a current senior at Washington & Lee University studying Biomedical Engineering. My research interests center on neuroengineering and hardware-based medical device development, so exploring the intersection of environmental data and neurological disease felt like a natural fit for this project. Working through the statistical analysis and building out the dashboard gave me a much deeper appreciation for how complex and confounded environmental health data can be — even when a relationship looks clean on a scatter plot, the story underneath is rarely simple.
 
 **Robert Bernot**
+<<<<<<< HEAD
 I am a current student at Washington & Lee University studying Biology and on the Pre-Med track. This project gave me the opportunity to combine both of my interests, as I was able to analyze how ecological processes correlate with health issues. 
 >>>>>>> 34a9765e5679b1080407c031ec2284e9a47f3cb6
+=======
+I am a current student at Washington & Lee University studying Biology and on the Pre-Med track. This project gave me the opportunity to combine both of my interests, as I was able to analyze how ecological processes correlate with health issues. Investigating the potential environmental contributors to Parkinson's disease deepened my understanding of how upstream factors — from pesticide exposure to air quality — can shape long-term neurological outcomes. As I pursue a career in medicine, this kind of population-level thinking will be invaluable for approaching patient care with a broader public health perspective.
+>>>>>>> 9394f4adecb13b849cf9e0844a4f972458a05219
 
 **Georgia Busbee**
 I am a current senior at Washington & Lee University minoring in data science. Working on the visualizations and statistical analysis for this project allowed me to apply my background in R to a real-world public health question, and I came away with a greater appreciation for how thoughtfully data needs to be handled when exploring the environmental dimensions of neurological disease.
