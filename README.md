@@ -11,11 +11,10 @@ The app is publicly deployed and accessible at:
 
 ## About the Creators
 
-This app was created as a final project for BIOL-185: Biostatistics at Washington & Lee University.
+This app was created as a final project for BIOL-185: Exploring Big Data at Washington & Lee University.
 
 **Ashley Ellis**
-I am a current senior at Washington & Lee University studying Biomedical Engineering. My research interests center on neuroengineering and hardware-based medical device development, so exploring the intersection of environmental data and neurological disease felt like a natural fit for this project. Working through the statistical analysis and building out the dashboard gave me a much deeper appreciation for how complex and confounded environmental health data can be — even when a relationship looks clean on a scatter plot, the story underneath is rarely simple.
-
+I am a current senior at Washington & Lee University studying Engineering Integrated with Biology. My career and research interests center on neuroengineering and hardware-based medical device development, so exploring the intersection of environmental risk factors and neurological disease for this project was a great way to tie in my interests while learning new skills.
 **Robert Bernote**
 I am a current student at Washington & Lee University. This project gave me the opportunity to explore how large-scale agricultural and public health datasets can be combined to investigate environmental contributors to disease. I enjoyed the challenge of wrangling messy real-world data and turning it into something visually accessible and analytically meaningful.
 
@@ -91,7 +90,7 @@ shiny::runApp("Clean Datasets and website code")
 
 ## Acknowledgements & Bibliography
 
-We would like to acknowledge our use of Claude.ai (Anthropic) during the coding and development of this app.
+We would like to acknowledge our use of Claude.ai (Anthropic) during the coding and development of this app. We would also like to thank and acknowledge the help of our professor, Professor Whitworth, who guided the development of this dashboard.
 
 **Data Sources:**
 
