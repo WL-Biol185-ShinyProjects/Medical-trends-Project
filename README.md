@@ -20,7 +20,7 @@ I am a current senior at Washington & Lee University studying Engineering Integr
 
 **Robert Bernot**
 
-I am a current student at Washington & Lee University studying Biology and on the Pre-Med track. This project gave me the opportunity to combine both of my interests, as I was able to analyze how ecological processes correlate with health issues. 
+I am a current student at Washington & Lee University studying Biology and on the Pre-Med track. This project gave me the opportunity to combine both of my interests, as I was able to analyze how ecological processes correlate with health issues. Investigating the potential environmental contributors to Parkinson's disease deepened my understanding of how upstream factors — from pesticide exposure to air quality — can shape long-term neurological outcomes. As I pursue a career in medicine, this kind of population-level thinking will be invaluable for approaching patient care with a broader public health perspective.
 
 
 **Georgia Busbee**
