@@ -4,6 +4,10 @@
 
 This is an interactive R Shiny web application that explores potential relationships between agricultural pesticide exposure, farm density, and neurological health outcomes across the United States. Using state- and county-level data, the dashboard visualizes geographic patterns in Parkinson's disease mortality, runs correlation and regression analyses between pesticide use and health outcomes, and applies ANOVA with Tukey post-hoc tests to compare health outcomes across low, medium, and high pesticide exposure groups. The goal of this project is to surface potential environmental risk patterns associated with Parkinson's disease while acknowledging the observational nature of the data and the many confounding factors at play.
 
+
+
+
+=======
 The app is publicly deployed and accessible at:
 **https://positconnect.wlu.edu/content/0c6f6fd5-759d-43ef-ba42-0739756bd983**
 
@@ -112,3 +116,4 @@ U.S. Census Bureau. (n.d.). *County FIPS codes and geographic coordinates.* Unit
 - State-level ANOVA analyses are underpowered due to small group sizes (~15-17 states per tertile)
 - Geographic confounding is present throughout — agricultural regions differ systematically in demographics, healthcare access, income, and other factors that independently affect health outcomes
 - Aggregated county and state data may mask important local variation
+
