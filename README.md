@@ -4,6 +4,10 @@
 
 This is an interactive R Shiny web application that explores potential relationships between agricultural pesticide exposure, farm density, and neurological health outcomes across the United States. Using state- and county-level data, the dashboard visualizes geographic patterns in Parkinson's disease mortality, runs correlation and regression analyses between pesticide use and health outcomes, and applies ANOVA with Tukey post-hoc tests to compare health outcomes across low, medium, and high pesticide exposure groups. The goal of this project is to surface potential environmental risk patterns associated with Parkinson's disease while acknowledging the observational nature of the data and the many confounding factors at play.
 
+
+
+
+=======
 The app is publicly deployed and accessible at:
 **https://positconnect.wlu.edu/content/0c6f6fd5-759d-43ef-ba42-0739756bd983**
 
@@ -14,13 +18,19 @@ The app is publicly deployed and accessible at:
 This app was created as a final project for BIOL-185: Exploring Big Data at Washington & Lee University.
 
 **Ashley Ellis**
+<<<<<<< HEAD
 I am a current senior at Washington & Lee University studying Engineering Integrated with Biology. My career and research interests center on neuroengineering and hardware-based medical device development, so exploring the intersection of environmental risk factors and neurological disease for this project was a great way to tie in my interests while learning new skills.
 **Robert Bernote**
 I am a current student at Washington & Lee University. This project gave me the opportunity to explore how large-scale agricultural and public health datasets can be combined to investigate environmental contributors to disease. I enjoyed the challenge of wrangling messy real-world data and turning it into something visually accessible and analytically meaningful.
+=======
+I am a current senior at Washington & Lee University studying Biomedical Engineering. My research interests center on neuroengineering and hardware-based medical device development, so exploring the intersection of environmental data and neurological disease felt like a natural fit for this project. Working through the statistical analysis and building out the dashboard gave me a much deeper appreciation for how complex and confounded environmental health data can be — even when a relationship looks clean on a scatter plot, the story underneath is rarely simple.
+
+**Robert Bernot**
+I am a current student at Washington & Lee University studying Biology and on the Pre-Med track. This project gave me the opportunity to combine both of my interests, as I was able to analyze how ecological processes correlate with health issues. 
+>>>>>>> 34a9765e5679b1080407c031ec2284e9a47f3cb6
 
 **Georgia Busbee**
-I am a current student at Washington & Lee University. I was drawn to this project because Parkinson's disease has a personal significance to me, and I wanted to understand whether the data could tell us anything meaningful about its geographic distribution and potential environmental drivers. Building this dashboard reinforced how important it is to communicate statistical findings carefully and honestly, especially when the results are mixed.
-
+I am a current senior at Washington & Lee University minoring in data science. Working on the visualizations and statistical analysis for this project allowed me to apply my background in R to a real-world public health question, and I came away with a greater appreciation for how thoughtfully data needs to be handled when exploring the environmental dimensions of neurological disease.
 ---
 
 ## AI Tools Used
@@ -111,3 +121,6 @@ U.S. Census Bureau. (n.d.). *County FIPS codes and geographic coordinates.* Unit
 - State-level ANOVA analyses are underpowered due to small group sizes (~15-17 states per tertile)
 - Geographic confounding is present throughout — agricultural regions differ systematically in demographics, healthcare access, income, and other factors that independently affect health outcomes
 - Aggregated county and state data may mask important local variation
+- Pesticide information for the state of California is not available as the California Department of Pesticide Regulation published separate reports from the USGS. 
+
+
