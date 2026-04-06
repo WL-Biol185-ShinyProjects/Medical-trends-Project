@@ -26,7 +26,7 @@ I am a current student at Washington & Lee University studying Biology and on th
 **Georgia Busbee**
 
 I am a current senior at Washington & Lee University minoring in data science. Working on the visualizations and statistical analysis for this project allowed me to apply my background in R to a real-world public health question, and I came away with a greater appreciation for how thoughtfully data needs to be handled when exploring the environmental dimensions of neurological disease.
----
+
 
 ## AI Tools Used
 
