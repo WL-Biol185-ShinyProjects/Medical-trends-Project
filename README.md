@@ -24,8 +24,7 @@ I am a current senior at Washington & Lee University studying Biomedical Enginee
 I am a current student at Washington & Lee University. This project gave me the opportunity to explore how large-scale agricultural and public health datasets can be combined to investigate environmental contributors to disease. I enjoyed the challenge of wrangling messy real-world data and turning it into something visually accessible and analytically meaningful.
 
 **Georgia Busbee**
-I am a current student at Washington & Lee University. I was drawn to this project because Parkinson's disease has a personal significance to me, and I wanted to understand whether the data could tell us anything meaningful about its geographic distribution and potential environmental drivers. Building this dashboard reinforced how important it is to communicate statistical findings carefully and honestly, especially when the results are mixed.
-
+I am a current senior at Washington & Lee University minoring in data science. Working on the visualizations and statistical analysis for this project allowed me to apply my background in R to a real-world public health question, and I came away with a greater appreciation for how thoughtfully data needs to be handled when exploring the environmental dimensions of neurological disease.
 ---
 
 ## AI Tools Used
@@ -116,4 +115,6 @@ U.S. Census Bureau. (n.d.). *County FIPS codes and geographic coordinates.* Unit
 - State-level ANOVA analyses are underpowered due to small group sizes (~15-17 states per tertile)
 - Geographic confounding is present throughout — agricultural regions differ systematically in demographics, healthcare access, income, and other factors that independently affect health outcomes
 - Aggregated county and state data may mask important local variation
+- Pesticide information for the state of California is not available as the California Department of Pesticide Regulation published separate reports from the USGS. 
+
 
